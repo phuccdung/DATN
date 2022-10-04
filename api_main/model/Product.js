@@ -14,7 +14,20 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+    status:{
+        type:String,
+        default:"waiting",
+    },
+    stock:{
+        type:Number,
+        default:0,
+    },
+    img:{
+        type:[String],
+    }
     
-});
+},
+{ timestamps: true }
+);
 
 module.exports = mongoose.model('Product', productSchema);

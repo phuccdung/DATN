@@ -18,6 +18,22 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getAllVendor=async (req,res)=>{
+    const qNew=req.query.new;
+    try{
+        let user;
+        if(qNew){
+             user=await User.find({"roles.Editor":1984}).sort({createdAt:-1}).limit(5);
+        }else{
+             user=await User.find({"roles.Editor":1984});
+        }
+        
+        res.status(200).json(user)
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
+
 const deleteUser = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ "message": 'User ID required' });
     const user = await User.findOne({ _id: req.body.id }).exec();
@@ -75,10 +91,37 @@ const updateUserToVendor=async(req, res)=>{
         res.status(500).json({ 'message': err.message });
     }
 }
+
+const countVendorStart=async (req,res)=>{
+    const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
+  try {
+    const data = await User.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json(data)
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
 module.exports = {
     getAllUsers,
+    getAllVendor,
     deleteUser,
     getUser,
     updateUser,
     updateUserToVendor,
+    countVendorStart,
 }
