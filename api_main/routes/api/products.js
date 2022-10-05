@@ -8,4 +8,7 @@ router.route('/')
     .get(verifyRoles(ROLES_LIST.Admin),productsController.getProduct)
     .post(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.createProduct);
 
+router.route('/:id')
+    .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.deleteProducts);
+
 module.exports = router;

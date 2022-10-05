@@ -15,13 +15,31 @@ export default function ProductList() {
 
   const [data, setData] = useState([]);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const handleDelete =async (id) => {
+    try{
+      
+      const res=await axios({
+        method: 'delete',
+        url: BASE_URL+`products/${id}`,
+        headers: { 
+          Authorization: "Bearer " + admin.accessToken,
+        }, 
+        data: {
+          userId:admin.id,
+        }
+      });
+      if(res.data.success){
+        let arr=data.filter((item)=>{return item._id!==id});
+        setData(arr);
+      }
+    }catch(err){
+      console.log(err);
+    }
   };
   useEffect(()=>{
     const getUsers=async()=>{
       try{
-        const res=await axios.get(BASE_URL+"products/?waiting=true",{
+        const res=await axios.get(BASE_URL+"products",{
           headers: {
 
             Authorization: "Bearer " + admin.accessToken
