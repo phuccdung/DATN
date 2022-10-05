@@ -26,6 +26,15 @@ const getProduct=async(req,res)=>{
     }
 }
 
+const getProductById = async (req, res) => {
+    if (!req?.params?.id) return res.status(400).json({ "message": false });
+    const product = await Product.findOne({ _id: req.params.id }).exec();
+    if (!product) {
+        return res.status(204).json({ 'message': false });
+    }
+    res.json({"data":product,'message':true});
+}
+
 const deleteProducts=async (req,res)=>{
     try {
         const product= await Product.findById(req.params.id);
@@ -47,5 +56,6 @@ const deleteProducts=async (req,res)=>{
 module.exports = {
     createProduct,
     getProduct,
+    getProductById,
     deleteProducts,
 }

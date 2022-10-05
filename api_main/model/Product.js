@@ -10,6 +10,9 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
+    desc:{
+        type: String,
+    },
     userId: {
         type: String,
         required: true
@@ -23,7 +26,7 @@ const productSchema = new Schema({
         default:0,
     },
     img:{
-        type:[String],
+        type:String,
     }
     
 },

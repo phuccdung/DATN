@@ -1,5 +1,4 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
-import { publicRequest } from "../requestMethods";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
