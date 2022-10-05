@@ -27,6 +27,9 @@ const productSchema = new Schema({
     },
     img:{
         type:String,
+    },
+    category:{
+        type:String,
     }
     
 },
