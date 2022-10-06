@@ -53,9 +53,38 @@ const deleteProducts=async (req,res)=>{
         res.status(500).json(err);
       }
 }
+
+const updateProduct = async (req, res) => {
+    try{
+        if (!req?.params?.id) return res.status(400).json({ "success": 'Product ID required','message':false} );
+    const product = await Product.findOne({ _id: req.params.id }).exec();
+    if (!product) {
+        return res.status(204).json({ 'message': `Product ID ${req.params.id} not found` ,'message':false});
+    }
+    const user=await User.findById(req.body.userId);
+    if(req.body.userId==product.userId||user.roles?.Admin){
+        if(req.body.status&&!user.roles?.Admin){
+            return res.status(400).json({ 'message': `You can't update status` ,'message':false});
+        }
+      const updateProduct=  await Product.findByIdAndUpdate(
+            req.params.id,
+            {
+              $set: req.body,
+            },
+            { new: true }
+          );
+
+    res.status(200).json({ "data":updateProduct,'message':true});
+    }
+    }catch (err) {
+        res.status(500).json(err);
+    }
+    
+}
 module.exports = {
     createProduct,
     getProduct,
     getProductById,
+    updateProduct,
     deleteProducts,
 }

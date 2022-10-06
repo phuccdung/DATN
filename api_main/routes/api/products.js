@@ -11,6 +11,7 @@ router.route('/')
 
 router.route('/:id')
     .get(productsController.getProductById)
+    .put(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.updateProduct)
     .delete(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.deleteProducts);
 
 module.exports = router;
