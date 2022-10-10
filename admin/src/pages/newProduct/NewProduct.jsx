@@ -39,7 +39,6 @@ export default function NewProduct() {
       NotificationManager.error( "Error",'Success message', 3000);
     }
   };
-  console.log(input);
 
   const handleClick = (e) => {
     e.preventDefault();
