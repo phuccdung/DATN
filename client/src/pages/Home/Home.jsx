@@ -20,13 +20,26 @@ const Home = () => {
 
   const [trenProduct,setTrenProduct]=useState([]);
   const [bestProduct,setBestProduct]=useState([]);
+  const [mobileProduct,setMobileProduct]=useState([]);
+  const [wirelessProduct,setWirelessProduct]=useState([]);
+  const [popularProduct,setPopularProduct]=useState([]);
+
+
+
 
   useEffect(()=>{
     const filterProduct1=products.filter(product=> {return product.category==="chair"})
     const filterProduct2=products.filter(product=> {return product.category==="sofa"})
-  
+    const filterProduct3=products.filter(product=> {return product.category==="wireless"})
+    const filterProduct4=products.filter(product=> {return product.category==="mobile"})
+    const filterProduct5=products.filter(product=> {return product.category==="watch"})
+
     setTrenProduct(filterProduct1);
     setBestProduct(filterProduct2);
+    setWirelessProduct(filterProduct3);
+    setMobileProduct(filterProduct4);
+    setPopularProduct(filterProduct5);
+
   },[])
   return ( 
     <Helmet title={"Home"}>
@@ -93,9 +106,32 @@ const Home = () => {
                 </motion.button>
               </Col>
 
-              <Col lg="6" md="6" className="text-end">
+              <Col lg="6" md="12" className="text-end count__img">
                 <img src={countterimg} alt="" />
               </Col>
+            </Row>
+          </Container>
+        </section>
+
+        <section className="new__arrivals">
+          <Container>
+            <Row>
+              <Col lg="12" className="text-center mb-5">
+                <h2 className="section__title">new Arrivals</h2>
+              </Col>
+              <ProductList data={mobileProduct}/>
+              <ProductList data={wirelessProduct}/>
+            </Row>
+          </Container>
+        </section>
+
+        <section className="popular__category">
+        <Container>
+            <Row>
+              <Col lg="12" className="text-center mb-5">
+                <h2 className="section__title">Popular in Category</h2>
+              </Col>
+              <ProductList data={popularProduct}/>
             </Row>
           </Container>
         </section>
