@@ -1,12 +1,30 @@
 import React from 'react';
+import { NotificationManager} from 'react-notifications';
+
 
 import "./ProductCard.css";
 import {motion} from "framer-motion"
 import { Col } from 'reactstrap';
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {cartActions} from "../../../redux/slices/cartSlice";
 
 const ProductCard = ({item}) => {
+
+  const dispatch=useDispatch();
+  const addToCart=()=>{
+    dispatch(cartActions.addItem({
+      id:item.id,
+      productName:item.productName,
+      price:item.price,
+      images:item.imageUrl,
+    }));
+    NotificationManager.success("",'Product added successfully', 2000);
+  }
+
   return (
+
+
     <Col lg="3" md="4" className="mb-2">
       <div className="product__item">
         <div className="product__img">
@@ -22,7 +40,7 @@ const ProductCard = ({item}) => {
         </div>
         <div className="product__card-bottom d-flex align-item-center justify-content-between p-2">
           <span className="price">${item.price}</span>
-          <motion.span  whileTap={{scale:1.2}} ><i class="ri-add-line"></i></motion.span>
+          <motion.span  whileTap={{scale:1.2}} onClick={addToCart} ><i class="ri-add-line" ></i></motion.span>
         </div>
       </div>
     </Col>

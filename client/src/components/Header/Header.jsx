@@ -1,13 +1,11 @@
 import React,{useRef,useEffect} from 'react';
 import {NavLink} from 'react-router-dom'
-
 import './Header.css'
-
 import logo from "../../assets/images/eco-logo.png";
 import user_icon from "../../assets/images/user-icon.png"
-
-import {Container,Row}from "reactstrap"
-import{motion} from "framer-motion"
+import {Container,Row}from "reactstrap";
+import{motion} from "framer-motion";
+import {useSelector} from"react-redux";
 
 const nav__link=[
   {
@@ -28,6 +26,8 @@ const Header = () => {
 
   const headerRef=useRef(null);
   const menuRef=useRef(null);
+
+  const totalQuantity=useSelector(state=>state.cart.totalQuantity)
 
   const stickyHeaderFunc=()=>{
     window.addEventListener('scroll',()=>{
@@ -79,7 +79,7 @@ const Header = () => {
               </span>
               <span className="cart__icon">
                 <i class="ri-shopping-bag-line"></i>
-                <span className="badge">2</span>
+                <span className="badge">{totalQuantity}</span>
               </span>
               
               <span>
