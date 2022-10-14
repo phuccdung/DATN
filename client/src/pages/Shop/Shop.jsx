@@ -62,7 +62,8 @@ const Shop = () => {
   const handleSearch=(e)=>{
     const search = e.currentTarget.value;
 
-    const searchedProduct=products.filter(item=>item.productName.toLowerCase().includes(search.toLowerCase()));
+    const searchedProduct=products.filter(item=>
+      item.productName.toLowerCase().includes(search.toLowerCase()));
 
     setFilterProduct(searchedProduct);
   }
@@ -73,7 +74,7 @@ const Shop = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="3" md="3">
+            <Col lg="3" md="6">
               <div className="filter__widget">
                 <select onChange={(e)=>handleFilter(e)} >
                 <option value="">Filter By Category</option>
@@ -85,7 +86,7 @@ const Shop = () => {
                 </select>
               </div>
             </Col>
-            <Col lg="3" md="3">
+            <Col lg="3" md="6" className='text-end'>
               <div className="filter__widget">
                 <select >
                   <option value>Sort By</option>
@@ -110,10 +111,10 @@ const Shop = () => {
         <Container>
           <Row>
             {
-            filterProductData.lenght===0 ? 
-             <h1>No Product are found!</h1>
+             filterProductData.length===0 ? 
+             (<h1 className='text-center fs-4'>No Product are found!</h1>)
              :
-             <ProductList data={filterProductData} />
+            (<ProductList data={filterProductData} />)
             }
           </Row>
         </Container>

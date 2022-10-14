@@ -17,7 +17,7 @@ const ProductCard = ({item}) => {
       id:item.id,
       productName:item.productName,
       price:item.price,
-      images:item.imageUrl,
+      image:item.imgUrl,
     }));
     NotificationManager.success("",'Product added successfully', 2000);
   }
@@ -32,7 +32,7 @@ const ProductCard = ({item}) => {
         </div>
         <div className="p-2 product__info">
           <h3 className="product__name">
-            <Link to={`shop/${item.id}`}>
+            <Link to={`/shop/${item.id}`}>
               {item.productName}
             </Link> 
           </h3>
