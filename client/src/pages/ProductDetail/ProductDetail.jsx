@@ -40,8 +40,14 @@ const ProductDetail = () => {
     const reviewUserName=reviewUser.current.value;
     const reviewUserMsg=reviewMsg.current.value;
 
+    const reviewObj={
+      userName:reviewUserName,
+      text:reviewUserMsg,
+      rating
+    };
 
-    console.log(reviewUserName,reviewUserMsg,rating);
+    NotificationManager.success("",'Review successfully', 2000);
+    console.log(reviewObj);
   }
 
   const addToCart=()=>{
@@ -49,7 +55,7 @@ const ProductDetail = () => {
       id,
       productName,
       price,
-      image:imgUrl,
+      imgUrl,
     }));
     NotificationManager.success("",'Product added successfully', 2000);
   };
@@ -133,22 +139,22 @@ const ProductDetail = () => {
                         <h4>Leave your experience</h4>
                         <form action="" onSubmit={submitHandler}>
                           <div className="form__group">
-                            <input type="text" placeholder='Enter name' ref={reviewUser}/>
+                            <input required type="text" placeholder='Enter name' ref={reviewUser}/>
                           </div>
 
                           <div className="form__group d-flex align-items-center gap-5 rating__group">
-                          <span onClick={()=>setRating(1)}>1<i class="ri-star-fill"></i></span>
-                          <span onClick={()=>setRating(2)}>2<i class="ri-star-fill"></i></span>
-                          <span onClick={()=>setRating(3)}>3<i class="ri-star-fill"></i></span>
-                          <span onClick={()=>setRating(4)}>4<i class="ri-star-fill"></i></span>
-                          <span onClick={()=>setRating(5)}>5<i class="ri-star-fill"></i></span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(1)}>1<i class="ri-star-fill"></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(2)}>2<i class="ri-star-fill"></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(3)}>3<i class="ri-star-fill"></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(4)}>4<i class="ri-star-fill"></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(5)}>5<i class="ri-star-fill"></i></motion.span>
                           </div>
 
                           <div className="form__group">
-                            <textarea rows={4} type="text" placeholder='Review Message....' ref={reviewMsg} />
+                            <textarea required rows={4} type="text" placeholder='Review Message....' ref={reviewMsg} />
                           </div>
 
-                          <button type='submit' className="buy__btn">Submit</button>
+                          <motion.button whileHover={{scale:1.2}} type='submit' className="buy__btn">Submit</motion.button>
                         </form>
                       </div>
                     </div>
