@@ -14,3 +14,13 @@ export const login = async (dispatch, user) => {
     return false;
   }
 };
+
+export const Register=async(user)=>{
+  try{
+    const res = await axios.post(BASE_URL+"register", user);
+    return res.data
+  }catch(err){
+    console.log(err);
+    return false;
+  }
+}
