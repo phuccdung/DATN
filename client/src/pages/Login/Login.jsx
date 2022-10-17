@@ -1,13 +1,28 @@
 import React,{useState} from 'react';
 import "./Login.css";
 import Helmet from "../../components/Helmet/Helmet";
+import { NotificationManager} from 'react-notifications';
 import { Container,Row,Col,Form,FormGroup } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import {login} from "../../redux/apiCall";
 
 const Login = () => {
 
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  const [user,setUsername]=useState("");
+  const [pwd,setPassword]=useState("");
+
+  const handleClick=async (e)=>{
+    e.preventDefault();
+     let isLogin=await login(dispatch,{user,pwd});
+     if(isLogin){
+      navigate("/home")
+     }else{
+      NotificationManager.error("",'Email or password is not correct', 2000);
+     }
+  };
 
 
   return (
@@ -18,15 +33,15 @@ const Login = () => {
             <Col lg='6' className='m-auto text-center'>
               <h3 className='fw-bold mb-4'>Login</h3>
 
-              <Form className='auth__form'>
+              <Form className='auth__form' onSubmit={handleClick}>
                 <FormGroup className='form__group'>
                   <input
-                   value={email} onChange={e=>setEmail(e.currentTarget.value)}
+                   value={user} required onChange={e=>setUsername(e.currentTarget.value)}
                    type="email" placeholder='Enter Your Email' />
                 </FormGroup>
                 <FormGroup className='form__group'>
                   <input 
-                  value={password} onChange={e=>setPassword(e.currentTarget.value)}
+                  value={pwd} required onChange={e=>setPassword(e.currentTarget.value)}
                   type="password" placeholder='Enter Your Password' />
                 </FormGroup>
 
