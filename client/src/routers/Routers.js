@@ -1,5 +1,7 @@
 import React from 'react';
 import { Routes,Route,Navigate} from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../redux/slices/userSlice';
 
 import Home from '../pages/Home/Home';
 import Shop from '../pages/Shop/Shop';
@@ -11,6 +13,8 @@ import Signup from '../pages/Signup/Signup';
 
 
 const Routers = () => {
+
+  const currentUser=useSelector(selectCurrentUser);
   return <Routes>
     <Route path="/" element={<Navigate to="home"/>}></Route>
     <Route path="/home" element={<Home/>}> </Route>
@@ -18,7 +22,7 @@ const Routers = () => {
     <Route path="/shop/:id" element={<ProductDetail/>}> </Route>
     <Route path="/cart" element={<Cart/>}> </Route>
     <Route path="/checkout" element={<Checkout/>}> </Route>
-    <Route path="/login" element={<Login/>}> </Route>
+    <Route path="/login" element={currentUser?<Navigate to="/home"/>: <Login/>}> </Route>
     <Route path="/signup" element={<Signup/>}> </Route>
   </Routes>
 }

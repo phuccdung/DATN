@@ -14,7 +14,7 @@ const Signup = () => {
   const [username,setUsername]=useState('');
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
-  const [file,setFile]=useState("");
+  const [file,setFile]=useState(null);
   const [loading,setLoading]=useState(false);
 
   const regiterAccount= async(body)=>{
@@ -31,37 +31,43 @@ const Signup = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setLoading(true);
-    const name = new Date().getTime() + file.name;
-    const storageRef = ref(storage, name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
-            break;
+    if(file){
+      const name = new Date().getTime() + file.name;
+      const storageRef = ref(storage, name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        (error) => {
+          setLoading(false);
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            const body = { name:username,user:email,pwd:password, img: downloadURL };
+            regiterAccount(body);
+          });
         }
-      },
-      (error) => {
-        setLoading(false);
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const body = { user:username,username:email,pwd:password, img: downloadURL };
-          regiterAccount(body);
-        });
-      }
-    );
+      );
+    }else{
+      const body = { name:username,user:email,pwd:password, img: null };
+            regiterAccount(body);
+    }
+    
   };
 
 
@@ -84,7 +90,7 @@ const Signup = () => {
                   <FormGroup className='form__group'>
                     <input
                     value={username} onChange={e=>setUsername(e.currentTarget.value)}
-                    type="text" placeholder='Username' required/>
+                    type="text" placeholder='Name' required/>
                   </FormGroup>
                   <FormGroup className='form__group'>
                     <input

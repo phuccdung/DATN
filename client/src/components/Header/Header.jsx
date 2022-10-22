@@ -1,11 +1,13 @@
 import React,{useRef,useEffect} from 'react';
-import {NavLink,useNavigate} from 'react-router-dom'
+import {Link, NavLink,useNavigate} from 'react-router-dom'
 import './Header.css'
 import logo from "../../assets/images/eco-logo.png";
 import user_icon from "../../assets/images/user-icon.png"
 import {Container,Row}from "reactstrap";
 import{motion} from "framer-motion";
-import {useSelector} from"react-redux";
+import {useSelector,useDispatch} from"react-redux";
+import {  selectCurrentUser } from '../../redux/slices/userSlice';
+import { Logout } from '../../redux/apiCall';
 
 const nav__link=[
   {
@@ -27,6 +29,15 @@ const Header = () => {
   const headerRef=useRef(null);
   const menuRef=useRef(null);
   const navigate=useNavigate();
+  const currentUser=useSelector(selectCurrentUser);
+  const profileActions=useRef(null);
+  const dispatch=useDispatch();
+  
+
+  const handleLogout=()=>{
+    Logout(dispatch);
+    navigate("/home");
+  }
 
   const totalQuantity=useSelector(state=>state.cart.totalQuantity)
 
@@ -49,6 +60,8 @@ const Header = () => {
     stickyHeaderFunc();
     return ()=> window.removeEventListener('scroll', stickyHeaderFunc)
   });
+
+  const profileActionsToggle=()=>profileActions.current.classList.toggle('show__profileActions')
 
   const menuToggle=()=> menuRef.current.classList.toggle('active__menu')
   return (
@@ -87,9 +100,24 @@ const Header = () => {
                 <span className="badge">{totalQuantity}</span>
               </span>
               
-              <span>
-                <motion.img  whileTap={{scale:1.4}} src={user_icon} alt="avatar" srcset="" />
-              </span>
+              <div className='profile'>
+                <motion.img  
+                  whileTap={{scale:1.4}} src={currentUser?currentUser.img :user_icon} alt="avatar"
+                  srcset="" 
+                  onClick={profileActionsToggle}
+                />
+              
+                <div className="profile__actions" ref={profileActions} onClick={profileActionsToggle}>
+                  {
+                    currentUser? <span onClick={handleLogout}>Logout</span>
+                    :
+                    <div className=" d-flex align-items-center justify-content-center flex-column"> 
+                      <Link to='/login'> Login</Link>
+                      <Link to='/sigup'> Signup</Link>
+                    </div>
+                  }
+                </div>
+              </div>
 
               <div className="mobile__menu" onClick={menuToggle}>
               <span>

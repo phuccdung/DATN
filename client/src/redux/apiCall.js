@@ -1,4 +1,4 @@
-import { loginFailure, loginStart, loginSuccess } from "./slices/userSlice";
+import { loginFailure, loginStart, loginSuccess,logout } from "./slices/userSlice";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
@@ -23,4 +23,8 @@ export const Register=async(user)=>{
     console.log(err);
     return false;
   }
+}
+
+export const Logout=async(dispatch)=>{
+  dispatch(logout());
 }
