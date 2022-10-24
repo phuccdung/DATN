@@ -7,8 +7,10 @@ import Helmet from "../../components/Helmet/Helmet";
 import CommonSection from "../../components/UI/CommonSection/CommonSection";
 import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
-import { useDispatch } from 'react-redux';
+import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
+import { updateCart } from '../../redux/apiCall';
+import { selectCurrentUser } from '../../redux/slices/userSlice';
 
 import products from "../../assets/data/products";
 
@@ -18,7 +20,8 @@ const ProductDetail = () => {
   const reviewUser=useRef('');
   const reviewMsg=useRef('');
   const dispatch=useDispatch();
-
+  const currentUser=useSelector(selectCurrentUser);
+  const cart=useSelector(state=>state.cart.cartItems);
   const [rating,setRating]=useState(null);
   const {id}=useParams();
   const product=products.find(item=> item.id===id);
@@ -52,12 +55,24 @@ const ProductDetail = () => {
 
   const addToCart=()=>{
     dispatch(cartActions.addItem({
+      item:{
       id,
       productName,
       price,
       imgUrl,
+      },
+      qty:1
     }));
     NotificationManager.success("",'Product added successfully', 2000);
+    if(currentUser){
+      updateCart(cart,currentUser,{
+        "productId":id,
+        "quantity":1,
+        "price":price,
+        "imgUrl":imgUrl,
+        "productName":productName,
+      });
+    }
   };
 
   useEffect(()=>{

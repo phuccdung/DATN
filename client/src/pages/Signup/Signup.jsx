@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { NotificationManager} from 'react-notifications';
 import {  storage } from "../../firebase.config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import {Register} from "../../redux/apiCall";
+import {Register,createCart} from "../../redux/apiCall";
 
 
 const Signup = () => {
@@ -20,12 +20,14 @@ const Signup = () => {
   const regiterAccount= async(body)=>{
     let res=await Register(body);
     if(res){
-      NotificationManager.success("",res.success, 2000);
+      await createCart({"username":email})
+      NotificationManager.success("","New Account has created", 2000);
       
     }else{
       NotificationManager.error("",'Email has been used register', 2000);
     }
     setLoading(false);
+    setFile(null);
   }
 
   const handleClick = (e) => {
@@ -69,7 +71,6 @@ const Signup = () => {
     }
     
   };
-
 
   return (
     <Helmet title='Signup'>

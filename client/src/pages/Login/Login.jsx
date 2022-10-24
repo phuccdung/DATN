@@ -4,8 +4,9 @@ import Helmet from "../../components/Helmet/Helmet";
 import { NotificationManager} from 'react-notifications';
 import { Container,Row,Col,Form,FormGroup } from 'reactstrap';
 import { Link,useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import {login} from "../../redux/apiCall";
+
 
 const Login = () => {
 
@@ -13,10 +14,12 @@ const Login = () => {
   const navigate=useNavigate();
   const [user,setUsername]=useState("");
   const [pwd,setPassword]=useState("");
+  const cart=useSelector(state=>state.cart.cartItems);
+
 
   const handleClick=async (e)=>{
     e.preventDefault();
-     let isLogin=await login(dispatch,{user,pwd});
+     let isLogin=await login(dispatch,{user,pwd},cart);
      if(isLogin){
       navigate("/home")
      }else{

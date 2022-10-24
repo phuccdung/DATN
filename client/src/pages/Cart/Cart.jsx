@@ -7,16 +7,23 @@ import { motion } from 'framer-motion';
 import {cartActions} from "../../redux/slices/cartSlice";
 import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { selectCurrentUser } from '../../redux/slices/userSlice';
+import { updateCart } from '../../redux/apiCall';
 
 const Cart = () => {
 
   const cartItems=useSelector(state=>state.cart.cartItems);
   const totalAmount=useSelector(state=>state.cart.totalAmount);
+  const currentUser=useSelector(selectCurrentUser);
+
 
   const dispatch = useDispatch();
 
     const handleDelete = (id) => {
       dispatch(cartActions.deleteItem(id));
+      if(currentUser){
+        updateCart(cartItems,currentUser);
+      }
     };
 
 

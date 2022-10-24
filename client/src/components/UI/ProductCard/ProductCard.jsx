@@ -1,25 +1,40 @@
 import React from 'react';
 import { NotificationManager} from 'react-notifications';
-
-
-import "./ProductCard.css";
 import {motion} from "framer-motion"
 import { Col } from 'reactstrap';
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import "./ProductCard.css";
+
+import {useDispatch,useSelector} from "react-redux";
+import { selectCurrentUser } from '../../../redux/slices/userSlice';
 import {cartActions} from "../../../redux/slices/cartSlice";
+import { updateCart } from '../../../redux/apiCall';
 
 const ProductCard = ({item}) => {
 
   const dispatch=useDispatch();
+  const currentUser=useSelector(selectCurrentUser);
+  const cart=useSelector(state=>state.cart.cartItems);
   const addToCart=()=>{
     dispatch(cartActions.addItem({
+      "item":{
       id:item.id,
       productName:item.productName,
       price:item.price,
       imgUrl:item.imgUrl,
-    }));
+      },
+      qty:1
+     }));
     NotificationManager.success("",'Product added successfully', 2000);
+    if(currentUser){
+      updateCart(cart,currentUser,{
+        "productId":item.id,
+        "quantity":1,
+        "price":item.price,
+        "imgUrl":item.imgUrl,
+        "productName":item.productName,
+      });
+    }
   }
 
   return (

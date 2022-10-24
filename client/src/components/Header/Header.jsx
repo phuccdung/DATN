@@ -8,6 +8,7 @@ import{motion} from "framer-motion";
 import {useSelector,useDispatch} from"react-redux";
 import {  selectCurrentUser } from '../../redux/slices/userSlice';
 import { Logout } from '../../redux/apiCall';
+import {cartActions} from "../../redux/slices/cartSlice";
 
 const nav__link=[
   {
@@ -36,6 +37,7 @@ const Header = () => {
 
   const handleLogout=()=>{
     Logout(dispatch);
+    dispatch(cartActions.resetCart());
     navigate("/home");
   }
 
@@ -113,7 +115,7 @@ const Header = () => {
                     :
                     <div className=" d-flex align-items-center justify-content-center flex-column"> 
                       <Link to='/login'> Login</Link>
-                      <Link to='/sigup'> Signup</Link>
+                      <Link to='/signup'> Signup</Link>
                     </div>
                   }
                 </div>
