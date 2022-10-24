@@ -108,7 +108,7 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
   }
 }
 
-export const updateCart=async(cart,user,ele)=>{
+export const updateCart=async(cart,user,ele,action)=>{
   let body=cart.map((item)=>{
     let i={
       "productId":item.id,
@@ -119,17 +119,21 @@ export const updateCart=async(cart,user,ele)=>{
     }
     return i;
   })
-  let existingItem=body.find((product)=>product.productId===ele.productId);
-  
-  if(!existingItem){
-    body.push(ele);
+  if(action==="remove"){
+    body=body.filter(item=>item.productId!==ele.id);
   }else{
-    body.forEach((item,index)=>{
-      if(item.productId===ele.productId){
-        body[index].quantity=item.quantity+ele.quantity;
-      }
-    })
+    let existingItem=body.find((product)=>product.productId===ele.productId);
+    if(!existingItem){
+      body.push(ele);
+    }else{
+      body.forEach((item,index)=>{
+        if(item.productId===ele.productId){
+          body[index].quantity=item.quantity+ele.quantity;
+        }
+      })
+    }
   }
+  
   console.log(body);
   axios({
     method: 'put',

@@ -19,10 +19,10 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
-    const handleDelete = (id) => {
+    const handleDelete = (id,index) => {
       dispatch(cartActions.deleteItem(id));
       if(currentUser){
-        updateCart(cartItems,currentUser);
+        updateCart(cartItems,currentUser,cartItems[index],"remove");
       }
     };
 
@@ -61,7 +61,7 @@ const Cart = () => {
                             <td>${item.price}</td>
                             <td>{item.quantity}px</td>
                             <td>
-                              <motion.i onClick={()=>handleDelete(item.id)} whileHover={{scale:1.5}} class="ri-delete-bin-6-line"></motion.i>
+                              <motion.i onClick={()=>handleDelete(item.id,index)} whileHover={{scale:1.5}} class="ri-delete-bin-6-line"></motion.i>
                             </td>
                           </tr>
                         ))
