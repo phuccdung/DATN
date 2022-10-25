@@ -8,8 +8,7 @@ const cartSchema = new Schema({
         require:true,
     },
     products:[
-        {
-            
+        {  
             type:Object,
         },
     ]

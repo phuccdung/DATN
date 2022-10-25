@@ -9,6 +9,7 @@ import {useSelector,useDispatch} from"react-redux";
 import {  selectCurrentUser } from '../../redux/slices/userSlice';
 import { Logout } from '../../redux/apiCall';
 import {cartActions} from "../../redux/slices/cartSlice";
+import {behaviorActions} from "../../redux/slices/behaviorSlice";
 
 const nav__link=[
   {
@@ -38,6 +39,7 @@ const Header = () => {
   const handleLogout=()=>{
     Logout(dispatch);
     dispatch(cartActions.resetCart());
+    dispatch(behaviorActions.resetBehavior());
     navigate("/home");
   }
 

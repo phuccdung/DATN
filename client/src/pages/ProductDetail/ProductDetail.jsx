@@ -11,6 +11,7 @@ import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
 import { updateCart } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
+import {behaviorActions} from "../../redux/slices/behaviorSlice";
 
 import products from "../../assets/data/products";
 
@@ -24,6 +25,8 @@ const ProductDetail = () => {
   const cart=useSelector(state=>state.cart.cartItems);
   const [rating,setRating]=useState(null);
   const {id}=useParams();
+  const [counter, setCounter] = React.useState(0);
+  const [behavior,setBehavior]=useState(false);
   const product=products.find(item=> item.id===id);
   const {
     imgUrl,
@@ -77,7 +80,28 @@ const ProductDetail = () => {
 
   useEffect(()=>{
     window.scrollTo(0,0);
-  },[product])
+    setCounter(0);
+    setBehavior(false);
+  },[product])  
+
+  useEffect(() => {
+    counter < 6 ? setTimeout(() => setCounter(counter +1), 1000)
+                : setBehavior(true);
+    
+  }, [counter]);
+
+
+  useEffect(() => {
+    if(counter>0){
+      const destination=new Date().getTime();
+      dispatch(behaviorActions.addAction({
+        "find":id,
+        "date":destination,
+        "count":1,
+        "status":"care"
+      }));
+    }
+  }, [behavior]);
 
   return (
     <Helmet title={productName}>

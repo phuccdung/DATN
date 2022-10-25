@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { NotificationManager} from 'react-notifications';
 import {  storage } from "../../firebase.config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import {Register,createCart} from "../../redux/apiCall";
+import {Register,createCartAndBehavior }  from "../../redux/apiCall";
 
 
 const Signup = () => {
@@ -20,7 +20,7 @@ const Signup = () => {
   const regiterAccount= async(body)=>{
     let res=await Register(body);
     if(res){
-      await createCart({"username":email})
+      await createCartAndBehavior({"username":email})
       NotificationManager.success("","New Account has created", 2000);
       
     }else{

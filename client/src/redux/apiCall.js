@@ -31,13 +31,15 @@ export const Register=async(user)=>{
   }
 }
 
-export const createCart=async(body)=>{
+export const createCartAndBehavior=async(body)=>{
   try{
     await axios.post(BASE_URL+"carts", body);
+    await axios.post(BASE_URL+"behaviors", body);
   }catch(err){
     console.log(err);
   }
 }
+
 
 export const Logout=async(dispatch)=>{
   dispatch(logout());
