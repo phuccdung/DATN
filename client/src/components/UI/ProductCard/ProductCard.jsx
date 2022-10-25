@@ -8,7 +8,8 @@ import "./ProductCard.css";
 import {useDispatch,useSelector} from "react-redux";
 import { selectCurrentUser } from '../../../redux/slices/userSlice';
 import {cartActions} from "../../../redux/slices/cartSlice";
-import { updateCart } from '../../../redux/apiCall';
+import {behaviorActions} from "../../../redux/slices/behaviorSlice";
+import { updateCart,addBehavior } from '../../../redux/apiCall';
 
 const ProductCard = ({item}) => {
 
@@ -34,6 +35,17 @@ const ProductCard = ({item}) => {
         "imgUrl":item.imgUrl,
         "productName":item.productName,
       });
+      addBehavior({
+        "find":item.id,
+        "date":new Date().getTime(),
+        "status":"want"
+      },currentUser);
+    }else{
+      dispatch(behaviorActions.addAction({
+        "find":item.id,
+        "date":new Date().getTime(),
+        "status":"want"
+      }));
     }
   }
 

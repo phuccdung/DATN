@@ -9,20 +9,12 @@ const behaviorSchema = new Schema({
     },
     actions:[
        { 
-            id: { type: String},
-            find:{
-                type: String,
-            },
-            time:{
-                type: Date,
-            },
-            count:{
-                type: Number,
-            },
-            status:{
-                type: String,
-            }
-
+            type: Object,
+        },
+    ],
+    search:[
+        { 
+            type: Object,
         },
     ]
  

@@ -33,8 +33,53 @@ const addAction=async (req, res) => {
         res.status(500).json({ 'data': err.message , "message": false});
     }
 }
+const addArrAction=async (req, res) => {
+    if (!req?.params?.userId) return res.status(400).json({ "message": false });
+    const behavior = await Behavior.findOne({ userId: req.params.userId }).exec();
+    if (!behavior) {
+        return res.status(204).json({ 'message': false });
+    }
+    // res.status(200).json({"data":req.body,'message':true});
+    const user=await User.findById(req.body.userId);
+    if(user._id!=req.params.userId){
+        return res.status(204).json({ 'message': false });
+    }
+    try{
+        const result=await Behavior.updateOne(
+                {_id:behavior._id},
+                { $push: { actions: { $each: req.body.arr } } }
+            );
+        res.json({"data":result,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message , "message": false});
+    }
+}
+
+const addArrKeyWords=async (req, res) => {
+    if (!req?.params?.userId) return res.status(400).json({ "message": false });
+    const behavior = await Behavior.findOne({ userId: req.params.userId }).exec();
+    if (!behavior) {
+        return res.status(204).json({ 'message': false });
+    }
+    // res.status(200).json({"data":req.body,'message':true});
+    const user=await User.findById(req.body.userId);
+    if(user._id!=req.params.userId){
+        return res.status(204).json({ 'message': false });
+    }
+    try{
+        const result=await Behavior.updateOne(
+                {_id:behavior._id},
+                { $push: { search: { $each: req.body.arr } } }
+            );
+        res.json({"data":result,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message , "message": false});
+    }
+}
 
 module.exports = {
     createBehavior,
     addAction,
+    addArrAction,
+    addArrKeyWords,
 }

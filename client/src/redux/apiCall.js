@@ -1,17 +1,20 @@
 import { loginFailure, loginStart, loginSuccess,logout } from "./slices/userSlice";
 import { cartActions } from "./slices/cartSlice";
+import { behaviorActions } from "./slices/behaviorSlice";
+
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
 
-export const login = async (dispatch, user,cart) => {
+export const login = async (dispatch, user,cart,behavior) => {
   dispatch(loginStart());
   try {
     const res = await axios.post(BASE_URL+"auth", user);
     if(res.data){
       // await axios.get(BASE_URL+"refresh");
       loginUpdateCart(dispatch,cart,res.data);
+      addBehaviorArrActions(dispatch,behavior,res.data)
     }
     dispatch(loginSuccess(res.data));
     return true;
@@ -20,6 +23,49 @@ export const login = async (dispatch, user,cart) => {
     return false;
   }
 };
+
+export const addBehaviorArrActions = async (dispatch,behavior,user) => {
+  await axios({
+    method: 'put',
+    url: BASE_URL+`behaviors/addArr/${user.id}`,
+    headers: { 
+      Authorization: "Bearer " + user.accessToken,
+    }, 
+    data:{
+      userId:user.id,
+      arr:behavior.actions
+    }
+  }); 
+  addBehaviorArrKey(behavior.keywords,user)
+  dispatch(behaviorActions.resetBehavior());
+}
+
+export const addBehaviorArrKey = async (keywords,user) => {
+  await axios({
+    method: 'put',
+    url: BASE_URL+`behaviors/addArrKeyWords/${user.id}`,
+    headers: { 
+      Authorization: "Bearer " + user.accessToken,
+    }, 
+    data:{
+      userId:user.id,
+      arr:keywords
+    }
+  }); 
+}
+export const addBehavior = async (behavior,user) => {
+  await axios({
+    method: 'put',
+    url: BASE_URL+`behaviors/${user.id}`,
+    headers: { 
+      Authorization: "Bearer " + user.accessToken,
+    }, 
+    data:{
+      userId:user.id,
+      action:behavior
+    }
+  }); 
+}
 
 export const Register=async(user)=>{
   try{
@@ -43,6 +89,8 @@ export const createCartAndBehavior=async(body)=>{
 
 export const Logout=async(dispatch)=>{
   dispatch(logout());
+  dispatch(behaviorActions.reSetKeywords());
+  dispatch(behaviorActions.resetBehavior());
 }
 
 export const loginUpdateCart=async(dispatch,cart,user)=>{

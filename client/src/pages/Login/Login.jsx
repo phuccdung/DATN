@@ -15,11 +15,12 @@ const Login = () => {
   const [user,setUsername]=useState("");
   const [pwd,setPassword]=useState("");
   const cart=useSelector(state=>state.cart.cartItems);
+  const behavior=useSelector(state=>state.behavior)
 
 
   const handleClick=async (e)=>{
     e.preventDefault();
-     let isLogin=await login(dispatch,{user,pwd},cart);
+     let isLogin=await login(dispatch,{user,pwd},cart,behavior);
      if(isLogin){
       navigate("/home")
      }else{

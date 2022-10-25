@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
 import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
-import { updateCart } from '../../redux/apiCall';
+import { updateCart,addBehavior } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 
@@ -75,6 +75,17 @@ const ProductDetail = () => {
         "imgUrl":imgUrl,
         "productName":productName,
       });
+      addBehavior({
+        "find":id,
+        "date":new Date().getTime(),
+        "status":"want"
+      },currentUser)
+    }else{
+      dispatch(behaviorActions.addAction({
+        "find":id,
+        "date":new Date().getTime(),
+        "status":"want"
+      }));
     }
   };
 
@@ -90,18 +101,40 @@ const ProductDetail = () => {
     
   }, [counter]);
 
-
   useEffect(() => {
     if(counter>0){
-      const destination=new Date().getTime();
-      dispatch(behaviorActions.addAction({
-        "find":id,
-        "date":destination,
-        "count":1,
-        "status":"care"
-      }));
+      if(currentUser){
+        addBehavior({
+          "find":id,
+          "date":new Date().getTime(),
+          "status":"view"
+        },currentUser)
+      }else{
+        dispatch(behaviorActions.addAction({
+          "find":id,
+          "date":new Date().getTime(),
+          "status":"view"
+        }));
+      }  
     }
   }, [behavior]);
+
+  const changTab=(tab)=>{
+    setTab(tab);
+    if(currentUser){
+      addBehavior({
+        "find":id,
+        "date":new Date().getTime(),
+        "status":"care"
+      },currentUser)
+    }else{
+      dispatch(behaviorActions.addAction({
+        "find":id,
+        "date":new Date().getTime(),
+        "status":"care"
+      }));
+    } 
+  }
 
   return (
     <Helmet title={productName}>
@@ -148,8 +181,8 @@ const ProductDetail = () => {
           <Row>
             <Col lg='12'>
               <div className="tab__wrapper d-flex align-items-center gap-5">
-                <h6 className={`${tab==='desc'?'active__tab':''}` } onClick={()=>setTab("desc")}>Description</h6>
-                <h6 className={`${tab==='rev'?'active__tab':''}`} onClick={()=>setTab("rev")}>Reviews ({reviews.length})</h6>
+                <h6 className={`${tab==='desc'?'active__tab':''}` } onClick={()=>changTab("desc")}>Description</h6>
+                <h6 className={`${tab==='rev'?'active__tab':''}`} onClick={()=>changTab("rev")}>Reviews ({reviews.length})</h6>
               </div>
               {
                 tab==="desc"?

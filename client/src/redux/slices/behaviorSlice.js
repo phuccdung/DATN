@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     actions: [],
+    keywords:[],
 }
 
 const behaviorSlice = createSlice({
@@ -11,22 +12,26 @@ const behaviorSlice = createSlice({
     resetBehavior:(state)=>{
         state.actions=[];
     },
+    reSetKeywords:(state)=>{
+      state.keywords=[];
+    },
     addAction:(state,action) => {
         const newBehavior =action.payload;
-        console.log("vao");
         const existingItem=state.actions.find(item => item.find===newBehavior.find);
         if(!existingItem){
           state.actions.push(newBehavior);
-          console.log("duoc1");
         }else{
           const different=newBehavior.date-existingItem.date;
           if(different>6000){
-            existingItem.count++;
-            existingItem.date=newBehavior.date;
-            console.log("duoc+");
+            state.actions.push(newBehavior);
+
           }
         }
     },
+    addKeyWords:(state,action)=>{
+      const newKeyWords =action.payload;
+      state.keywords.push(newKeyWords);
+    }
   }
 });
 
