@@ -12,6 +12,7 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications'
 import {  storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getProductById ,updateProductById} from "../../redux/apiCall"; 
 
 
 export default function Product() {
@@ -22,28 +23,14 @@ export default function Product() {
     const [file,setFile]=useState(null);
     useEffect(()=>{
         const getProduct=async()=>{
-          try{
-            const res=await axios.get(BASE_URL+`products/${productId}`);
-            setProduct(res.data.data);
-            // console.log(res.data)
-          }catch(err){
-            console.log(err);
-          }
+          const res= await getProductById(productId);
+          setProduct(res)
         }
         getProduct();
     },[]);
     const updateProduct =async (body) => {
         try{
-          const res= await axios({
-            method: 'put',
-            url: BASE_URL+`products/${productId}`,
-            headers: { 
-              Authorization: "Bearer " + admin.accessToken,
-            }, 
-            data: 
-              body
-            
-          });
+          const res= await updateProductById(productId,body,admin);
           if(res.data.message){
             NotificationManager.success( "Product has been update...",'Success message', 3000);
             setProduct(res.data.data);

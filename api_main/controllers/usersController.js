@@ -9,7 +9,13 @@ const getAllUsers = async (req, res) => {
         if(qNew){
              user=await User.find().limit(10);
         }else{
-             user=await User.find();
+             user=await User.find({'roles.Admin': {$ne : "5150"}}, {
+                username:1, 
+                _id:1,
+                img:1,
+                name:1,
+                roles:1,
+            });
         }
         
         res.status(200).json(user)
@@ -46,7 +52,13 @@ const deleteUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     if (!req?.params?.id) return res.status(400).json({ "message": 'User ID required' });
-    const user = await User.findOne({ _id: req.params.id }).exec();
+    const user = await User.findOne({ _id: req.params.id },{
+        username:1, 
+        _id:1,
+        img:1,
+        name:1,
+        roles:1,
+    }).exec();
     if (!user) {
         return res.status(204).json({ 'message': `User ID ${req.params.id} not found` });
     }

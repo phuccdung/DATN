@@ -3,10 +3,9 @@ import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useState,useEffect } from "react";
-import {BASE_URL} from "../../requestMethods";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
-import axios from "axios";
+import { getProduct,deleteProductById } from "../../redux/apiCall";
 
 
 export default function ProductList() {
@@ -15,43 +14,23 @@ export default function ProductList() {
   const [data, setData] = useState([]);
 
   const handleDelete =async (id) => {
-    try{
-      
-      const res=await axios({
-        method: 'delete',
-        url: BASE_URL+`products/${id}`,
-        headers: { 
-          Authorization: "Bearer " + admin.accessToken,
-        }, 
-        data: {
-          userId:admin.id,
-        }
-      });
-      if(res.data.success){
+    const deleteProduct=async()=>{
+      const res= await deleteProductById(id,admin);
+      if(res){
         let arr=data.filter((item)=>{return item._id!==id});
         setData(arr);
       }
-    }catch(err){
-      console.log(err);
     }
+    deleteProduct();
+
   };
   useEffect(()=>{
-    const getUsers=async()=>{
-      try{
-        const res=await axios.get(BASE_URL+"products",{
-          headers: {
-
-            Authorization: "Bearer " + admin.accessToken
-  
-          },
-        });
-        setData(res.data);
-        console.log(res.data)
-      }catch(err){
-        console.log(err);
-      }
+    const getData=async()=>{
+      const res= await getProduct("");
+      setData(res);
     }
-    getUsers();
+    getData();
+    
   },[])
 
   const columns = [

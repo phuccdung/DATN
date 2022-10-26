@@ -21,7 +21,7 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          {admin?.role.Admin &&<>
+          {admin? <>
             <Topbar /> 
           <div className="container">
           <Sidebar />
@@ -47,7 +47,7 @@ function App() {
             <NewProduct />
           </Route>
           </div>
-          </>}
+          </>:null}
           
       </Switch>    
     </Router>

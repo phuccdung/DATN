@@ -6,7 +6,7 @@ const verifyRoles = require('../../middleware/verifyRoles');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 router.route('/')
-    .get(verifyJWT,verifyRoles(ROLES_LIST.Admin),productsController.getProduct)
+    .get(productsController.getProduct)
     .post(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.createProduct);
 
 router.route('/:id')
