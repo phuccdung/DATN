@@ -77,9 +77,30 @@ const addArrKeyWords=async (req, res) => {
     }
 }
 
+const analytics=async (req, res) => {
+    const date=new Date()
+    const lastDate=new Date(date.setDate(date.getDate()-req.params.day));
+    try {
+        const data = await Behavior.aggregate(
+            [
+                {$unwind: '$actions'},
+                { $match: { 
+                    "actions.date": { $gte: lastDate } 
+                     } 
+                },
+                {$group: {_id: '$actions.find', total: {$sum: 1}}},
+            ]
+        );
+        res.status(200).json({"data":data, "message":true})
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+
 module.exports = {
     createBehavior,
     addAction,
     addArrAction,
     addArrKeyWords,
+    analytics,
 }

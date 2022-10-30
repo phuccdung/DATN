@@ -12,6 +12,10 @@ import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/login";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "./redux/userRedux"
+import 'react-notifications/lib/notifications.css';
+import {NotificationContainer} from 'react-notifications'
+
+
 
 function App() {
   const admin=useSelector(selectCurrentUser);
@@ -19,9 +23,11 @@ function App() {
     <Router>
         <Switch>
           <Route path="/login">
+            <NotificationContainer/>
             <Login />
           </Route>
           {admin? <>
+             <NotificationContainer/>
             <Topbar /> 
           <div className="container">
           <Sidebar />

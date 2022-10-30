@@ -50,7 +50,6 @@ export const updateProductById= async(id,body,user)=>{
     return null;
   }
 }
-
 export const deleteProductById= async(id,user)=>{
   try{
     const res=await axios({
@@ -69,7 +68,6 @@ export const deleteProductById= async(id,user)=>{
     return null;
   }
 }
-
 export const getUser = async (status,user) => {
   try{
     const res=await axios({
@@ -81,6 +79,70 @@ export const getUser = async (status,user) => {
       data: {
         userId:user.id,
       }
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+export const getUserById = async (userId,user) => {
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`users/${userId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const updateUserById = async (userId,body,user) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`users/${userId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const analyticsUser = async (user)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+"users/countVendorStart",
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const analyticsFind = async (user,day)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`behaviors/${day}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
     });
     return res.data;
   }catch(err){

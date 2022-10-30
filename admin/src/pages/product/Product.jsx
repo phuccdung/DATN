@@ -4,12 +4,10 @@ import Chart from "../../components/chart/Chart"
 import {productData} from "../../dummyData"
 import { Publish } from "@material-ui/icons";
 import { useState,useEffect } from "react";
-import {BASE_URL} from "../../requestMethods";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
-import axios from "axios";
 import 'react-notifications/lib/notifications.css';
-import {NotificationContainer, NotificationManager} from 'react-notifications'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 import {  storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { getProductById ,updateProductById} from "../../redux/apiCall"; 

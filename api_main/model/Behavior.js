@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+var action = new Schema({
+    find: String,
+    date: Date,
+    status:String
+  });
+var key = new Schema({
+    key: String,
+    date: Date,
+
+});
 const behaviorSchema = new Schema({
     userId: {
         type: String,
@@ -8,14 +18,10 @@ const behaviorSchema = new Schema({
         unique: true,
     },
     actions:[
-       { 
-            type: Object,
-        },
+        action
     ],
     search:[
-        { 
-            type: Object,
-        },
+        key
     ]
  
 },
