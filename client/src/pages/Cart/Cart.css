@@ -6,7 +6,9 @@
 td i{
     cursor: pointer;
 }
+
 td {
     color: var(--primary-color);
-    
+    text-align: center;
+    vertical-align: middle;
 }

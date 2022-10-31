@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import './Cart.css';
 import Helmet from "../../components/Helmet/Helmet";
 import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection"
@@ -15,10 +15,8 @@ const Cart = () => {
   const cartItems=useSelector(state=>state.cart.cartItems);
   const totalAmount=useSelector(state=>state.cart.totalAmount);
   const currentUser=useSelector(selectCurrentUser);
-
-
+  const [orderDetail,setOrderDetail]=useState([]);
   const dispatch = useDispatch();
-
     const handleDelete = (id,index) => {
       dispatch(cartActions.deleteItem(id));
       if(currentUser){
@@ -26,7 +24,13 @@ const Cart = () => {
       }
     };
 
-
+  const handleCheck=(e,index) => {
+    if(e.currentTarget.checked){
+      console.log(cartItems[index]);
+    }else{
+      console.log(cartItems[index]);
+    }
+  }  
   return (
     <Helmet title="Cart">
       <CommonSectionfrom title='Shopping Cart'/>
@@ -42,6 +46,7 @@ const Cart = () => {
                   <table className="table bordered">
                     <thead>
                       <tr>
+                        <th>Check</th>
                         <th>Image</th>
                         <th>Title</th>
                         <th>Price</th>
@@ -54,6 +59,9 @@ const Cart = () => {
                       {
                         cartItems.map((item,index)=>(
                           <tr key={index}>
+                            <td>
+                              <input type="checkbox"  onChange={(e)=>handleCheck(e,index)}/>
+                            </td>
                             <td>
                               <img src={item.imgUrl} alt="" />
                             </td>

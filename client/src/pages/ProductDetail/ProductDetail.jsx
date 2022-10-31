@@ -59,6 +59,7 @@ const ProductDetail = () => {
       "productName":dataProduct.title,
       "price":dataProduct.price,
       "imgUrl":dataProduct.img,
+      "vendorId":dataProduct.userId,
       },
       qty:1
     }));
@@ -70,6 +71,7 @@ const ProductDetail = () => {
         "price":dataProduct.price,
         "imgUrl":dataProduct.img,
         "productName":dataProduct.title,
+        "vendorId":dataProduct.userId,
       });
       addBehavior({
         "find":id,
@@ -89,7 +91,6 @@ const ProductDetail = () => {
     window.scrollTo(0,0);
     const getData=async ()=>{
       const res= await getProductById(id);
-      console.log(res);
       if(res?.message){
         setDataProduct(res.data);
         setDataOther(res.otherProducts);

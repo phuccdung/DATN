@@ -20,6 +20,7 @@ const ProductCard = ({item}) => {
     dispatch(cartActions.addItem({
       "item":{
       id:item._id,
+      vendorId:item.userId,
       productName:item.title,
       price:item.price,
       imgUrl:item.img,
@@ -32,6 +33,7 @@ const ProductCard = ({item}) => {
         "productId":item._id,
         "quantity":1,
         "price":item.price,
+        "vendorId":item.userId,
         "imgUrl":item.img,
         "productName":item.title,
       });
