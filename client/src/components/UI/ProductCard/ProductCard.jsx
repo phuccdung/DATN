@@ -19,30 +19,30 @@ const ProductCard = ({item}) => {
   const addToCart=()=>{
     dispatch(cartActions.addItem({
       "item":{
-      id:item.id,
-      productName:item.productName,
+      id:item._id,
+      productName:item.title,
       price:item.price,
-      imgUrl:item.imgUrl,
+      imgUrl:item.img,
       },
       qty:1
      }));
     NotificationManager.success("",'Product added successfully', 2000);
     if(currentUser){
       updateCart(cart,currentUser,{
-        "productId":item.id,
+        "productId":item._id,
         "quantity":1,
         "price":item.price,
-        "imgUrl":item.imgUrl,
-        "productName":item.productName,
+        "imgUrl":item.img,
+        "productName":item.title,
       });
       addBehavior({
-        "find":item.id,
+        "find":item._id,
         "date":new Date().getTime(),
         "status":"want"
       },currentUser);
     }else{
       dispatch(behaviorActions.addAction({
-        "find":item.id,
+        "find":item._id,
         "date":new Date().getTime(),
         "status":"want"
       }));
@@ -55,14 +55,14 @@ const ProductCard = ({item}) => {
     <Col lg="3" md="4" className="mb-2">
       <div className="product__item">
         <div className="product__img">
-         <Link to={`/shop/${item.id}`}>
-          <motion.img whileHover={{scale:0.9}} img src={item.imgUrl} alt="" />
+         <Link to={`/shop/${item._id}`}>
+          <motion.img whileHover={{scale:0.9}} img src={item.img} alt="" />
           </Link>
         </div>
         <div className="p-2 product__info">
           <h3 className="product__name">
-            <Link to={`/shop/${item.id}`}>
-              {item.productName}
+            <Link to={`/shop/${item._id}`}>
+              {item.title}
             </Link> 
           </h3>
           <span >{item.category}</span>

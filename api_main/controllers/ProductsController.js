@@ -12,11 +12,11 @@ const createProduct= async (req, res) => {
 }
 
 const getProduct=async(req,res)=>{
-    const qWaiting=req.query.waiting;
+    const key=req.query.key;
     try{
         let products;
-        if(qWaiting){
-            products=await Product.find({"status":"waiting"}).sort({createdAt:1}).limit(5)
+        if(key){
+            products=await Product.find({ $or: [ { category: {'$regex': key} }, { title: {'$regex': new RegExp("^" + key.toLowerCase(), "i")} } ] });
         }else{
             products=await Product.find().sort({updatedAt:-1})   
         }
@@ -32,7 +32,13 @@ const getProductById = async (req, res) => {
     if (!product) {
         return res.status(204).json({ 'message': false });
     }
-    res.json({"data":product,'message':true});
+    const limit=req.query.limit;
+    if(limit){
+        otherProducts=await Product.find({category:product.category}).limit(limit); 
+        res.json({"data":product,"otherProducts":otherProducts,'message':true});
+    }else{
+        res.json({"data":product,'message':true});
+    }
 }
 
 const deleteProducts=async (req,res)=>{

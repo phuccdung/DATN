@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
 import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
-import { updateCart,addBehavior } from '../../redux/apiCall';
+import { updateCart,addBehavior,getProductById } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 
@@ -27,19 +27,15 @@ const ProductDetail = () => {
   const {id}=useParams();
   const [counter, setCounter] = React.useState(0);
   const [behavior,setBehavior]=useState(false);
-  const product=products.find(item=> item.id===id);
+  const [dataProduct,setDataProduct] = useState({});
+  const [dataOther,setDataOther] = useState([]);
+  const product=products.find(item=> item.id==="08");
   const {
-    imgUrl,
-    productName,
-    shortDesc,
-    price,
     avgRating,
     reviews,
     description,
-    category
   }=product;
 
-  const relatedProducts=products.filter(item=>item.category===category)
 
   const submitHandler=(e)=>{
     e.preventDefault();
@@ -60,9 +56,9 @@ const ProductDetail = () => {
     dispatch(cartActions.addItem({
       item:{
       id,
-      productName,
-      price,
-      imgUrl,
+      "productName":dataProduct.title,
+      "price":dataProduct.price,
+      "imgUrl":dataProduct.img,
       },
       qty:1
     }));
@@ -71,9 +67,9 @@ const ProductDetail = () => {
       updateCart(cart,currentUser,{
         "productId":id,
         "quantity":1,
-        "price":price,
-        "imgUrl":imgUrl,
-        "productName":productName,
+        "price":dataProduct.price,
+        "imgUrl":dataProduct.img,
+        "productName":dataProduct.title,
       });
       addBehavior({
         "find":id,
@@ -91,9 +87,18 @@ const ProductDetail = () => {
 
   useEffect(()=>{
     window.scrollTo(0,0);
+    const getData=async ()=>{
+      const res= await getProductById(id);
+      console.log(res);
+      if(res?.message){
+        setDataProduct(res.data);
+        setDataOther(res.otherProducts);
+      }
+    }
+    getData();
     setCounter(0);
     setBehavior(false);
-  },[product])  
+  },[id])  
 
   useEffect(() => {
     counter < 6 ? setTimeout(() => setCounter(counter +1), 1000)
@@ -137,18 +142,18 @@ const ProductDetail = () => {
   }
 
   return (
-    <Helmet title={productName}>
-      <CommonSection title={productName} />
+    <Helmet title={dataProduct.title}>
+      <CommonSection title={dataProduct.title} />
 
       <section className='pt-0'>
         <Container>
           <Row>
             <Col lg='6'>
-              <img src={imgUrl} alt="" />
+              <img src={dataProduct.img} alt="" />
             </Col>
             <Col lg='6'>
               <div className="product__details">
-                <h2>{productName}</h2>
+                <h2>{dataProduct.title}</h2>
                 <div className="product__rating d-flex align-items-center gap-5 mb-3">
                   <div className="">
                     <span><i class="ri-star-fill"></i></span>
@@ -163,10 +168,10 @@ const ProductDetail = () => {
                   </p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
-                 <span className='product__price'>${price}</span>
-                 <span>Category: {category}</span>
+                 <span className='product__price'>${dataProduct.price}</span>
+                 <span>Category: {dataProduct.category}</span>
                 </div>
-                <p className='mt-3' >{shortDesc}</p>
+                <p className='mt-3' >{dataProduct.desc}</p>
 
                 <motion.button  whileTap={{scale:1.2}} className="buy__btn" onClick={addToCart}>Add to Cart</motion.button>
               </div>
@@ -239,7 +244,7 @@ const ProductDetail = () => {
               <h2 className='related__title'>You might also like</h2>
             </Col>
 
-            <ProductList data={relatedProducts}/>
+            <ProductList data={dataOther}/>
           </Row>
         </Container>
       </section>

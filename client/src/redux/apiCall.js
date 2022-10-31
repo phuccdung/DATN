@@ -7,6 +7,31 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3500/";
 
 
+export const getProductById=async (id)=>{
+  try{
+    const res = await axios.get(BASE_URL+`products/${id}?limit=4`);
+    return res.data
+  }catch(err){
+    console.log(err);
+    return false;
+  }
+}
+export const getProduct=async (key)=>{
+  try{
+    let url;
+    if(key){
+      url=BASE_URL+`products?key=${key}`
+    }else{
+      url=BASE_URL+"products"
+    }
+    const res = await axios.get(url);
+    return res.data
+  }catch(err){
+    console.log(err);
+    return false;
+  }
+}
+
 export const login = async (dispatch, user,cart,behavior) => {
   dispatch(loginStart());
   try {

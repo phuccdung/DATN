@@ -13,7 +13,7 @@
     cursor: pointer;
 }
 .product__info h3 a{
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     color: var(--primary-color);
     font-weight:600;
     margin-top:15px;

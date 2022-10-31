@@ -9,100 +9,60 @@ import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 import { addBehaviorArrKey } from '../../redux/apiCall';
 
+import {getProduct} from '../../redux/apiCall'
 
-import products from "../../assets/data/products";
 
 
 const Shop = () => {
-
-  const [filterProductData,setFilterProduct]=useState(products)
+  const [data,setData]=useState([]);
   const [keyWords,setKeyWords]=useState("");
+  const [searchKey,setSearchKey]=useState("");
   const dispatch=useDispatch();
   const currentUser=useSelector(selectCurrentUser);
   
-  const keys=useSelector(state=>state.behavior.keywords);
-  
-  console.log(keys);
 
   const changeSearch=(e)=>{
-    setKeyWords(e.currentTarget.value);
+    setSearchKey(e.currentTarget.value);
   }
 
   useEffect(()=>{
-    console.log(keyWords);
-  },[keyWords,])
+    const getData=async()=>{
+      const res= await getProduct(keyWords);
+      if(res){
+        setData(res);
+      }
+    };
+    getData();
+  },[keyWords])
   const handleFilter = (e) =>{
     const filter = e.currentTarget.value;
-    const destination=new Date().getTime();
     dispatch(behaviorActions.addKeyWords({
       "key":filter,
-      "date":destination
+      "date":new Date().getTime()
     }));
     if(currentUser){
       addBehaviorArrKey([{
         "key":filter,
-        "date":destination
+        "date":new Date().getTime()
       }],currentUser)
     }
-    let filterProduct;
-    switch(filter) {
-      case "sofa":
-        {
-          filterProduct=products.filter(item=> item.category==='sofa')
-          setFilterProduct(filterProduct);
-          break;
-        }
-      case "mobile":
-       {
-          filterProduct=products.filter(item=> item.category==='mobile')
-          setFilterProduct(filterProduct);
-          break;
-          
-       }
-       case "chair":
-       {
-          filterProduct=products.filter(item=> item.category==='chair')
-          setFilterProduct(filterProduct);
-          break;
-        
-       }
-       case "watch":
-       {
-          filterProduct=products.filter(item=> item.category==='watch')
-          setFilterProduct(filterProduct);
-          break;
-       }
-       case "wireless":
-       {
-          filterProduct=products.filter(item=> item.category==="wireless")
-          setFilterProduct(filterProduct);
-          break; 
-       }
-      default:
-        {
-          setFilterProduct(products);
-          break;
-        }
-    }
+    setKeyWords(filter);
   }
 
   const handleSearch=()=>{
-    const search = keyWords ;
-    const destination=new Date().getTime();
+    const search = searchKey ;
+
     dispatch(behaviorActions.addKeyWords({
       "key":search,
-      "date":destination
+      "date":new Date().getTime(),
     }));
     if(currentUser){
       addBehaviorArrKey([{
         "key":search,
-        "date":destination
+        "date":new Date().getTime(),
       }],currentUser)
     }
-    const searchedProduct=products.filter(item=>
-      item.productName.toLowerCase().includes(search.toLowerCase()));
-
-    setFilterProduct(searchedProduct);
+    setKeyWords(search);
   }
 
   return (
@@ -114,12 +74,11 @@ const Shop = () => {
             <Col lg="3" md="6">
               <div className="filter__widget">
                 <select onChange={(e)=>handleFilter(e)} >
-                <option value="">Filter By Category</option>
-                  <option value="sofa">Sofa</option>
-                  <option value="mobile">Mobile</option>
-                  <option value="chair">Chair</option>
-                  <option value="watch">Watch</option>
-                  <option value="wireless">Wireless</option>
+                  <option value="" >All</option>
+                  <option value="Skin Care" >Skin Care</option>
+                  <option value="Make Up" >Make Up</option>
+                  <option value="Body&Hair" >Body&Hair</option>
+                  <option value="Internal Body" >Internal Body</option>
                 </select>
               </div>
             </Col>
@@ -148,10 +107,10 @@ const Shop = () => {
         <Container>
           <Row>
             {
-             filterProductData.length===0 ? 
+             data.length===0 ? 
              (<h1 className='text-center fs-4'>No Product are found!</h1>)
              :
-            (<ProductList data={filterProductData} />)
+            (<ProductList data={data} />)
             }
           </Row>
         </Container>
