@@ -17,8 +17,8 @@ import {selectCurrentUser} from "../../redux/userRedux";
 import { getUserById } from "../../redux/apiCall";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {  storage } from "../../firebase";
-import { updateUserById } from "../../redux/apiCall";
-
+import { updateUserById,analyticsBehaviorByUserId } from "../../redux/apiCall";
+import Chart from "../../components/chart/Chart";
 
 export default function User() {
   const location=useLocation();
@@ -26,22 +26,40 @@ export default function User() {
   const admin=useSelector(selectCurrentUser);
   const [user,setUser]=useState({});
   const [file,setFile]=useState(null);
+  const [actionDataStats,setActionDataStats]=useState([]);
+  const [keyDataStats,setKeyDataStats]=useState([]);
+
 
 
   useEffect(()=>{
     const getProduct=async()=>{
       const res= await getUserById(userId,admin);
       setUser(res);
+      const analytics=await analyticsBehaviorByUserId(admin,userId);
+      console.log(analytics);
+      if(analytics?.message){
+        let arr1= analytics.data.action.map((item) =>{
+          return {name:item._id,"Active Product": item.total}
+        });
+        setActionDataStats(arr1);
+        let arr2= analytics.data.search.map((item) =>{
+          return {name:item._id,"Active KeyWord": item.total}
+        });
+        setKeyDataStats(arr2);
+
+        console.log(arr1,arr2);
+      }
     }
     getProduct();
   },[]);
+  
+ 
 
   const handleChange=(e)=>{
     setUser(prev=>{
       return {...prev,[e.target.name]:e.target.value};
     });
   } 
-
   const handleClick = (e) => {
     e.preventDefault();
     
@@ -88,7 +106,6 @@ export default function User() {
           updateUser(body);
         } 
   };
-
   const updateUser =async (body) => {
     try{
       const res= await updateUserById(user._id,body,admin);
@@ -110,10 +127,18 @@ export default function User() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Edit User</h1>
+        <h1 className="userTitle">Profile User</h1>
         <Link to="/newUser">
           <button className="userAddButton">Create</button>
         </Link>
+      </div>
+      <div className="analyticsTop">
+        <div className="chartLeft">
+        <Chart data={actionDataStats} title="Product Behavior Analytics" grid dataKey="Active Product"/>
+        </div>
+        <div className="chartLeft">
+        <Chart data={keyDataStats} title="Product Behavior Analytics" grid dataKey="Active KeyWord"/>
+        </div>
       </div>
       <div className="userContainer">
         <div className="userShow">

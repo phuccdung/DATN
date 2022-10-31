@@ -54,10 +54,10 @@ export default function NewProduct() {
           console.log("Upload is " + progress + "% done");
           switch (snapshot.state) {
             case "paused":
-              console.log("Upload is paused");
+              NotificationManager.info("Upload is paused");
               break;
             case "running":
-              console.log("Upload is running");
+              NotificationManager.info("Upload is running");
               break;
             default:
               break;

@@ -10,7 +10,11 @@ router.route('/')
     .post(behaviorController.createBehavior);
 
 router.route('/:day')
-    .get(behaviorController.analytics)
+    .get(behaviorController.analytics);
+router.route('/key/:day')
+    .get(behaviorController.analyticsKey);
+router.route('/user/:userId')
+    .get(behaviorController.analyticsByUserId);
 
 router.route('/:userId')
     .put(verifyJWT,behaviorController.addAction);

@@ -135,11 +135,49 @@ export const analyticsUser = async (user)=>{
   }
 }
 
-export const analyticsFind = async (user,day)=>{
+export const analyticsFind = async (user,day,status)=>{
+  try{
+    let url;
+    if(status){
+      url=BASE_URL+`behaviors/${day}?status=${status}`;
+    }else{
+      url=BASE_URL+`behaviors/${day}`
+    }
+    const res=await axios({
+      method: 'get',
+      url: url,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const analyticsKey = async (user,day)=>{
   try{
     const res=await axios({
       method: 'get',
-      url: BASE_URL+`behaviors/${day}`,
+      url: BASE_URL+`behaviors/key/${day}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const analyticsBehaviorByUserId = async (user,userId)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`behaviors/user/${userId}`,
       headers: { 
         Authorization: "Bearer " + user.accessToken,
       }, 

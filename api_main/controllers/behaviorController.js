@@ -80,18 +80,90 @@ const addArrKeyWords=async (req, res) => {
 const analytics=async (req, res) => {
     const date=new Date()
     const lastDate=new Date(date.setDate(date.getDate()-req.params.day));
+    const status=req.query.status
     try {
-        const data = await Behavior.aggregate(
+        let data;
+        if(status){
+            data = await Behavior.aggregate(
+                [
+                    {$unwind: '$actions'},
+                    { $match: { 
+                        "actions.date": { $gte: lastDate } ,
+                        "actions.status":status
+                         } 
+                    },
+                    {$group: {_id: '$actions.find', total: {$sum: 1}}},
+                ]
+            );
+        }else{
+             data = await Behavior.aggregate(
+                [
+                    {$unwind: '$actions'},
+                    { $match: { 
+                        "actions.date": { $gte: lastDate } 
+                         } 
+                    },
+                    {$group: {_id: '$actions.find', total: {$sum: 1}}},
+                ]
+            );
+        }
+
+        
+        res.status(200).json({"data":data, "message":true})
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+
+const analyticsKey=async (req, res) => {
+    const date=new Date()
+    const lastDate=new Date(date.setDate(date.getDate()-req.params.day));
+    try {
+        const  data = await Behavior.aggregate(
+            [
+                {$unwind: '$search'},
+                { $match: { 
+                    "search.date": { $gte: lastDate } 
+                        } 
+                },
+                {$group: {_id: '$search.key', total: {$sum: 1}}},
+                { $limit : 50 }
+            ]
+        );        
+        res.status(200).json({"data":data, "message":true})
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+const analyticsByUserId=async (req, res) => {
+    const date=new Date()
+    const lastDate=new Date(date.setDate(date.getDate()-7));
+    try {
+        const  data1 = await Behavior.aggregate(
             [
                 {$unwind: '$actions'},
                 { $match: { 
-                    "actions.date": { $gte: lastDate } 
-                     } 
+                    "actions.date": { $gte: lastDate } ,
+                    "userId":req.params.userId
+                        } 
                 },
                 {$group: {_id: '$actions.find', total: {$sum: 1}}},
+                { $limit : 50 }
             ]
-        );
-        res.status(200).json({"data":data, "message":true})
+        );  
+        const  data2 = await Behavior.aggregate(
+            [
+                {$unwind: '$search'},
+                { $match: { 
+                    "search.date": { $gte: lastDate } ,
+                    "userId":req.params.userId
+                        } 
+                },
+                {$group: {_id: '$search.key', total: {$sum: 1}}},
+                { $limit : 20 }
+            ]
+        );       
+        res.status(200).json({"data":{"action":data1,"search":data2}, "message":true})
     }catch(err){
         res.status(500).json({ 'data': err.message, "message": false})
     }
@@ -103,4 +175,6 @@ module.exports = {
     addArrAction,
     addArrKeyWords,
     analytics,
+    analyticsKey,
+    analyticsByUserId,
 }
