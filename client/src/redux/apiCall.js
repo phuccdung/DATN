@@ -190,7 +190,8 @@ export const updateCart=async(cart,user,ele,action)=>{
         "quantity":item.quantity,
         "price":item.price,
         "imgUrl":item.imgUrl,
-        "productName":item.productName
+        "productName":item.productName,
+        "vendorId":item.userId,
     }
     return i;
   })
