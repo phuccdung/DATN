@@ -7,6 +7,19 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3500/";
 
 
+export const createOrder=async (body)=>{
+  try{
+    const res = await axios({
+      method: 'post',
+      url: BASE_URL+`orders`, 
+      data:body
+    }); 
+    return res.data
+  }catch(err){
+    console.log(err);
+    return false;
+  }
+}
 export const getProductById=async (id)=>{
   try{
     const res = await axios.get(BASE_URL+`products/${id}?limit=4`);
@@ -133,28 +146,30 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
         productName:item.productName,
         imgUrl:item.imgUrl,
         price:item.price,
+        vendorId:item.vendorId,
         quantity:item.quantity,
         totalPrice:item.price*item.quantity,
       }
         return i;
     });
-    cart.forEach((item,index)=>{
-      let existingItem=products.find(product=>product.productId===item.id);
+     cart.forEach((item,index)=>{
+      let existingItem=products.find(product=>product.id===item.id);
       if(!existingItem){
         products.push({
           id: item.id,
           productName:item.productName,
           imgUrl:item.imgUrl,
           price:item.price,
+          vendorId:item.vendorId,
           quantity:item.quantity,
           totalPrice:item.price*item.quantity,
         })
       }else{
-        cart[index].price=Number(item.price);
-        cart[index].imgUrl=item.imgUrl;
-        cart[index].productName=item.productName;
-        cart[index].quantity=Number(existingItem.quantity)+Number(item.quantity);
-        cart[index].totalPrice=Number(existingItem.totalPrice)+Number(item.quantity)*Number(item.price);
+        products[index].price=Number(item.price);
+        products[index].imgUrl=item.imgUrl;
+        products[index].productName=item.productName;
+        products[index].quantity=Number(existingItem.quantity)+Number(item.quantity);
+        products[index].totalPrice=Number(existingItem.totalPrice)+Number(item.quantity)*Number(item.price);
       }
     })  
     dispatch(cartActions.updateCart(products));
@@ -164,39 +179,47 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
         "productId":item.id,
         "quantity":item.quantity,
         "price":item.price,
+        "vendorId":item.vendorId,
         "imgUrl":item.imgUrl,
         "productName":item.productName
       }
       return i;
     })
-      await axios({
-        method: 'put',
-        url: BASE_URL+`carts/${user.id}`,
-        headers: { 
-          Authorization: "Bearer " + user.accessToken,
-        }, 
-        data:{
-          userId:user.id,
-          products:body
-        }
-      });   
+    await axios({
+      method: 'put',
+      url: BASE_URL+`carts/${user.id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:{
+        userId:user.id,
+        products:body
+      }
+    });   
   }
 }
 
 export const updateCart=async(cart,user,ele,action)=>{
-  let body=cart.map((item)=>{
+   let body=cart.map((item)=>{
     let i={
-      "productId":item.id,
+       "productId":item.id,
         "quantity":item.quantity,
         "price":item.price,
         "imgUrl":item.imgUrl,
         "productName":item.productName,
-        "vendorId":item.userId,
+        "vendorId":item.vendorId,
     }
     return i;
   })
   if(action==="remove"){
-    body=body.filter(item=>item.productId!==ele.id);
+    if(typeof ele=== "Object"){
+      body=body.filter(item=>item.productId!==ele.id)
+    }else{
+      ele.forEach(it=>{
+        body=body.filter(item=>item.productId!==it.productId);
+      })
+    }
+    
   }else{
     let existingItem=body.find((product)=>product.productId===ele.productId);
     if(!existingItem){
@@ -209,8 +232,6 @@ export const updateCart=async(cart,user,ele,action)=>{
       })
     }
   }
-  
-  console.log(body);
   axios({
     method: 'put',
     url: BASE_URL+`carts/${user.id}`,
@@ -222,5 +243,4 @@ export const updateCart=async(cart,user,ele,action)=>{
       products:body
     }
   });  
-  // console.log(cart);
 }

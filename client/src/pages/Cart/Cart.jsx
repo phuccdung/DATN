@@ -6,31 +6,60 @@ import { Container,Row,Col } from 'reactstrap';
 import { motion } from 'framer-motion';
 import {cartActions} from "../../redux/slices/cartSlice";
 import { useSelector,useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import { updateCart } from '../../redux/apiCall';
 
 const Cart = () => {
 
   const cartItems=useSelector(state=>state.cart.cartItems);
+  const [cart,setCart]=useState([])
   const totalAmount=useSelector(state=>state.cart.totalAmount);
   const currentUser=useSelector(selectCurrentUser);
   const [orderDetail,setOrderDetail]=useState([]);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-    const handleDelete = (id,index) => {
-      dispatch(cartActions.deleteItem(id));
+    const handleDelete = async(id,index) => {
+      await dispatch(cartActions.deleteItem(id));
+      let arr=cart.filter(item => item.id!==id);
+      setCart(arr);
       if(currentUser){
         updateCart(cartItems,currentUser,cartItems[index],"remove");
       }
     };
 
+  useEffect(()=>{
+    let arr=cartItems.map(item=>{
+      return {...item,checked:false}
+    });
+    setCart(arr);
+  },[])
   const handleCheck=(e,index) => {
+    let arr=[...cart]
+    let order=[...orderDetail]
     if(e.currentTarget.checked){
-      console.log(cartItems[index]);
+      arr[index].checked=true;
+      var orderItem={
+        productId:arr[index].id,
+        productName: arr[index].productName,
+        vendorId:arr[index].vendorId,
+        quantity:arr[index].quantity,
+        price:arr[index].price,
+        imgUrl:arr[index].imgUrl,
+      }
+      order.push(orderItem);
     }else{
-      console.log(cartItems[index]);
+      arr[index].checked=false;
+      order=order.filter(item=>item.productId!==arr[index].id)
     }
+    setCart(arr);
+    setOrderDetail(order)
+
   }  
+
+  const toCheckout=()=>{
+    navigate('/checkout',{state:orderDetail});
+  }
   return (
     <Helmet title="Cart">
       <CommonSectionfrom title='Shopping Cart'/>
@@ -39,7 +68,7 @@ const Cart = () => {
           <Row>
             <Col lg='9'>
               {
-                cartItems.length===0?
+                cart.length===0?
                 ( <h2 className='fs-4 text-center'>No item added to the cart</h2>)
                 :
                 (
@@ -54,13 +83,12 @@ const Cart = () => {
                         <th>Delete</th>
                       </tr>
                     </thead>
-
                     <tbody>
                       {
-                        cartItems.map((item,index)=>(
+                        cart.map((item,index)=>(
                           <tr key={index}>
                             <td>
-                              <input type="checkbox"  onChange={(e)=>handleCheck(e,index)}/>
+                              <input type="checkbox" checked={item.checked} onChange={(e)=>handleCheck(e,index)}/>
                             </td>
                             <td>
                               <img src={item.imgUrl} alt="" />
@@ -78,20 +106,19 @@ const Cart = () => {
                   </table>
                 )
               }
-
-              
             </Col>
             <Col lg='3'>
               <div >
                 <h6 className='d-flex align-items-center justify-content-between'>
                   Subtotal
-                  <span className='fs-4 fw-bold'>${totalAmount}</span>
+                  <span className='fs-4 fw-bold'>${orderDetail.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)}</span>
                 </h6>
               </div>
               <p className='fs-6 mt-2'>taxes and shipping will calculate in checkout</p>
               <div>
-                <button className='buy__btn w-100 '>
-                  <Link to='/checkout'> Checkout</Link>
+                <button className='buy__btn w-100 ' onClick={toCheckout}>
+                  
+                  Checkout
                 </button>
                 <button className='buy__btn w-100 mt-3'>
                   <Link to='/shop'> Continuue Shopping</Link>
