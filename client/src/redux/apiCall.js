@@ -7,6 +7,38 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3500/";
 
 
+export const updateUserById = async (body,user) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`users/${user.id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+export const getUserById = async (user) => {
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`users/${user.id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+  
+}
 export const createOrder=async (body)=>{
   try{
     const res = await axios({

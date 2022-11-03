@@ -10,6 +10,7 @@ import ProductDetail from '../pages/ProductDetail/ProductDetail';
 import Checkout from '../pages/Checkout/Checkout';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
+import Profile from '../pages/Profile/Profile';
 
 
 const Routers = () => {
@@ -24,6 +25,7 @@ const Routers = () => {
     <Route path="/checkout" element={<Checkout/>}> </Route>
     <Route path="/login" element={currentUser?<Navigate to="/home"/>: <Login/>}> </Route>
     <Route path="/signup" element={<Signup/>}> </Route>
+    <Route path="/profile" element={<Profile/>}> </Route>
   </Routes>
 }
 

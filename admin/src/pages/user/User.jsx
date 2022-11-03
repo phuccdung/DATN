@@ -111,7 +111,7 @@ export default function User() {
       const res= await updateUserById(user._id,body,admin);
       console.log(res);
       if(res.message){
-        NotificationManager.success( "Product has been update...",'Success message', 3000);
+        NotificationManager.success( "User has been update...",'Success message', 3000);
         setUser(res.data);
         setFile(null);
 

@@ -16,6 +16,9 @@ const userSchema = new Schema({
     birthday: {
         type: String,
     },
+    gender: {
+        type: String,
+    },
     address: {
         type: String,
         default: ""

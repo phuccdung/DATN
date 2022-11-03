@@ -113,7 +113,11 @@ const Header = () => {
               
                 <div className="profile__actions" ref={profileActions} onClick={profileActionsToggle}>
                   {
-                    currentUser? <span onClick={handleLogout}>Logout</span>
+                    currentUser?
+                    <div className=" d-flex align-items-center justify-content-center flex-column"> 
+                      <span onClick={handleLogout}>Logout</span>
+                      <Link to={`/profile`}> Profile</Link>
+                    </div> 
                     :
                     <div className=" d-flex align-items-center justify-content-center flex-column"> 
                       <Link to='/login'> Login</Link>
