@@ -7,6 +7,27 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3500/";
 
 
+export const getMyOrderByUserId = async (user,status) => {
+  try{
+    let url;
+    if(status){
+      url=BASE_URL+`orders/${user.id}?status=${status}`;
+    }else{
+      url=BASE_URL+`orders/${user.id}`;
+    }
+    const res=await axios({
+      method: 'get',
+      url: url,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const updateUserById = async (body,user) => {
   try{
     const res=await axios({

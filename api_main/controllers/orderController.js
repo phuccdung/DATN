@@ -10,8 +10,28 @@ const createOrder= async (req, res) => {
         res.status(500).json(err);
     } 
 }
+const getOrdertByUserId = async (req, res) => {
+    const qStatus=req.query.status;
+    if (!req?.params?.userId) return res.status(400).json({ "message": false });
+    try{
 
+        let order;
+        if(qStatus){
+            order = await Order.find({ userId: req.params.userId ,status: qStatus}).sort({createdAt:-1}).limit(20);
+            res.json({"data":order,'message':true});
+            
+        }else{
+            order = await Order.find({ userId: req.params.userId }).sort({createdAt:-1}).limit(20);
+            res.json({"data":order,'message':true});
+        }
+    
+    }catch(err){
+        res.status(500).json(err);
+    }
+    
+}
 
 module.exports = {
     createOrder, 
+    getOrdertByUserId,
 }

@@ -8,5 +8,8 @@ const verifyJWT = require('../../middleware/verifyJWT');
 router.route('/')
     .post(ordersController.createOrder);
 
+router.route('/:userId')
+    .get(verifyJWT,ordersController.getOrdertByUserId);
 
-module.exports = router;
+
+module.exports = router; 

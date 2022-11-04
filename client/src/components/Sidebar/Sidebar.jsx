@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Sidebar.css";
+import {Link} from 'react-router-dom'
 import { motion } from 'framer-motion';
 
 function Sidebar({num}) {
@@ -10,10 +11,14 @@ function Sidebar({num}) {
           <h3 className="sidebarTitle"> Profile</h3>
           <ul className="sidebarList">
             <motion.li whileTap={{scale:1.2}} className={num===1?"sidebarListItem  active":"sidebarListItem "}>
-              My Information
+              <Link to="/profile">
+               My Information
+              </Link>
             </motion.li>
-            <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
-              My Order
+            <motion.li whileTap={{scale:1.2}} className={num===2?"sidebarListItem  active":"sidebarListItem "}>
+              <Link to="/myorder">
+               My Order
+              </Link>
             </motion.li>
           </ul>
         </div>

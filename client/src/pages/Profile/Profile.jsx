@@ -1,5 +1,6 @@
 import React ,{ useState,useEffect } from 'react';
 import "./Profile.css";
+import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
 import Moment from 'moment';
 import Helmet from "../../components/Helmet/Helmet";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -96,6 +97,7 @@ function Profile() {
 
   return (
     <Helmet title="Profile" >
+        <CommonSectionfrom title='My Information'/>
         <div className="containerProfile">
             <Sidebar num={1}/>
             <div className="user">

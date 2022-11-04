@@ -11,6 +11,7 @@ import Checkout from '../pages/Checkout/Checkout';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import Profile from '../pages/Profile/Profile';
+import MyOrder from "../pages/MyOrder/MyOrder";
 
 
 const Routers = () => {
@@ -26,6 +27,8 @@ const Routers = () => {
     <Route path="/login" element={currentUser?<Navigate to="/home"/>: <Login/>}> </Route>
     <Route path="/signup" element={<Signup/>}> </Route>
     <Route path="/profile" element={<Profile/>}> </Route>
+    <Route path="/myorder" element={<MyOrder/>}> </Route>
+
   </Routes>
 }
 

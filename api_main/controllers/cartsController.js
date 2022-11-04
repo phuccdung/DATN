@@ -43,24 +43,7 @@ const updateCartByUserId = async (req, res) => {
     } 
 }
 
-// const addElementtoCart = async (req, res) => {
-//     if (!req?.params?.userId) return res.status(400).json({ "message": false });
-//     const cart = await Cart.findOne({ userId: req.params.userId }).exec();
-//     if (!cart) {
-//         return res.status(204).json({ 'message': false });
-//     }
-//     const user=await User.findById(req.body.userId);
-//     if(user._id!=req.params.userId){
-//         return res.status(204).json({ 'message': false });
-//     }
-//     try{
-//         cart.products=req.body.products;
-//         const result=await cart.save();
-//         res.json({"data":result,'message':true});
-//     }catch(err){
-//         res.status(500).json({ 'data': err.message , "message": false});
-//     } 
-// }
+
 
 module.exports = {
     createCart,
