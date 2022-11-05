@@ -17,6 +17,9 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+    userName:{
+        type: String,
+    },
     status:{
         type:String,
         default:"waiting",

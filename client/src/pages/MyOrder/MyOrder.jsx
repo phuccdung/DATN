@@ -6,14 +6,17 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Moment from 'moment';
 import { motion } from 'framer-motion';
 import { Container,Row,Col } from 'reactstrap';
-import { getMyOrderByUserId} from "../../redux/apiCall";
+import { getMyOrderByUserId,getOrderByNameOrderItem} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import {useSelector} from "react-redux";
 
+
+import axios from "axios";
 function MyOrder() {
     const currentUser=useSelector(selectCurrentUser);
     const [data,setData]=useState([]);
-    const [status,setStatus] = useState("")
+    const [status,setStatus] = useState("");
+    const [search,setSearch]=useState("");
     useEffect(()=>{
       const getData=async()=>{
         const res = await getMyOrderByUserId(currentUser,status);
@@ -21,6 +24,10 @@ function MyOrder() {
       }
       getData();
     },[status])
+    const searcherOrder= async()=>{
+        const res=await getOrderByNameOrderItem(currentUser,search)
+        console.log(res);
+    }
   return (
     <Helmet title="My Order">
         <CommonSectionfrom title='My Order'/>
@@ -32,8 +39,8 @@ function MyOrder() {
                   <Row>
                     <Col lg="6" md="3">
                       <div className="search__box">
-                        <input type="text" placeholder="Search with name product..."   />
-                        <span >
+                        <input type="text" placeholder="Search with name product..." onChange={(e)=>setSearch(e.currentTarget.value)}  />
+                        <span onClick={searcherOrder}>
                           <i whileTap={{scale:1.2}} class="ri-search-line"></i>
                         </span>
                       </div>

@@ -28,6 +28,25 @@ export const getMyOrderByUserId = async (user,status) => {
     return null;
   }
 }
+export const getOrderByNameOrderItem = async (user,search) => {
+  try{
+    let body
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`orders/searchKey/${user.id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      },
+      data:{
+        key:search
+      }
+    });
+    return res;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const updateUserById = async (body,user) => {
   try{
     const res=await axios({

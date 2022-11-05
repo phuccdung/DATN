@@ -11,5 +11,7 @@ router.route('/')
 router.route('/:userId')
     .get(verifyJWT,ordersController.getOrdertByUserId);
 
+router.route('/searchKey/:userId')
+    .get(verifyJWT,ordersController.getOrderByNameOrderItem);
 
 module.exports = router; 
