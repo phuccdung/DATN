@@ -2,8 +2,12 @@ import React from 'react';
 import "./Sidebar.css";
 import {Link} from 'react-router-dom'
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from "../../redux/slices/userSlice"; 
 
 function Sidebar({num}) {
+  const currentUser=useSelector(selectCurrentUser);
+  console.log(currentUser);
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -22,17 +26,25 @@ function Sidebar({num}) {
             </motion.li>
           </ul>
         </div>
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Shop</h3>
-          <ul className="sidebarList">
-            <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
-               Products
-            </motion.li>
-            <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
-               Order
-            </motion.li>
-          </ul>
-        </div>
+        {
+          currentUser.role?.Editor?
+          <div className="sidebarMenu">
+            <h3 className="sidebarTitle">Shop</h3>
+            <ul className="sidebarList">
+              <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
+                <Link to="/shopproduct">
+                  Products
+                </Link>
+              </motion.li>
+              <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
+                <Link to="/shoporder">
+                  Orders
+                </Link>
+              </motion.li>
+            </ul>
+          </div>
+          : null
+        }
       </div>
     </div>
   )
