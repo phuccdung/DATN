@@ -9,6 +9,7 @@ import { Container,Row,Col } from 'reactstrap';
 import { getMyOrderByUserId,getOrderByNameOrderItem} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import {useSelector} from "react-redux";
+import { NotificationManager} from 'react-notifications';
 
 
 import axios from "axios";
@@ -25,8 +26,12 @@ function MyOrder() {
       getData();
     },[status])
     const searcherOrder= async()=>{
-        const res=await getOrderByNameOrderItem(currentUser,search)
-        console.log(res);
+        const res=await getOrderByNameOrderItem(currentUser,status,search)
+        if(res?.message){
+          setData(res.data);
+        }else{
+          NotificationManager.error("",'No Order can find', 2000);
+        }
     }
   return (
     <Helmet title="My Order">

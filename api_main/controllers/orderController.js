@@ -31,26 +31,27 @@ const getOrdertByUserId = async (req, res) => {
 
 const getOrderByNameOrderItem=async (req, res) => {
     const qStatus=req.query.status;
+    const qKey=req.query.key;
     if (!req?.params?.userId) return res.status(400).json({ "message": false });
     try{
-        // let order;
-        // if(qStatus){
-        //     order = await Order.find({ 
-        //         userId: req.params.userId ,
-        //         status: qStatus,
-        //         products: {$elemMatch: { productName: {'$regex': new RegExp("^" + req.body.key.toLowerCase(), "i")} }}
-        //     }).sort({createdAt:-1}).limit(20);
-        //     res.json({"data":order,'message':true});
+        let order;
+        if(qStatus){
+            order = await Order.find({ 
+                userId: req.params.userId ,
+                status: qStatus,
+                products: {$elemMatch: { productName: {'$regex': new RegExp("^" + qKey.toLowerCase(), "i")} }}
+            }).sort({createdAt:-1}).limit(20);
+            res.json({"data":order,'message':true});
             
-        // }else{
-        //     order = await Order.find({ 
-        //         userId: req.params.userId ,
-        //         products: {$elemMatch: { productName: {'$regex': new RegExp("^" + req.body.key.toLowerCase(), "i")} }}
-        //     }).sort({createdAt:-1}).limit(20);
-        //     res.json({"data":order,'message':true});
-        // }
+        }else{
+            order = await Order.find({ 
+                userId: req.params.userId ,
+                products: {$elemMatch: { productName: {'$regex': new RegExp("^" + qKey.toLowerCase(), "i")} }}
+            }).sort({createdAt:-1}).limit(20);
+            res.json({"data":order,'message':true});
+        }
         
-        res.json({"data":req.body,'message':true});
+        // res.json({"data":qKey,'message':true});
     }catch(err){
         res.status(500).json(err);
     }
