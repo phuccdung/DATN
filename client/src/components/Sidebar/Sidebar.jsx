@@ -7,7 +7,6 @@ import { selectCurrentUser } from "../../redux/slices/userSlice";
 
 function Sidebar({num}) {
   const currentUser=useSelector(selectCurrentUser);
-  console.log(currentUser);
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -27,7 +26,7 @@ function Sidebar({num}) {
           </ul>
         </div>
         {
-          currentUser.role?.Editor?
+          currentUser?.role?.Editor?
           <div className="sidebarMenu">
             <h3 className="sidebarTitle">Shop</h3>
             <ul className="sidebarList">
@@ -36,7 +35,7 @@ function Sidebar({num}) {
                   Products
                 </Link>
               </motion.li>
-              <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
+              <motion.li whileTap={{scale:1.2}}  className={num===4?"sidebarListItem  active":"sidebarListItem "}>
                 <Link to="/shoporder">
                   Orders
                 </Link>

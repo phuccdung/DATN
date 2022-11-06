@@ -49,6 +49,41 @@ export const getOrderByNameOrderItem = async (user,status,search) => {
     return null;
   }
 }
+export const getOrderByVendor = async (user,fromDate,toDate,status) => {
+  try{
+    let url=BASE_URL+`orders/vendor/${user.id}?fromDate=${fromDate}&toDate=${toDate}`;
+    if(status){
+      url=BASE_URL+`orders/vendor/${user.id}?fromDate=${fromDate}&toDate=${toDate}&status=${status}`;
+    }
+    const res=await axios({
+      method: 'get',
+      url: url,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      },
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+export const getOrderByVendorWithKey = async (user,key) => {
+  try{
+    let url=BASE_URL+`orders/vendor/searchKey/${user.id}?key=${key}`;
+    const res=await axios({
+      method: 'get',
+      url: url,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      },
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const updateUserById = async (body,user) => {
   try{
     const res=await axios({

@@ -57,8 +57,50 @@ const getOrderByNameOrderItem=async (req, res) => {
     }
 }
 
+const getOrderWithDate=async (req,res)=>{
+    const fromDate=new Date(req.query.fromDate) ;
+    const toDate=new Date(req.query.toDate) ;
+    const qStatus=req.query.status;
+    try {
+       
+        let order;
+        if(qStatus){
+           order= await Order.find({ 
+                vendorId: req.params.userId,
+                createdAt: { $gte: fromDate,$lt:toDate} ,
+                status:qStatus
+                }).sort({createdAt:-1});
+            
+        }else{
+          order=  await Order.find({ 
+                vendorId: req.params.userId,
+                createdAt: { $gte: fromDate,$lt:toDate} 
+                }).sort({createdAt:-1});
+        }
+        res.json({"data":order,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+
+const getOrderWithKey=async (req,res)=>{
+    const key=req.query.key;
+    try {
+       
+       const order = await Order.find({ 
+        vendorId: req.params.userId ,
+            products: {$elemMatch: { productName: {'$regex': new RegExp("^" + key.toLowerCase(), "i")} }}
+        }).sort({createdAt:-1}).limit(20);
+        res.json({"data":order,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+
 module.exports = {
     createOrder, 
     getOrdertByUserId,
     getOrderByNameOrderItem,
+    getOrderWithDate,
+    getOrderWithKey,
 }

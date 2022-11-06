@@ -29,6 +29,7 @@ function MyOrder() {
         const res=await getOrderByNameOrderItem(currentUser,status,search)
         if(res?.message){
           setData(res.data);
+          setSearch("");
         }else{
           NotificationManager.error("",'No Order can find', 2000);
         }
@@ -68,7 +69,7 @@ function MyOrder() {
               
               <Container>
                 <Row>
-                  <Col lg='9'>
+                  <Col lg="9">
                     {
                       
                       data.length===0?
@@ -76,7 +77,7 @@ function MyOrder() {
                       :
                       (
                         data.map((order)=>(
-                          <div className="OrderItem">
+                          <div  className="OrderItem">
                             <div className="topOrderDetail">
                               <div className="leftDetail">
                                 <span className="vendorName">Phuc Shop:</span>

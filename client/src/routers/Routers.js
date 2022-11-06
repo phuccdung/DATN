@@ -31,7 +31,7 @@ const Routers = () => {
     <Route path="/profile" element={<Profile/>}> </Route>
     <Route path="/myorder" element={<MyOrder/>}> </Route>
     {
-      currentUser.role?.Editor?
+      currentUser?.role?.Editor?
       <>
         <Route path="/shopproduct" element={<ShopProduct/>}> </Route>
         <Route path="/shoporder" element={<ShopOrder/>}> </Route>
