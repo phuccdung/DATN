@@ -39,14 +39,14 @@ const getOrderByNameOrderItem=async (req, res) => {
             order = await Order.find({ 
                 userId: req.params.userId ,
                 status: qStatus,
-                products: {$elemMatch: { productName: {'$regex': new RegExp("^" + qKey.toLowerCase(), "i")} }}
+                products: {$elemMatch: { productName: {$regex: qKey, $options: 'i'} }}
             }).sort({createdAt:-1}).limit(20);
             res.json({"data":order,'message':true});
             
         }else{
             order = await Order.find({ 
                 userId: req.params.userId ,
-                products: {$elemMatch: { productName: {'$regex': new RegExp("^" + qKey.toLowerCase(), "i")} }}
+                products: {$elemMatch: { productName: {$regex: qKey, $options: 'i'} }}
             }).sort({createdAt:-1}).limit(20);
             res.json({"data":order,'message':true});
         }
@@ -89,7 +89,7 @@ const getOrderWithKey=async (req,res)=>{
        
        const order = await Order.find({ 
         vendorId: req.params.userId ,
-            products: {$elemMatch: { productName: {'$regex': new RegExp("^" + key.toLowerCase(), "i")} }}
+            products: {$elemMatch: { productName: {$regex: key, $options: 'i'} }}
         }).sort({createdAt:-1}).limit(20);
         res.json({"data":order,'message':true});
     }catch(err){
