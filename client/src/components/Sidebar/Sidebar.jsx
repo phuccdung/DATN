@@ -30,7 +30,7 @@ function Sidebar({num}) {
           <div className="sidebarMenu">
             <h3 className="sidebarTitle">Shop</h3>
             <ul className="sidebarList">
-              <motion.li whileTap={{scale:1.2}} className="sidebarListItem">
+              <motion.li whileTap={{scale:1.2}} className={num===3?"sidebarListItem  active":"sidebarListItem "}>
                 <Link to="/shopproduct">
                   Products
                 </Link>
