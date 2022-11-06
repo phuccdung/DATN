@@ -6,6 +6,26 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
+export const getProductsByUserId = async (user,status,category,key) => {
+  try{
+    let url=BASE_URL+`products/vendor/${user.id}?status=${status}&category=${category}`;
+    if(key){
+      url=BASE_URL+`products/vendor/${user.id}?key=${key}`
+    }
+    const res=await axios({
+      method: 'get',
+      url: url,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const updateStatusOrderById = async (user,body,orderId) => {
   try{
     const res=await axios({

@@ -2,7 +2,7 @@
     
 }
 .product__name{
-    
+
 }
 .product__card{
 }
@@ -17,6 +17,13 @@
     color: var(--primary-color);
     font-weight:600;
     margin-top:15px;
+
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;  
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
 }
 .product__info a:hover{

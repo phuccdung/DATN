@@ -11,12 +11,59 @@ const createProduct= async (req, res) => {
     } 
 }
 
+const getAllProductByVendorId=async(req,res)=>{
+    const qStatus=req.query?.status;
+    const qCategory=req.query?.category;
+    const qKey=req.query?.key;
+    if (!req?.params?.id) return res.status(400).json({ "message": false });
+    try{
+        let products;
+        if(qKey){
+            products=await Product.find({ 
+                title: {$regex: qKey, $options: 'i'},
+                userId:req.params.id,
+             } );
+        }else{
+            if(qCategory&&qStatus){
+                products=await Product.find({
+                    userId:req.params.id,
+                    status:qStatus,
+                    category:qCategory
+                });
+            }else{
+                if(qCategory){
+                    products=await Product.find({
+                        userId:req.params.id,
+                        category:qCategory
+                    });
+                }else{
+                    if(qStatus){
+                        products=await Product.find({
+                            userId:req.params.id,
+                            status:qStatus,
+                        });  
+                    }
+                    else{
+                        products=await Product.find({
+                            userId:req.params.id,
+                        }); 
+                    }
+                }
+            }
+        }
+        
+        res.json({"data":products,'message':true});
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
+
 const getProduct=async(req,res)=>{
     const key=req.query.key;
     try{
         let products;
         if(key){
-            products=await Product.find({ $or: [ { category: {'$regex': key} }, { title: {'$regex': new RegExp("^" + key.toLowerCase(), "i")} } ] });
+            products=await Product.find({ $or: [ { category: {'$regex': key} }, { title: {$regex: key, $options: 'i'}  } ] });
         }else{
             products=await Product.find().sort({updatedAt:-1})   
         }
@@ -93,4 +140,5 @@ module.exports = {
     getProductById,
     updateProduct,
     deleteProducts,
+    getAllProductByVendorId,
 }
