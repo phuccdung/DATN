@@ -5,15 +5,17 @@ import Helmet from "../../components/Helmet/Helmet";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { Container,Row,Col } from 'reactstrap';
 import Moment from 'moment';
-import { getOrderByVendor,getOrderByVendorWithKey} from "../../redux/apiCall";
+import { getOrderByVendor,getOrderByVendorWithKey,updateStatusOrderById} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import {useSelector} from "react-redux";
+import { NotificationManager} from 'react-notifications';
 
 function ShopOrder() {
   const currentUser=useSelector(selectCurrentUser);
     const [data,setData]=useState([]);
     const [status,setStatus] = useState("Pending");
     const [search,setSearch]=useState("");
+    const [reset,setReset]=useState(true);
     const [fromDate,setFromDate]=useState(Moment().startOf('day').subtract(3,"day").format("YYYY-MM-DD"));
     const [toDate,setToDate]=useState(Moment().endOf('day').format("YYYY-MM-DD"));
 
@@ -29,7 +31,7 @@ function ShopOrder() {
        } 
      }
      getData();
-    },[fromDate,toDate,status])
+    },[fromDate,toDate,status,reset])
     
     const searchKey=async()=>{
       const res=await getOrderByVendorWithKey(currentUser,search);
@@ -37,6 +39,20 @@ function ShopOrder() {
         setData(res.data);
       }else{
        setData([]);
+      }
+    }
+    const updateOrder=async(stt,orderId)=>{
+      let body={
+        "status":stt,
+        "userId":currentUser.id
+      }
+      const res=await updateStatusOrderById(currentUser,body,orderId);
+      if(res.message){
+        setReset(!reset);
+        NotificationManager.success( "Order has been update...",'Success message', 2000);
+      }else{
+        NotificationManager.error("",' Order can not update', 2000);
+        setReset(!reset);
       }
     }
   return (
@@ -97,9 +113,12 @@ function ShopOrder() {
                       (
                         data.map((order)=>(
                           <div className="OrderItem">
+                            
+                                
+                            <div className="infoDetail">
                             <div className="topOrderDetail">
                               <div className="leftDetail">
-                                <span className="vendorName">Name: {order.name}:</span>
+                                <span className="vendorName">Name: {order.name}  </span>
                                 <span className="totalOrder"> ${order.total}</span>
                               </div>
 
@@ -109,10 +128,10 @@ function ShopOrder() {
                                   order.status==="Pending"?
                                     (
                                       <>
-                                      <button className="updateOrder">
+                                      <button className="updateOrder" onClick={()=>updateOrder("Cancelled",order._id)}>
                                         Cancel
                                       </button>
-                                      <button className="updateOrder">
+                                      <button className="updateOrder br_blue" onClick={()=>updateOrder("Accept",order._id)}>
                                         Accept
                                       </button>
                                      </>
@@ -122,7 +141,7 @@ function ShopOrder() {
                                     order.status==="Accept"?
                                     (
                                       
-                                      <button className="updateOrder">
+                                      <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivering",order._id)}>
                                         Delivering
                                       </button>
                                       
@@ -131,7 +150,7 @@ function ShopOrder() {
                                     order.status==="Delivering"?
                                     (
                                       
-                                      <button className="updateOrder">
+                                      <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivered",order._id)}>
                                         Delivered
                                       </button>
                                       
@@ -141,7 +160,18 @@ function ShopOrder() {
                                 }
                                 
                               </div>
+                              
                             </div>
+                              <div className="moreInfo">
+                                  <span className="addressOrder">Address:{order.address}</span>
+                                  <span className="phoneOrder"> Phone:{order.phone}</span>
+                              </div>
+                            </div>    
+
+
+
+
+
                             { order.products.map(item=>(
                               <div className="detailItem">
                                <img src={item.imgUrl} alt="" />

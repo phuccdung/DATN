@@ -6,7 +6,22 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
-
+export const updateStatusOrderById = async (user,body,orderId) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`orders/vendor/${orderId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const getMyOrderByUserId = async (user,status) => {
   try{
     let url;

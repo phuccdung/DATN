@@ -14,7 +14,8 @@ router.route('/:userId')
 router.route('/searchKey/:userId')
     .get(verifyJWT,ordersController.getOrderByNameOrderItem);
 
-router.route('/vendor/:userId')
+router.route('/vendor/:id')
+    .put(verifyJWT,verifyRoles( ROLES_LIST.Editor),ordersController.updateStatusOrder)
     .get(verifyJWT,ordersController.getOrderWithDate);
 router.route('/vendor/searchKey/:userId')
     .get(verifyJWT,ordersController.getOrderWithKey);

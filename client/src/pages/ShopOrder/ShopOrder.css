@@ -5,3 +5,15 @@
     flex: 4;
     padding: 10px;
 }
+.updateOrder{
+    width: auto;
+}
+.br_blue{
+    background-color: blue;
+}
+.infoExtra{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color:var(--primary-color)
+}

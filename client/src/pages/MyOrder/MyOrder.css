@@ -55,12 +55,25 @@ tr{
     padding-bottom: 10px;
     
 }
-.topOrderDetail{
+.infoDetail
+{
     border-bottom: 1px solid black;
     padding: 20px;
     display: flex;
+    flex-direction: column;
+}
+.topOrderDetail{
+    
+    display: flex;
     justify-content: space-between;
     color:var(--primary-color)
+}
+.moreInfo{
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    color: var(--primary-color);
+    font-weight: 550;
 }
 .vendorName,.status{
     font-weight: 550;

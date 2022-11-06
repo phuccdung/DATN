@@ -78,19 +78,39 @@ function MyOrder() {
                       (
                         data.map((order)=>(
                           <div  className="OrderItem">
-                            <div className="topOrderDetail">
-                              <div className="leftDetail">
-                                <span className="vendorName">Phuc Shop:</span>
-                                <span className="totalOrder"> ${order.total}</span>
-                              </div>
+                            <div className="infoDetail">
+                              <div className="topOrderDetail">
+                                <div className="leftDetail">
+                                  <span className="vendorName">Phuc Shop:</span>
+                                  <span className="totalOrder"> ${order.total}</span>
+                                </div>
 
-                              <div className="rightDetail">
-                                <span className="status"> {order.status}</span>
-                                <button className="updateOrder">
-                                  { order.status==="Delivered"?   "Regain":"Cancel"}
-                                </button>
+                                <div className="rightDetail">
+                                  <span className="status"> {order.status}</span>
+                                  {
+                                    order.status==="Delivered"?
+                                    (
+                                      <button className="updateOrder">
+                                        Delivered
+                                      </button>
+                                    )
+                                    :
+                                    order.status==="Pending"?
+                                    (
+                                      <button className="updateOrder">
+                                        Cancel
+                                      </button>
+                                    ):null
+                                  }
+                                  
+                                </div>
+                              </div>
+                              <div className="moreInfo">
+                                  <span className="addressOrder">Address:{order.address}</span>
+                                  <span className="phoneOrder"> Phone:{order.phone}</span>
                               </div>
                             </div>
+                            
                             { order.products.map(item=>(
                               <div className="detailItem">
                                <img src={item.imgUrl} alt="" />

@@ -66,14 +66,14 @@ const getOrderWithDate=async (req,res)=>{
         let order;
         if(qStatus){
            order= await Order.find({ 
-                vendorId: req.params.userId,
+                vendorId: req.params.id,
                 createdAt: { $gte: fromDate,$lt:toDate} ,
                 status:qStatus
                 }).sort({createdAt:-1});
             
         }else{
           order=  await Order.find({ 
-                vendorId: req.params.userId,
+                vendorId: req.params.id,
                 createdAt: { $gte: fromDate,$lt:toDate} 
                 }).sort({createdAt:-1});
         }
@@ -96,6 +96,27 @@ const getOrderWithKey=async (req,res)=>{
         res.status(500).json({ 'data': err.message, "message": false})
     }
 }
+const updateStatusOrder=async (req,res)=>{
+    try {
+        if (!req?.params?.id) return res.status(400).json({ "success": 'Order ID required','message':false} );
+        const order = await Order.findOne({ _id: req.params.id }).exec();
+        if (!order) {
+            return res.status(204).json({ 'message': `Order ID ${req.params.id} not found` ,'message':false});
+        }
+        if(order.vendorId==req.body.userId){
+            const updateOrder=  await Order.findByIdAndUpdate(
+                req.params.id,
+                {
+                    status:req.body.status
+                },
+                { new: true }
+              );
+            res.status(200).json({ "data":updateOrder,'message':true});
+        }
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
 
 module.exports = {
     createOrder, 
@@ -103,4 +124,5 @@ module.exports = {
     getOrderByNameOrderItem,
     getOrderWithDate,
     getOrderWithKey,
+    updateStatusOrder,
 }
