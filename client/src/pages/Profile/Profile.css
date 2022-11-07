@@ -20,7 +20,7 @@
     font-weight: 500;
 }
 .userChangePassword{
-    width: 150px;
+    width: auto;
     border:none;
     padding: 5px;
     background-color:teal;

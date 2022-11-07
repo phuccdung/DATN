@@ -116,9 +116,6 @@ const updateProduct = async (req, res) => {
     }
     const user=await User.findById(req.body.userId);
     if(req.body.userId==product.userId||user.roles?.Admin){
-        if(req.body.status&&!user.roles?.Admin){
-            return res.status(400).json({ 'message': `You can't update status` ,'message':false});
-        }
       const updateProduct=  await Product.findByIdAndUpdate(
             req.params.id,
             {

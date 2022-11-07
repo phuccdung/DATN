@@ -12,8 +12,9 @@ import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import Profile from '../pages/Profile/Profile';
 import MyOrder from "../pages/MyOrder/MyOrder";
-import ShopProduct from "../pages/ShopProduct/ShopProduct"
-import ShopOrder from "../pages/ShopOrder/ShopOrder"
+import ShopProduct from "../pages/ShopProduct/ShopProduct";
+import ShopOrder from "../pages/ShopOrder/ShopOrder";
+import ShopProductDetail from "../pages/ShopPoroductDetail/ShopProductDetail";
 
 
 const Routers = () => {
@@ -35,6 +36,7 @@ const Routers = () => {
       <>
         <Route path="/shopproduct" element={<ShopProduct/>}> </Route>
         <Route path="/shoporder" element={<ShopOrder/>}> </Route>
+        <Route path="/product/:id" element={<ShopProductDetail/>}> </Route>
       </>
       :null
     }

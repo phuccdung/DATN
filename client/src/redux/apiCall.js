@@ -6,6 +6,24 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
+
+export const updateProductById = async (user,body,productId) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`products/${productId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const getProductsByUserId = async (user,status,category,key) => {
   try{
     let url=BASE_URL+`products/vendor/${user.id}?status=${status}&category=${category}`;
@@ -164,9 +182,13 @@ export const createOrder=async (body)=>{
     return false;
   }
 }
-export const getProductById=async (id)=>{
+export const getProductById=async (id,limit)=>{
   try{
-    const res = await axios.get(BASE_URL+`products/${id}?limit=4`);
+    let url=BASE_URL+`products/${id}`;
+    if(limit){
+      url=BASE_URL+`products/${id}?limit=${limit}`
+    }
+    const res = await axios.get(url);
     return res.data
   }catch(err){
     console.log(err);

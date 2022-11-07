@@ -90,7 +90,7 @@ const ProductDetail = () => {
   useEffect(()=>{
     window.scrollTo(0,0);
     const getData=async ()=>{
-      const res= await getProductById(id);
+      const res= await getProductById(id,4);
       if(res?.message){
         setDataProduct(res.data);
         setDataOther(res.otherProducts);

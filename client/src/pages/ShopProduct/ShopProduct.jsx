@@ -120,7 +120,7 @@ function ShopProduct() {
                             <td>
                               <div className="action__shop">
                                 <motion.button whileTap={{scale:1.2}} className='btn__detail'>
-                                  <Link to='/shop'>Detail</Link>
+                                  <Link to={`/product/${item._id}`}>Detail</Link>
                                 </motion.button>
                                 <motion.i  whileHover={{scale:2}} class="ri-delete-bin-6-line"></motion.i>
                               </div>
