@@ -6,6 +6,24 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
+export const createProduct = async (user,body) => {
+  try{
+    const res= await axios({
+      method: 'post',
+      url: BASE_URL+`products`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data: 
+        body
+      
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 
 export const updateProductById = async (user,body,productId) => {
   try{
@@ -378,7 +396,7 @@ export const updateCart=async(cart,user,ele,action)=>{
     return i;
   })
   if(action==="remove"){
-    if(typeof ele=== "Object"){
+    if(typeof ele=== "object"){
       body=body.filter(item=>item.productId!==ele.id)
     }else{
       ele.forEach(it=>{

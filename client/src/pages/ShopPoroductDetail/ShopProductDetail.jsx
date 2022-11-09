@@ -7,7 +7,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import {useSelector} from "react-redux";
 import {getProductById,updateProductById } from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
-import { useParams } from 'react-router-dom';
+import {Link, useParams } from 'react-router-dom';
 import {  storage } from "../../firebase.config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -89,7 +89,11 @@ function ShopProductDetail() {
             <div className="productDetail">
                 <div className="top__productDetail">
                     <h1> Product Detail</h1>
-                    <button className="create__new_product">Create Product</button>    
+                    <button className="create__new_product">
+                        <Link to='/newproduct'>
+                            Create Product
+                        </Link>
+                    </button>    
                 </div>             
                 <div className="product__container">
                     <div className="info__newProductForm">
