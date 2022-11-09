@@ -1,18 +1,19 @@
 import React,{ useState,useEffect }  from 'react';
 import "./ShopProduct.css";
 import { motion } from 'framer-motion';
+import {NotificationManager} from 'react-notifications';
 import { Container,Row,Col } from 'reactstrap';
 import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
 import Helmet from "../../components/Helmet/Helmet";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import {useSelector} from "react-redux";
-import {getProductsByUserId } from "../../redux/apiCall";
+import {getProductsByUserId,deleteProductById } from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import { Link } from 'react-router-dom';
 
 function ShopProduct() {
   const currentUser=useSelector(selectCurrentUser);
-  const [status,setStatus] = useState("");
+  const [status,setStatus] = useState("sale");
   const [category,setCategory] = useState("");
   const [search,setSearch]=useState("");
   const [data,setData]=useState([]);
@@ -35,6 +36,18 @@ function ShopProduct() {
         setStatus("");
         setCategory("")
       }
+  }
+  const deleteProduct=async(id)=>{
+    const res=await deleteProductById(id,currentUser)
+    console.log(res);
+    if(res.message){
+      NotificationManager.success( "Product has been delete...",'Success message', 3000);
+      let arr=data.filter(item=>item._id!==id);
+      setData(arr);
+      
+  }else{
+      NotificationManager.error( "Error", 3000);
+  }
   }
  
   return (
@@ -86,7 +99,7 @@ function ShopProduct() {
             <Col lg='12'>
               {
                 data.length===0?
-                ( <h2 className='fs-4 text-center'>No item added to the cart</h2>)
+                ( <h2 className='fs-4 text-center'>No item in the shop</h2>)
                 :
                 (
                   <table className="table bordered">
@@ -118,11 +131,11 @@ function ShopProduct() {
                             <td>{item.stock}</td>
                             <td>{item.status}</td>
                             <td>
-                              <div className="action__shop">
+                              <div className="action__shop" key={index}>
                                 <motion.button whileTap={{scale:1.2}} className='btn__detail'>
                                   <Link to={`/product/${item._id}`}>Detail</Link>
                                 </motion.button>
-                                <motion.i  whileHover={{scale:2}} class="ri-delete-bin-6-line"></motion.i>
+                                <motion.i  whileHover={{scale:2}} class="ri-delete-bin-6-line" onClick={()=>deleteProduct(item._id)}></motion.i>
                               </div>
                             </td>
                           </tr>

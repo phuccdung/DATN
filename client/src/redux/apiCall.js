@@ -6,6 +6,25 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
+export const deleteProductById= async(id,user)=>{
+  try{
+    const res=await axios({
+      method: 'delete',
+      url: BASE_URL+`products/${id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data: {
+        userId:user.id,
+      }
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const createProduct = async (user,body) => {
   try{
     const res= await axios({
