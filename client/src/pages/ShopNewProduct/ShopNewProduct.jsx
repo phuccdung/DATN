@@ -25,16 +25,31 @@ function ShopNewProduct() {
     const createNewProduct=async(body)=>{
         body={...body,"userId":currentUser.id};
         const res=await createProduct(currentUser,body);
-        console.log(res);
+        if(res.message){
+            NotificationManager.success( "Product has been create...",'Success message', 3000);
+            setData({
+                title:"",
+                price:"",
+                desc:"",
+                category:"",
+                img:"",
+                stock:""
+            }); 
+            setFile(null);
+        }else{
+            NotificationManager.error( "Error", 3000);
+            setData({
+                title:"",
+                price:"",
+                desc:"",
+                category:"",
+                img:"",
+                stock:""
+            }); 
+            setFile(null);
+        }
 
-        setData({
-            title:"",
-            price:"",
-            desc:"",
-            category:"",
-            img:"",
-            stock:""
-        });
+        
     }  
     const handleClick=(e)=>{
     e.preventDefault();
