@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState} from 'react';
 import "../ShopPoroductDetail/ShopProductDetail.css";
 import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
 import {NotificationManager} from 'react-notifications';

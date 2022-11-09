@@ -34,3 +34,34 @@ align-items: center;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.create__new{
+    display: flex;
+    justify-content: space-between;
+}
+.create__product{
+    width: auto;
+    border:none;
+    padding: 5px;
+    background-color:teal;
+    cursor: pointer;
+    color:white;
+    font-size:16px;
+    border-radius: 10px;
+    margin-right: 50px;
+}
+.import__excel button{
+    width: auto;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color:white;
+    font-size:16px;
+    border-radius: 10px;
+}
+.btn__import{
+    background-color: brown;
+    margin-left: 20px;
+}
+.btn__download{
+    background-color: rgb(238, 152, 46);
+}

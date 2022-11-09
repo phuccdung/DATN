@@ -90,6 +90,25 @@ function ShopProduct() {
                       </div>
                     </Col>
                   </Row>
+                  <Row>
+                    <Col lg="12" md="3">
+                      <div className="create__new">
+                        <div className="import__excel">
+                          <button className="btn__download">
+                                  Download Sample Files
+                          </button>
+                          <button className="btn__import">
+                                  Import EXCEL
+                          </button>
+                        </div>
+                        <button className="create__product">
+                          <Link to='/newproduct'>
+                              Create Product
+                          </Link>
+                        </button> 
+                      </div>
+                    </Col>
+                  </Row>
                 </Container>
               </section>
 
