@@ -11,12 +11,14 @@ import {getProductsByUserId,deleteProductById } from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import { Link } from 'react-router-dom';
 
+
 function ShopProduct() {
   const currentUser=useSelector(selectCurrentUser);
   const [status,setStatus] = useState("sale");
   const [category,setCategory] = useState("");
   const [search,setSearch]=useState("");
   const [data,setData]=useState([]);
+  
 
   useEffect(()=>{
     const getData=async()=>{
@@ -49,6 +51,7 @@ function ShopProduct() {
       NotificationManager.error( "Error", 3000);
   }
   }
+
  
   return (
     <Helmet title="Shop Products" >
@@ -94,80 +97,82 @@ function ShopProduct() {
                     <Col lg="12" md="3">
                       <div className="create__new">
                         <div className="import__excel">
-                          <button className="btn__download">
-                                  Download Sample Files
-                          </button>
-                          <button className="btn__import">
-                                  Import EXCEL
-                          </button>
+                          
+                            <button className="btn__import" >
+                              <Link to='/import'>
+                                Import EXCEL
+                              </Link>
+                            </button>
+                            <button className="create__product">
+                              <Link to='/newproduct'>
+                                  Create Product
+                              </Link>
+                            </button> 
+                          
                         </div>
-                        <button className="create__product">
-                          <Link to='/newproduct'>
-                              Create Product
-                          </Link>
-                        </button> 
+                        
                       </div>
-                    </Col>
+                    </Col>  
                   </Row>
                 </Container>
               </section>
 
               <section>
-        <Container>
-          <Row>
-            <Col lg='12'>
-              {
-                data.length===0?
-                ( <h2 className='fs-4 text-center'>No item in the shop</h2>)
-                :
-                (
-                  <table className="table bordered">
-                    <thead>
-                      <tr>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>stock</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                <Container>
+                  <Row>
+                    <Col lg='12'>
                       {
-                        data.map((item,index)=>(
-                          <tr key={index}>
-                            <td>
-                              <img src={item.img} alt="" />
-                            </td>
-                            <td >
-                              <div className="over__title">
-                              {item.title}
-                              </div>
-                            </td>
-                            <td>{item.category}</td>
-                            <td>${item.price}</td>
-                            <td>{item.stock}</td>
-                            <td>{item.status}</td>
-                            <td>
-                              <div className="action__shop" key={index}>
-                                <motion.button whileTap={{scale:1.2}} className='btn__detail'>
-                                  <Link to={`/product/${item._id}`}>Detail</Link>
-                                </motion.button>
-                                <motion.i  whileHover={{scale:2}} class="ri-delete-bin-6-line" onClick={()=>deleteProduct(item._id)}></motion.i>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
+                        data.length===0?
+                        ( <h2 className='fs-4 text-center'>No item in the shop</h2>)
+                        :
+                        (
+                          <table className="table bordered">
+                            <thead>
+                              <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {
+                                data.map((item,index)=>(
+                                  <tr key={index}>
+                                    <td>
+                                      <img src={item.img} alt="" />
+                                    </td>
+                                    <td >
+                                      <div className="over__title">
+                                      {item.title}
+                                      </div>
+                                    </td>
+                                    <td>{item.category}</td>
+                                    <td>${item.price}</td>
+                                    <td>{item.stock}</td>
+                                    <td>{item.status}</td>
+                                    <td>
+                                      <div className="action__shop" key={index}>
+                                        <motion.button whileTap={{scale:1.2}} className='btn__detail'>
+                                          <Link to={`/product/${item._id}`}>Detail</Link>
+                                        </motion.button>
+                                        <motion.i  whileHover={{scale:2}} class="ri-delete-bin-6-line" onClick={()=>deleteProduct(item._id)}></motion.i>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                ))
+                              }
+                            </tbody>
+                          </table>
+                        )
                       }
-                    </tbody>
-                  </table>
-                )
-              }
-            </Col>
-          </Row>
-        </Container>
-      </section>
+                    </Col>
+                  </Row>
+                </Container>
+              </section>
             </div>
         </div>
     </Helmet>

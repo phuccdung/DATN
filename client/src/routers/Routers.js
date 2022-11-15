@@ -16,6 +16,7 @@ import ShopProduct from "../pages/ShopProduct/ShopProduct";
 import ShopOrder from "../pages/ShopOrder/ShopOrder";
 import ShopProductDetail from "../pages/ShopPoroductDetail/ShopProductDetail";
 import ShopNewProduct from "../pages/ShopNewProduct/ShopNewProduct";
+import ImportProduct from "../pages/ImportPage/ImportPage";
 
 
 const Routers = () => {
@@ -39,6 +40,7 @@ const Routers = () => {
         <Route path="/shoporder" element={<ShopOrder/>}> </Route>
         <Route path="/product/:id" element={<ShopProductDetail/>}> </Route>
         <Route path="/newproduct" element={<ShopNewProduct/>}> </Route>
+        <Route path="/import" element={<ImportProduct/>}> </Route>
       </>
       :null
     }

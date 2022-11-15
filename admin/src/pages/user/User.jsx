@@ -36,7 +36,6 @@ export default function User() {
       const res= await getUserById(userId,admin);
       setUser(res);
       const analytics=await analyticsBehaviorByUserId(admin,userId);
-      console.log(analytics);
       if(analytics?.message){
         let arr1= analytics.data.action.map((item) =>{
           return {name:item._id,"Active Product": item.total}
@@ -46,8 +45,6 @@ export default function User() {
           return {name:item._id,"Active KeyWord": item.total}
         });
         setKeyDataStats(arr2);
-
-        console.log(arr1,arr2);
       }
     }
     getProduct();

@@ -69,7 +69,6 @@ export default function NewProduct() {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             const product = { ...input, img: downloadURL };
-            console.log(product);
             createNewProduct(product);
           });
         }

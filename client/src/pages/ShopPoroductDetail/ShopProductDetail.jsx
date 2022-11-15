@@ -20,7 +20,6 @@ function ShopProductDetail() {
     useEffect(()=>{
         const getData=async()=>{
             const res =await getProductById(id,"");
-            console.log(res.data);
             if(res?.message){
                 setData(res.data);
             }

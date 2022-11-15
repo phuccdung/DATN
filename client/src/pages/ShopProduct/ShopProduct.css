@@ -60,8 +60,13 @@ align-items: center;
 }
 .btn__import{
     background-color: brown;
-    margin-left: 20px;
+    margin-right: 20px;
 }
-.btn__download{
-    background-color: rgb(238, 152, 46);
+
+ 
+.btn__import__product{
+    padding: 5px;
+    margin-left: 10px;
+    color: white;
+    background-color: green;
 }

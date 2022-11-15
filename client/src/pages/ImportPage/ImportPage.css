@@ -1,0 +1,46 @@
+.containerProfile{
+    display: flex;
+}
+
+.productList{
+    flex: 4;
+    padding: 10px;
+    margin-left: 30px;
+    margin: 30px;
+}
+.btn_in_importPage{
+    width: auto;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color:white;
+    font-size:16px;
+    border-radius: 10px;
+}
+.btn__download{
+    background-color: rgb(238, 152, 46);
+    margin-right: 20px;
+}
+.custom-file-input{
+    width: 180px;
+}
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.custom-file-input::before {
+    content: 'Choose file EXCEL';
+    display: inline-block;
+    font-size: 16px;
+    padding: 5px;
+    border: none;
+    color: white;
+    background-color: brown;
+    border-radius: 10px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+} 
+.btn__import{
+    background-color: blue;
+}
