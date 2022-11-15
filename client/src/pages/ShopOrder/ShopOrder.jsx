@@ -41,6 +41,11 @@ function ShopOrder() {
        setData([]);
       }
     }
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        searchKey();
+      }
+    }
     const updateOrder=async(stt,orderId)=>{
       let body={
         "status":stt,
@@ -80,7 +85,7 @@ function ShopOrder() {
                     </Col>
                     <Col lg="6" md="3">
                       <div className="search__box">
-                        <input value={search} type="text" placeholder="Search with name product..." onChange={e=>setSearch(e.currentTarget.value)}  />
+                        <input value={search} type="text" placeholder="Search with name product..." onKeyDown={e=>handleKeyDown(e)} onChange={e=>setSearch(e.currentTarget.value)}  />
                         <span onClick={searchKey}>
                           <i whileTap={{scale:1.2}} class="ri-search-line"></i>
                         </span>

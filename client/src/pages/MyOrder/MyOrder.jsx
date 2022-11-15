@@ -34,6 +34,11 @@ function MyOrder() {
           NotificationManager.error("",'No Order can find', 2000);
         }
     }
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        searcherOrder();
+      }
+    }
   return (
     <Helmet title="My Order">
         <CommonSectionfrom title='My Order'/>
@@ -45,7 +50,7 @@ function MyOrder() {
                   <Row>
                     <Col lg="6" md="3">
                       <div className="search__box">
-                        <input type="text" placeholder="Search with name product..." onChange={(e)=>setSearch(e.currentTarget.value)}  />
+                        <input type="text" placeholder="Search with name product..." onKeyDown={(e)=>handleKeyDown(e)} onChange={(e)=>setSearch(e.currentTarget.value)}  />
                         <span onClick={searcherOrder}>
                           <i whileTap={{scale:1.2}} class="ri-search-line"></i>
                         </span>

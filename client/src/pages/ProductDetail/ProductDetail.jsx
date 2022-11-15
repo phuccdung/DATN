@@ -149,7 +149,7 @@ const ProductDetail = () => {
       <section className='pt-0'>
         <Container>
           <Row>
-            <Col lg='6'>
+            <Col lg='6' >
               <img src={dataProduct.img} alt="" />
             </Col>
             <Col lg='6'>

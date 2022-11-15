@@ -47,11 +47,15 @@ function ShopProduct() {
       let arr=data.filter(item=>item._id!==id);
       setData(arr);
       
-  }else{
-      NotificationManager.error( "Error", 3000);
+    }else{
+        NotificationManager.error( "Error", 3000);
+    }
   }
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      searchProduct();
+    }
   }
-
  
   return (
     <Helmet title="Shop Products" >
@@ -64,7 +68,7 @@ function ShopProduct() {
                   <Row>
                     <Col lg="6" md="3">
                       <div className="search__box">
-                        <input type="text" value={search} placeholder="Search with name product..." onChange={(e)=>setSearch(e.currentTarget.value)}  />
+                        <input type="text" value={search} placeholder="Search with name product..." onKeyDown={(e)=>handleKeyDown(e)} onChange={(e)=>setSearch(e.currentTarget.value)}  />
                         <span onClick={()=>searchProduct()}>
                           <i whileTap={{scale:1.2}} class="ri-search-line"></i>
                         </span>
