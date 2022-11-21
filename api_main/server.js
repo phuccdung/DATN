@@ -49,6 +49,7 @@ app.use('/carts', require('./routes/api/carts'));
 app.use('/behaviors', require('./routes/api/behaviors'));
 app.use('/orders', require('./routes/api/orders'));
 app.use('/comments', require('./routes/api/comments'));
+app.use('/links', require('./routes/api/links'));
 
 app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees'));

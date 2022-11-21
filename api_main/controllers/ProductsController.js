@@ -160,19 +160,6 @@ const addComment=async(req,res)=>{
     }
 }
 
-const createLink = async (req, res) => {
-    if (!req?.params?.id) return res.status(400).json({ "message": false });
-    const user = await User.findOne({ _id: req.params.id }).exec();
-    if (!user) {
-        return res.status(204).json({ 'message': false });
-    }
-    const key=CryptoJS.AES.encrypt(
-        req.params.id,
-        process.env.PASS_SEC)
-        .toString();    
-    res.json({"data":key,'message':true});
-    
-}
 
 module.exports = {
     createProduct,
@@ -182,5 +169,4 @@ module.exports = {
     deleteProducts,
     getAllProductByVendorId,
     addComment,
-    createLink,
 }

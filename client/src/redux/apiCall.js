@@ -5,6 +5,24 @@ import { behaviorActions } from "./slices/behaviorSlice";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
+
+export const createLinks= async(user)=>{
+  // try{
+  //   const res=await axios({
+  //     method: 'get',
+  //     url: BASE_URL+`products/link/${user.id}`,
+  //     headers: { 
+  //       Authorization: "Bearer " + user.accessToken,
+  //     }, 
+  //   });
+  //   return res.data;
+  // }catch(err){
+  //   console.log(err);
+  //   return null;
+  // }
+  return false;
+}
+
 export const getComment= async(id)=>{
   try{
     const res=await axios({

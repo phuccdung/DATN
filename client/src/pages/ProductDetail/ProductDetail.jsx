@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
 import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
-import { updateCart,addBehavior,getProductById,addComment,getComment } from '../../redux/apiCall';
+import { updateCart,addBehavior,getProductById,addComment,getComment,createLinks } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 import {
@@ -43,7 +43,7 @@ const ProductDetail = () => {
     description,
   }=product;
 
-
+  // console.log(location.search.split("?")[1]);
   const submitHandler= async(e)=>{
     e.preventDefault();
 
@@ -182,6 +182,24 @@ const ProductDetail = () => {
       </div>
     );
   }
+  const CreateLink=async()=>{
+    // if(currentUser){
+    //   const res=await createLinks(currentUser)
+    //   if(res?.message){
+    //     navigator.clipboard.writeText(`http://localhost:3000${location.pathname}?${res.data}`)
+    //     NotificationManager.success('Copied!',"Success", 2000);
+    //     addBehavior({
+    //       "find":id,
+    //       "date":new Date().getTime(),
+    //       "status":"link"
+    //     },currentUser)
+    //   }else{
+    //     NotificationManager.error('Error!', 2000);
+    //   }
+    // }else{
+    //   NotificationManager.error("You must Login ",'Error', 2000);
+    // }
+  }
 
   return (
     <Helmet title={dataProduct.title}>
@@ -237,6 +255,7 @@ const ProductDetail = () => {
                   >
                     <TwitterIcon size={30} round={true}/>
                   </TwitterShareButton>
+                  <motion.button  whileTap={{scale:1.2}} className="link__btn" onClick={CreateLink}>Link</motion.button>
                 </div>
               </div>
             </Col>
