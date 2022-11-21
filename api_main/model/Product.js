@@ -22,8 +22,8 @@ const productSchema = new Schema({
     ratings:{
         type:starts,
         default:{
-            total:0,
-            count:0,
+            total:5,
+            count:1,
         }
     },
     userId: {
