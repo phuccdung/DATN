@@ -35,6 +35,10 @@ const getCommentByIdProduct = async (req, res) => {
     if (!req?.params?.id) return res.status(400).json({ "message": false });
     try{
         const data=await Comment.aggregate( [
+            { $match: { 
+                "productId":req.params.id
+                }
+            },
             {
                $lookup:
                   {
