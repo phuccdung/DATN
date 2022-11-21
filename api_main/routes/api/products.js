@@ -15,6 +15,10 @@ router.route('/:id')
     .delete(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.deleteProducts);
 
 router.route('/vendor/:id')
-    .get(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.getAllProductByVendorId)
+    .get(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.getAllProductByVendorId);
+
+router.route('/link/:id')
+    .get(verifyJWT,productsController.createLink);
+
 
 module.exports = router;

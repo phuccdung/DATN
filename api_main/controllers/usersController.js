@@ -44,7 +44,7 @@ const deleteUser = async (req, res) => {
     if (!req?.body?.id) return res.status(400).json({ "message": false });
     const user = await User.findOne({ _id: req.body.id }).exec();
     if (!user) {
-        return res.status(204).json({ 'message': true });
+        return res.status(204).json({ 'message': false });
     }
     const result = await user.deleteOne({ _id: req.body.id });
     res.json(result);
@@ -71,6 +71,7 @@ const getUser = async (req, res) => {
 const updateUser=async(req, res)=>{
     if (!req?.params?.id) return res.status(400).json({ "message": false });
     if (req.body.roles) return res.status(400).json({ "message": false });
+    if (req.body.chip) return res.status(400).json({ "message": false });
     const user = await User.findOne({ _id: req.body.userId }).exec();
     if (!user) {
         return res.status(204).json({ 'message': false });
@@ -108,6 +109,7 @@ const updateUser=async(req, res)=>{
         return res.status(204).json({"data":null, 'message': false });
     }
 }
+
 
 const updateUserToVendor=async(req, res)=>{
     if (!req?.params?.id) return res.status(400).json({ "message": 'User ID required' });
@@ -155,6 +157,8 @@ const countVendorStart=async (req,res)=>{
     res.status(500).json(err);
   }
 }
+
+
 module.exports = {
     getAllUsers,
     getAllVendor,

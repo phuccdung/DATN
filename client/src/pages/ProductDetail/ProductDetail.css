@@ -5,7 +5,16 @@
     font-size: 1.6rem;
     margin-bottom: 10px;
 }
-
+.share__link{
+    margin-top: 20px;
+}
+.share__link span{
+    margin: 10px;
+    font-size: 1.2rem;
+}
+.icon_share{
+    margin: 2px;
+}
 .product__rating span i{
     color: coral;
 }

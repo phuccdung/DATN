@@ -17,6 +17,7 @@ router.route('/:id')
     .get( usersController.getUser)
     .put(usersController.updateUser);
 
+
 router.route('/admin/ToVendor/:id')
     .put(verifyRoles(ROLES_LIST.Admin),usersController.updateUserToVendor);
 module.exports = router;

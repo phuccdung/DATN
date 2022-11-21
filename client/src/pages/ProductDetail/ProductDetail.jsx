@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import "./ProductDetail.css"
 import { NotificationManager} from 'react-notifications';
 import { Container,Row,Col } from 'reactstrap';
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation } from 'react-router-dom';
 import Helmet from "../../components/Helmet/Helmet";
 import CommonSection from "../../components/UI/CommonSection/CommonSection";
 import { motion } from 'framer-motion';
@@ -12,11 +12,19 @@ import{cartActions} from "../../redux/slices/cartSlice";
 import { updateCart,addBehavior,getProductById,addComment,getComment } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
-
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  FacebookMessengerShareButton,
+  FacebookMessengerIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from "react-share";
 import products from "../../assets/data/products";
 
 const ProductDetail = () => {
 
+  const location=useLocation();
   const [tab,setTab]=useState('desc');
   const [reviewMsg,setReviewMsg]=useState('');
   const dispatch=useDispatch();
@@ -201,6 +209,35 @@ const ProductDetail = () => {
                 <p className='mt-3' >{dataProduct.desc}</p>
 
                 <motion.button  whileTap={{scale:1.2}} className="buy__btn" onClick={addToCart}>Add to Cart</motion.button>
+                <div className="share__link">
+                  <span>Share:</span>
+                  <FacebookShareButton 
+                    url={`http://localhost:3000${location.pathname}`}
+                    quote={dataProduct.title}
+                    hashtag={"#MultiMart"}
+                    className='icon_share'
+                  >
+                    <FacebookIcon size={30} round={true}/>
+                  </FacebookShareButton>
+                  <FacebookMessengerShareButton 
+                    url={`http://localhost:3000${location.pathname}`}
+                    quote={dataProduct.title}
+                    hashtag={"#MultiMart"}
+                    className='icon_share'
+
+                  >
+                    <FacebookMessengerIcon size={30} round={true}/>
+                  </FacebookMessengerShareButton>
+                  <TwitterShareButton 
+                    url={`http://localhost:3000${location.pathname}`}
+                    quote={dataProduct.title}
+                    hashtag={"#MultiMart"}
+                    className='icon_share'
+
+                  >
+                    <TwitterIcon size={30} round={true}/>
+                  </TwitterShareButton>
+                </div>
               </div>
             </Col>
           </Row>

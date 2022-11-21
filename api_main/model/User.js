@@ -7,6 +7,10 @@ const userSchema = new Schema({
         required: true,
         unique:true
     },
+    chip:{
+        type: Number,
+        default: 0
+    },
     name: {
         type: String,
     },
