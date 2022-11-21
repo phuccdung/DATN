@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+var starts = new Schema({
+    total:Number,
+    count:Number,
+ });
 const productSchema = new Schema({
     title: {
         type: String,
@@ -12,6 +17,14 @@ const productSchema = new Schema({
     },
     desc:{
         type: String,
+    },
+    detail:[String],
+    ratings:{
+        type:starts,
+        default:{
+            total:0,
+            count:0,
+        }
     },
     userId: {
         type: String,

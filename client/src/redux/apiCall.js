@@ -5,7 +5,34 @@ import { behaviorActions } from "./slices/behaviorSlice";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
-
+export const getComment= async(id)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`comments/${id}`
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+export const addComment= async(body,user)=>{
+  try{
+    const res=await axios({
+      method: 'post',
+      url: BASE_URL+`comments`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data: body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const deleteProductById= async(id,user)=>{
   try{
     const res=await axios({

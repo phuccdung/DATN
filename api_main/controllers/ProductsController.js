@@ -131,6 +131,33 @@ const updateProduct = async (req, res) => {
     }
     
 }
+
+const addComment=async(req,res)=>{
+    if (!req?.params?.id) return res.status(400).json({ "message": false });
+    const product = await Product.findOne({ _id: req.params.id }).exec();
+    if (!product) {
+        return res.status(204).json({ 'message': false });
+    }
+    let rating={
+        "total":product.ratings.total+req.body.start,
+        "count":product.ratings.count+1
+    }
+    // res.json({"data":rating});
+    try{
+        const result= await Product.findByIdAndUpdate(
+                {_id:req.params.id},
+                {
+                    $push:{comment:req.body},
+                    $set:{
+                        ratings:rating
+                    }
+                },
+            );
+        res.json({"data":result,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message , "message": false});
+    }
+}
 module.exports = {
     createProduct,
     getProduct,
@@ -138,4 +165,5 @@ module.exports = {
     updateProduct,
     deleteProducts,
     getAllProductByVendorId,
+    addComment,
 }

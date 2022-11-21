@@ -1,4 +1,4 @@
-import React,{useState,useRef,useEffect} from 'react';
+import React,{useState,useEffect} from 'react';
 import "./ProductDetail.css"
 import { NotificationManager} from 'react-notifications';
 import { Container,Row,Col } from 'reactstrap';
@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
 import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
-import { updateCart,addBehavior,getProductById } from '../../redux/apiCall';
+import { updateCart,addBehavior,getProductById,addComment,getComment } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 
@@ -18,38 +18,51 @@ import products from "../../assets/data/products";
 const ProductDetail = () => {
 
   const [tab,setTab]=useState('desc');
-  const reviewUser=useRef('');
-  const reviewMsg=useRef('');
+  const [reviewMsg,setReviewMsg]=useState('');
   const dispatch=useDispatch();
   const currentUser=useSelector(selectCurrentUser);
   const cart=useSelector(state=>state.cart.cartItems);
-  const [rating,setRating]=useState(null);
+  const [rating,setRating]=useState(5);
+  const [star,setStar]=useState({});
   const {id}=useParams();
   const [counter, setCounter] = React.useState(0);
   const [behavior,setBehavior]=useState(false);
   const [dataProduct,setDataProduct] = useState({});
   const [dataOther,setDataOther] = useState([]);
   const product=products.find(item=> item.id==="08");
+  const [comments,setComments]=useState([]);
   const {
-    avgRating,
-    reviews,
     description,
   }=product;
 
 
-  const submitHandler=(e)=>{
+  const submitHandler= async(e)=>{
     e.preventDefault();
-    const reviewUserName=reviewUser.current.value;
-    const reviewUserMsg=reviewMsg.current.value;
 
     const reviewObj={
-      userName:reviewUserName,
-      text:reviewUserMsg,
-      rating
+      userId:currentUser.username,
+      productId:id,
+      text:reviewMsg,
+      star:rating
     };
-
-    NotificationManager.success("",'Review successfully', 2000);
-    console.log(reviewObj);
+    if(currentUser){
+      const res=await addComment(reviewObj,currentUser);
+      if(res?.message){
+        NotificationManager.success("",'Review successfully', 2000);
+        setRating(5);
+        setReviewMsg("");
+        setStar(res.data);
+        const resCmt= await getComment(id);
+        if(resCmt?.message){
+          setComments(resCmt.data)
+        }
+      }else{
+        NotificationManager.error("",'Error', 2000);
+      }
+    }else{
+      NotificationManager.error("You must Login ",'Error', 2000);
+    }
+    
   }
 
   const addToCart=()=>{
@@ -94,6 +107,11 @@ const ProductDetail = () => {
       if(res?.message){
         setDataProduct(res.data);
         setDataOther(res.otherProducts);
+        setStar(res.data.ratings);
+      }
+      const resCmt= await getComment(id);
+      if(resCmt?.message){
+        setComments(resCmt.data)
       }
     }
     getData();
@@ -142,6 +160,21 @@ const ProductDetail = () => {
     } 
   }
 
+  const showStar=()=>{
+    var indents =[  ]
+    for(let i=0;i<Math.floor(star?.total/star?.count);i++){
+      indents.push(<span key={i}><i class="ri-star-fill"></i></span>);
+    }
+    if((star?.total/star?.count)-Math.floor(star?.total/star?.count)>0){
+      indents.push(<span ><i class="ri-star-half-line"></i></span>);
+    }
+    return (
+      <div >
+        {indents}
+      </div>
+    );
+  }
+
   return (
     <Helmet title={dataProduct.title}>
       <CommonSection title={dataProduct.title} />
@@ -156,16 +189,9 @@ const ProductDetail = () => {
               <div className="product__details">
                 <h2>{dataProduct.title}</h2>
                 <div className="product__rating d-flex align-items-center gap-5 mb-3">
-                  <div className="">
-                    <span><i class="ri-star-fill"></i></span>
-                    <span><i class="ri-star-fill"></i></span>
-                    <span><i class="ri-star-fill"></i></span>
-                    <span><i class="ri-star-fill"></i></span>
-                    <span><i class="ri-star-half-line"></i></span>
-                  </div>
-
+                  {showStar()}
                   <p>
-                    ( <span>{avgRating}</span> ratings)
+                    ( <span>{(star?.total/star?.count).toFixed(1)}</span> ratings)
                   </p>
                 </div>
                 <div className="d-flex align-items-center gap-5">
@@ -188,7 +214,7 @@ const ProductDetail = () => {
             <Col lg='12'>
               <div className="tab__wrapper d-flex align-items-center gap-5">
                 <h6 className={`${tab==='desc'?'active__tab':''}` } onClick={()=>changTab("desc")}>Description</h6>
-                <h6 className={`${tab==='rev'?'active__tab':''}`} onClick={()=>changTab("rev")}>Reviews ({reviews.length})</h6>
+                <h6 className={`${tab==='rev'?'active__tab':''}`} onClick={()=>changTab("rev")}>Reviews ({comments.length})</h6>
               </div>
               {
                 tab==="desc"?
@@ -203,10 +229,10 @@ const ProductDetail = () => {
                     <div className="review__wrapper">
                       <ul>
                         {
-                          reviews?.map((item,index)=>(
+                          comments?.map((item,index)=>(
                             <li key={index} className='mb-4'>
-                              <h6>Phucc</h6>
-                              <span>{item.rating} (rating)</span>
+                              <h6>{item.username}</h6>
+                              <span>{item.rating} <i class="ri-star-fill"></i></span>
                               <p>{item.text}</p>
                             </li>
                           ))
@@ -216,20 +242,16 @@ const ProductDetail = () => {
                       <div className="review__form">
                         <h4>Leave your experience</h4>
                         <form action="" onSubmit={submitHandler}>
-                          <div className="form__group">
-                            <input required type="text" placeholder='Enter name' ref={reviewUser}/>
-                          </div>
-
                           <div className="form__group d-flex align-items-center gap-5 rating__group">
-                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(1)}>1<i class="ri-star-fill"></i></motion.span>
-                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(2)}>2<i class="ri-star-fill"></i></motion.span>
-                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(3)}>3<i class="ri-star-fill"></i></motion.span>
-                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(4)}>4<i class="ri-star-fill"></i></motion.span>
-                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(5)}>5<i class="ri-star-fill"></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(1)}>1<i class={rating<1?"ri-star-fill" :"ri-star-fill start__coral"} ></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(2)}>2<i class={rating<2?"ri-star-fill" :"ri-star-fill start__coral"}></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(3)}>3<i class={rating<3?"ri-star-fill" :"ri-star-fill start__coral"}></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(4)}>4<i class={rating<4?"ri-star-fill" :"ri-star-fill start__coral"}></i></motion.span>
+                          <motion.span whileTap={{scale:1.2}} onClick={()=>setRating(5)}>5<i class={rating<5?"ri-star-fill" :"ri-star-fill start__coral"}></i></motion.span>
                           </div>
 
                           <div className="form__group">
-                            <textarea required rows={4} type="text" placeholder='Review Message....' ref={reviewMsg} />
+                            <textarea required rows={4} type="text" value={reviewMsg} placeholder='Review Message....' onChange={(e)=>setReviewMsg(e.currentTarget.value)} />
                           </div>
 
                           <motion.button whileHover={{scale:1.2}} type='submit' className="buy__btn">Submit</motion.button>

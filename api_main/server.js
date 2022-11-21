@@ -48,10 +48,12 @@ app.use('/products', require('./routes/api/products'));
 app.use('/carts', require('./routes/api/carts'));
 app.use('/behaviors', require('./routes/api/behaviors'));
 app.use('/orders', require('./routes/api/orders'));
+app.use('/comments', require('./routes/api/comments'));
 
 app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees'));
 app.use('/users', require('./routes/api/users'));
+
 
 app.all('*', (req, res) => {
     res.status(404);
