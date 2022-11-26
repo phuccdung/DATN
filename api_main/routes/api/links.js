@@ -6,4 +6,7 @@ const verifyJWT = require('../../middleware/verifyJWT');
 router.route('/')
     .post(verifyJWT,linkController.createLink);
 
+router.route('/view/:id')
+    .post(linkController.addChipView);    
+
 module.exports = router;

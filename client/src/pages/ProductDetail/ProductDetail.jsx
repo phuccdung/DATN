@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
 import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
-import { updateCart,addBehavior,getProductById,addComment,getComment,createLinks } from '../../redux/apiCall';
+import { updateCart,addBehavior,getProductById,addComment,getComment,createLinks,addChipView } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 import {
@@ -39,11 +39,11 @@ const ProductDetail = () => {
   const [dataOther,setDataOther] = useState([]);
   const product=products.find(item=> item.id==="08");
   const [comments,setComments]=useState([]);
+  const linkReC=location.search.split("?")[1];
   const {
     description,
   }=product;
 
-  // console.log(location.search.split("?")[1]);
   const submitHandler= async(e)=>{
     e.preventDefault();
 
@@ -135,6 +135,9 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if(counter>0){
+      if(linkReC){
+        addChipView(linkReC);
+      }
       if(currentUser){
         addBehavior({
           "find":id,
@@ -183,22 +186,26 @@ const ProductDetail = () => {
     );
   }
   const CreateLink=async()=>{
-    // if(currentUser){
-    //   const res=await createLinks(currentUser)
-    //   if(res?.message){
-    //     navigator.clipboard.writeText(`http://localhost:3000${location.pathname}?${res.data}`)
-    //     NotificationManager.success('Copied!',"Success", 2000);
-    //     addBehavior({
-    //       "find":id,
-    //       "date":new Date().getTime(),
-    //       "status":"link"
-    //     },currentUser)
-    //   }else{
-    //     NotificationManager.error('Error!', 2000);
-    //   }
-    // }else{
-    //   NotificationManager.error("You must Login ",'Error', 2000);
-    // }
+    let body={
+      userId:currentUser.id,
+      productId:id
+    }
+    if(currentUser){
+      const res=await createLinks(body,currentUser)
+      if(res?.message){
+        navigator.clipboard.writeText(`http://localhost:3000${location.pathname}?${res.data}`)
+        NotificationManager.success('Copied!',"Success", 2000);
+        // addBehavior({
+        //   "find":id,
+        //   "date":new Date().getTime(),
+        //   "status":"link"
+        // },currentUser)
+      }else{
+        NotificationManager.error('Error!', 2000);
+      }
+    }else{
+      NotificationManager.error("You must Login ",'Error', 2000);
+    }
   }
 
   return (

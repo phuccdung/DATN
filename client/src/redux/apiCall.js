@@ -6,21 +6,34 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
-export const createLinks= async(user)=>{
-  // try{
-  //   const res=await axios({
-  //     method: 'get',
-  //     url: BASE_URL+`products/link/${user.id}`,
-  //     headers: { 
-  //       Authorization: "Bearer " + user.accessToken,
-  //     }, 
-  //   });
-  //   return res.data;
-  // }catch(err){
-  //   console.log(err);
-  //   return null;
-  // }
-  return false;
+export const addChipView= async(id)=>{
+  try{
+    const res=await axios({
+      method: 'post',
+      url: BASE_URL+`links/view/${id}`,
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
+export const createLinks= async(body,user)=>{
+  try{
+    const res=await axios({
+      method: 'post',
+      url: BASE_URL+`links`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
 }
 
 export const getComment= async(id)=>{
