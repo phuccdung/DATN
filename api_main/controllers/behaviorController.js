@@ -19,7 +19,7 @@ const addAction=async (req, res) => {
     if (!req?.params?.userId) return res.status(400).json({ "message": false });
     const behavior = await Behavior.findOne({ userId: req.params.userId }).exec();
     if (!behavior) {
-        return res.status(204).json({ 'message': false });
+        return res.send({'message': false})
     }
     const dateUpdate=new Date().setTime(behavior.updatedAt);
 
@@ -27,7 +27,7 @@ const addAction=async (req, res) => {
     // res.json({"data":time,'message':true});
     const user=await User.findById(req.body.userId);
     if(user._id!=req.params.userId){
-        return res.status(204).json({ 'message': false });
+        return res.send({'message': false})
     }
     try{
         if(time>12000){

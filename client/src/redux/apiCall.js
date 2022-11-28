@@ -7,16 +7,10 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3500/";
 
 export const addChipView= async(id)=>{
-  try{
-    const res=await axios({
+    await axios({
       method: 'post',
       url: BASE_URL+`links/view/${id}`,
     });
-    return res.data;
-  }catch(err){
-    console.log(err);
-    return null;
-  }
 }
 
 export const createLinks= async(body,user)=>{

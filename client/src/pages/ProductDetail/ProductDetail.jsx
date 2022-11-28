@@ -138,12 +138,6 @@ const ProductDetail = () => {
           "date":new Date().getTime(),
           "status":"view"
         },currentUser)
-      }else{
-        dispatch(behaviorActions.addAction({
-          "find":id,
-          "date":new Date().getTime(),
-          "status":"view"
-        }));
       }  
     }
   }, [behavior]);
