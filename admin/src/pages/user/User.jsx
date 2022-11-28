@@ -17,7 +17,7 @@ import {selectCurrentUser} from "../../redux/userRedux";
 import { getUserById } from "../../redux/apiCall";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {  storage } from "../../firebase";
-import { updateUserById,analyticsBehaviorByUserId } from "../../redux/apiCall";
+import { updateUserById,analyticsBehaviorByUserId,toVendor } from "../../redux/apiCall";
 import Chart from "../../components/chart/Chart";
 
 export default function User() {
@@ -113,21 +113,37 @@ export default function User() {
         setFile(null);
 
       }else{
-        NotificationManager.error( "Error",'Success message', 3000); 
+        NotificationManager.error( "Error",'Error message', 3000); 
       }
     }catch(err){
-      NotificationManager.error( "Error",'Success message', 3000);
+      NotificationManager.error( "Error",'Error message', 3000);
     }
   };
- 
-
+ const becomeVendor=async()=>{
+  const res=await toVendor(user._id,admin);
+  if(res){
+    NotificationManager.success( "User has been update...",'Success message', 3000);
+    setUser(prev=>{
+      return {...prev,roles:{
+        "Editor": 1984,
+        "User": 2001
+   }};
+    });
+  }else{
+    NotificationManager.error( "Error",'Error message', 3000);
+  }
+ }
   return (
     <div className="user">
       <div className="userTitleContainer">
         <h1 className="userTitle">Profile User</h1>
-        <Link to="/newUser">
-          <button className="userAddButton">Create</button>
-        </Link>
+        {
+          user.roles?.Editor?
+          null
+          :
+          <button className="userAddButton" onClick={()=>becomeVendor()}>Become Vendor</button>
+          
+        }
       </div>
       <div className="analyticsTop">
         <div className="chartLeft">

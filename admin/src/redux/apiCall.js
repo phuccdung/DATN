@@ -23,6 +23,23 @@ export const getProduct = async (status) => {
   }
 }
 
+export const toVendor = async (id,user) => {
+  try{
+    const res= await axios({
+      method: 'put',
+      url: BASE_URL+`users/admin/ToVendor/${id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+ 
+}
+
 export const getProductById = async (id) => {
   try{
     const res=await axios.get(BASE_URL+`products/${id}`);
