@@ -49,9 +49,10 @@ const Checkout = () => {
             "address":address,
             "vendorId":item,
             "products":arr,
-            "total":arr.reduce((sum,curr)=>sum+curr.price*curr.quantity,0)
+            "total":arr.reduce((sum,curr)=>sum+curr.price*curr.quantity,0).toFixed(3)
           }
           handleOrder(body)
+          // console.log(body);
         })
         await order.forEach(item=>{
           handleDelete(item);
@@ -114,13 +115,13 @@ const Checkout = () => {
               <Col lg='4'>
                 <div className="checkout__cart">
                   <h6>Total Qty:<span>{order.reduce((sum,curr)=>sum+curr.quantity,0)} items</span> </h6>
-                  <h6>Subtotal:<span>${order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)}</span> </h6>
+                  <h6>Subtotal:<span>${(order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)).toFixed(3)}</span> </h6>
                   <h6>Shipping: <br/>
                       free shipping
                     <span>$0</span> 
                   </h6>
                   <h6>Free shipping</h6>
-                  <h4>Total Cost: <span>${order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)}</span> </h4>
+                  <h4>Total Cost: <span>${order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0).toFixed(3)}</span> </h4>
 
                   <button onClick={handleClick} className="order__btn">
                   Place an order

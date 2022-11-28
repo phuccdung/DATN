@@ -7,6 +7,7 @@ var productDetail = new Schema({
     quantity:Number,
     price:Number,
     imgUrl:String,
+    link:String,
   });
 const orderSchema = new Schema({
     userId:{

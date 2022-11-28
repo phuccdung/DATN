@@ -404,6 +404,7 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
         vendorId:item.vendorId,
         quantity:item.quantity,
         totalPrice:item.price*item.quantity,
+        link:item?.link
       }
         return i;
     });
@@ -418,8 +419,10 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
           vendorId:item.vendorId,
           quantity:item.quantity,
           totalPrice:item.price*item.quantity,
+          link:item?.link
         })
       }else{
+        products[index].link=item?.link;
         products[index].price=Number(item.price);
         products[index].imgUrl=item.imgUrl;
         products[index].productName=item.productName;
@@ -436,7 +439,8 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
         "price":item.price,
         "vendorId":item.vendorId,
         "imgUrl":item.imgUrl,
-        "productName":item.productName
+        "productName":item.productName,
+        "link":item?.link
       }
       return i;
     })
@@ -463,6 +467,7 @@ export const updateCart=async(cart,user,ele,action)=>{
         "imgUrl":item.imgUrl,
         "productName":item.productName,
         "vendorId":item.vendorId,
+        "link":item.link,
     }
     return i;
   })

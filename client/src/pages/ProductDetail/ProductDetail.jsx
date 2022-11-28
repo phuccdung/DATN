@@ -81,6 +81,7 @@ const ProductDetail = () => {
       "price":dataProduct.price,
       "imgUrl":dataProduct.img,
       "vendorId":dataProduct.userId,
+      "link":linkReC,
       },
       qty:1
     }));
@@ -93,6 +94,7 @@ const ProductDetail = () => {
         "imgUrl":dataProduct.img,
         "productName":dataProduct.title,
         "vendorId":dataProduct.userId,
+        "link":linkReC,
       });
       addBehavior({
         "find":id,
