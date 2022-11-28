@@ -21,14 +21,20 @@ const addAction=async (req, res) => {
     if (!behavior) {
         return res.status(204).json({ 'message': false });
     }
-    // res.json({"data":behavior,'message':true});
+    const dateUpdate=new Date().setTime(behavior.updatedAt);
+
+    const time=req.body.action.date-dateUpdate;
+    // res.json({"data":time,'message':true});
     const user=await User.findById(req.body.userId);
     if(user._id!=req.params.userId){
         return res.status(204).json({ 'message': false });
     }
     try{
-        const result=await Behavior.findByIdAndUpdate({_id:behavior._id},{$push:{actions:req.body.action}});
-        res.json({"data":result,'message':true});
+        if(time>12000){
+
+            await Behavior.findByIdAndUpdate({_id:behavior._id},{$push:{actions:req.body.action}});
+        }
+        res.json({"data":time,'message':true});
     }catch(err){
         res.status(500).json({ 'data': err.message , "message": false});
     }

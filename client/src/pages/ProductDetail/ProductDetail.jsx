@@ -99,12 +99,6 @@ const ProductDetail = () => {
         "date":new Date().getTime(),
         "status":"want"
       },currentUser)
-    }else{
-      dispatch(behaviorActions.addAction({
-        "find":id,
-        "date":new Date().getTime(),
-        "status":"want"
-      }));
     }
   };
 
@@ -128,7 +122,7 @@ const ProductDetail = () => {
   },[id])  
 
   useEffect(() => {
-    counter < 6 ? setTimeout(() => setCounter(counter +1), 1000)
+    counter < 7 ? setTimeout(() => setCounter(counter +1), 1000)
                 : setBehavior(true);
     
   }, [counter]);
@@ -156,19 +150,13 @@ const ProductDetail = () => {
 
   const changTab=(tab)=>{
     setTab(tab);
-    if(currentUser){
-      addBehavior({
-        "find":id,
-        "date":new Date().getTime(),
-        "status":"care"
-      },currentUser)
-    }else{
-      dispatch(behaviorActions.addAction({
-        "find":id,
-        "date":new Date().getTime(),
-        "status":"care"
-      }));
-    } 
+      if(currentUser){
+        addBehavior({
+          "find":id,
+          "date":new Date().getTime(),
+          "status":"care"
+        },currentUser)
+      } 
   }
 
   const showStar=()=>{

@@ -134,7 +134,7 @@ export default function User() {
         <Chart data={actionDataStats} title="Product Behavior Analytics" grid dataKey="Active Product"/>
         </div>
         <div className="chartLeft">
-        <Chart data={keyDataStats} title="Product Behavior Analytics" grid dataKey="Active KeyWord"/>
+        <Chart data={keyDataStats} title="KeyWord Analytics" grid dataKey="Active KeyWord"/>
         </div>
       </div>
       <div className="userContainer">
