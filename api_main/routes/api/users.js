@@ -12,7 +12,10 @@ router.route('/vendor')
     .get(verifyRoles(ROLES_LIST.Admin),usersController.getAllVendor);
 
 router.route('/countVendorStart')
-    .get(verifyRoles(ROLES_LIST.Admin),usersController.countVendorStart);    
+    .get(verifyRoles(ROLES_LIST.Admin),usersController.countVendorStart); 
+
+    
+
 router.route('/:id')
     .get( usersController.getUser)
     .put(usersController.updateUser);

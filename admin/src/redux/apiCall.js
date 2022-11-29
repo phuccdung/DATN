@@ -136,6 +136,22 @@ export const updateUserById = async (userId,body,user) => {
   }
 }
 
+export const analyticsOrder = async (user)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+"orders",
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const analyticsUser = async (user)=>{
   try{
     const res=await axios({

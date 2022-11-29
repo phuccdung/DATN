@@ -17,6 +17,7 @@ export default function Chart({ title, data, dataKey, grid }) {
         <LineChart data={data}>
           <XAxis dataKey="name" stroke="#5550bd" />
           <Line type="monotone" dataKey={dataKey} stroke="#5550bd" />
+          <Line type="monotone" dataKey="Sale By Link" stroke="#82ca9d" />
           <Tooltip />
           {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
         </LineChart>

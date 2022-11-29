@@ -39,7 +39,7 @@ const ProductDetail = () => {
   const [dataOther,setDataOther] = useState([]);
   const product=products.find(item=> item.id==="08");
   const [comments,setComments]=useState([]);
-  const linkReC=location.search.split("?")[1];
+  const linkReC=location.search.split("?")[1]||"";
   const {
     description,
   }=product;
@@ -103,6 +103,7 @@ const ProductDetail = () => {
       },currentUser)
     }
   };
+ 
 
   useEffect(()=>{
     window.scrollTo(0,0);

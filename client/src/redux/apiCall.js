@@ -472,7 +472,7 @@ export const updateCart=async(cart,user,ele,action)=>{
     return i;
   })
   if(action==="remove"){
-    if(typeof ele=== "object"){
+    if(typeof ele=== "Object"){
       body=body.filter(item=>item.productId!==ele.id)
     }else{
       ele.forEach(it=>{

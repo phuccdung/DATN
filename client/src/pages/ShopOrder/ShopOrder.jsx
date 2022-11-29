@@ -123,8 +123,8 @@ function ShopOrder() {
                             <div className="infoDetail">
                             <div className="topOrderDetail">
                               <div className="leftDetail">
-                                <span className="vendorName">Name: {order.name}  </span>
-                                <span className="totalOrder"> ${order.total}</span>
+                                {/* <span className="vendorName">Name: {order.name}  </span> */}
+                                <span className="totalOrder">Total: ${order.total}</span>
                               </div>
 
                               <div className="rightDetail">
@@ -143,24 +143,24 @@ function ShopOrder() {
                                     )
                                   :
                                   
-                                    order.status==="Accept"?
-                                    (
+                                    // order.status==="Accept"?
+                                    // (
                                       
-                                      <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivering",order._id)}>
-                                        Delivering
-                                      </button>
+                                    //   <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivering",order._id)}>
+                                    //     Delivering
+                                    //   </button>
                                       
-                                    )
-                                    :
-                                    order.status==="Delivering"?
-                                    (
+                                    // )
+                                    // :
+                                    // order.status==="Delivering"?
+                                    // (
                                       
-                                      <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivered",order._id)}>
-                                        Delivered
-                                      </button>
+                                    //   <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivered",order._id)}>
+                                    //     Delivered
+                                    //   </button>
                                       
-                                    )
-                                    :
+                                    // )
+                                    // :
                                     null
                                 }
                                 
@@ -168,15 +168,10 @@ function ShopOrder() {
                               
                             </div>
                               <div className="moreInfo">
-                                  <span className="addressOrder">Address:{order.address}</span>
-                                  <span className="phoneOrder"> Phone:{order.phone}</span>
+                                  <span className="addressOrder">Id:{order._id}</span>
+                                  {/* <span className="phoneOrder"> Phone:{order.phone}</span> */}
                               </div>
-                            </div>    
-
-
-
-
-
+                            </div>   
                             { order.products.map(item=>(
                               <div className="detailItem">
                                <img src={item.imgUrl} alt="" />

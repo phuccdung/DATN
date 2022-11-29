@@ -16,7 +16,7 @@ import axios from "axios";
 function MyOrder() {
     const currentUser=useSelector(selectCurrentUser);
     const [data,setData]=useState([]);
-    const [status,setStatus] = useState("");
+    const [status,setStatus] = useState("Pending");
     const [search,setSearch]=useState("");
     useEffect(()=>{
       const getData=async()=>{
@@ -59,11 +59,11 @@ function MyOrder() {
                     <Col lg="3" md="6">
                       <div className="filter__widget text-center ">
                         <select onChange={(e)=>setStatus(e.currentTarget.value)} >
-                          <option value="" >All</option>
-                          <option value="Pending" >Pending</option>
-                          <option value="Delivering" >Delivering</option>
-                          <option value="Delivered" >Delivered</option>
-                          <option value="Cancelled" >Cancelled</option>
+                          <option selected={status===""} value="" >All</option>
+                          <option selected={status==="Pending"} value="Pending" >Pending</option>
+                          <option selected={status==="Delivering"} value="Delivering" >Delivering</option>
+                          <option selected={status==="Delivered"} value="Delivered" >Delivered</option>
+                          <option selected={status==="Cancelled"} value="Cancelled" >Cancelled</option>
                         </select>
                       </div>
                     </Col>
@@ -93,13 +93,6 @@ function MyOrder() {
                                 <div className="rightDetail">
                                   <span className="status"> {order.status}</span>
                                   {
-                                    order.status==="Delivered"?
-                                    (
-                                      <button className="updateOrder">
-                                        Delivered
-                                      </button>
-                                    )
-                                    :
                                     order.status==="Pending"?
                                     (
                                       <button className="updateOrder">

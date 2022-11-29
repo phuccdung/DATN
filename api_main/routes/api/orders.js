@@ -6,7 +6,10 @@ const verifyRoles = require('../../middleware/verifyRoles');
 const verifyJWT = require('../../middleware/verifyJWT');
 
 router.route('/')
+    .get(verifyJWT,verifyRoles(ROLES_LIST.Admin),ordersController.countQuantityOrder)
     .post(ordersController.createOrder);
+
+    
 
 router.route('/:userId')
     .get(verifyJWT,ordersController.getOrdertByUserId);
@@ -17,7 +20,10 @@ router.route('/searchKey/:userId')
 router.route('/vendor/:id')
     .put(verifyJWT,verifyRoles( ROLES_LIST.Editor),ordersController.updateStatusOrder)
     .get(verifyJWT,ordersController.getOrderWithDate);
+
 router.route('/vendor/searchKey/:userId')
     .get(verifyJWT,ordersController.getOrderWithKey);
+
+
 
 module.exports = router; 

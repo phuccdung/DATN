@@ -118,6 +118,66 @@ const updateStatusOrder=async (req,res)=>{
     }
 }
 
+const countQuantityOrder=async (req,res)=>{
+    const date = new Date();
+    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+    // const qLink=req.query.link;
+
+    try {
+        
+        const data = await Order.aggregate([
+            {$unwind: '$products'},
+            { $match: { 
+                    createdAt: { $gte: lastYear },
+                 }
+            },
+            {
+                $project: {
+                month: { $month: "$createdAt" },
+                number:{$sum:'$products.quantity'}
+                },
+            },
+            {
+                $group: {
+                _id: "$month",
+                total: { $sum: '$number' },
+                },
+            },
+            { $sort : { _id : 1 } }
+        ]);
+        const dataLink = await Order.aggregate([
+            {$unwind: '$products'},
+            { $match: { 
+                    createdAt: { $gte: lastYear },
+                    "products.link":{ $ne:"" }
+                 }
+            },
+            {
+                $project: {
+                month: { $month: "$createdAt" },
+                number:{$sum:'$products.quantity'}
+                },
+            },
+            {
+                $group: {
+                _id: "$month",
+                total: { $sum: '$number' },
+                },
+            },
+            { $sort : { _id : 1 } }
+        ]);
+
+
+        res.status(200).json({"data":data,"dataLink":dataLink,'message':true});
+    } catch (err) {
+    res.status(500).json(err);
+    }
+}
+
+
+
+
+
 module.exports = {
     createOrder, 
     getOrdertByUserId,
@@ -125,4 +185,5 @@ module.exports = {
     getOrderWithDate,
     getOrderWithKey,
     updateStatusOrder,
+    countQuantityOrder,
 }
