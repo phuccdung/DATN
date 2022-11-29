@@ -59,7 +59,7 @@ const getOrderByNameOrderItem=async (req, res) => {
 
 const getOrderWithDate=async (req,res)=>{
     const fromDate=new Date(req.query.fromDate) ;
-    const toDate=new Date(req.query.toDate) ;
+    const toDate=new Date(req.query.toDate);
     const qStatus=req.query.status;
     try {
        
@@ -78,6 +78,37 @@ const getOrderWithDate=async (req,res)=>{
                 }).sort({createdAt:-1});
         }
         res.json({"data":order,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+
+const countProductIdtWithDate=async(req,res)=>{
+    const fromDate=new Date(req.query.fromDate) ;
+    const toDate=new Date(req.query.toDate);
+
+    try{
+      const  data = await Order.aggregate([
+            {$unwind: '$products'},
+            { $match: { 
+                createdAt: { $gte: fromDate,$lt:toDate} ,
+                vendorId: req.params.id,
+                 }
+            },
+            {
+                $project: {
+                number:{$sum:'$products.quantity'}
+                },
+            },
+            {
+                $group: {
+                _id: "$products.productId",
+                total: { $sum: '$number' },
+                },
+            },
+            
+        ]);
+        res.status(200).json({"data":data, "message":true})
     }catch(err){
         res.status(500).json({ 'data': err.message, "message": false})
     }
@@ -121,51 +152,99 @@ const updateStatusOrder=async (req,res)=>{
 const countQuantityOrder=async (req,res)=>{
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-    // const qLink=req.query.link;
+    const qProductId=req.query.productId;
 
     try {
+        let data;
+        let dataLink;
         
-        const data = await Order.aggregate([
-            {$unwind: '$products'},
-            { $match: { 
-                    createdAt: { $gte: lastYear },
-                 }
-            },
-            {
-                $project: {
-                month: { $month: "$createdAt" },
-                number:{$sum:'$products.quantity'}
+        if(qProductId){
+            data = await Order.aggregate([
+                {$unwind: '$products'},
+                { $match: { 
+                        createdAt: { $gte: lastYear },
+                        "products.productId":qProductId,
+                     }
                 },
-            },
-            {
-                $group: {
-                _id: "$month",
-                total: { $sum: '$number' },
+                {
+                    $project: {
+                    month: { $month: "$createdAt" },
+                    number:{$sum:'$products.quantity'}
+                    },
                 },
-            },
-            { $sort : { _id : 1 } }
-        ]);
-        const dataLink = await Order.aggregate([
-            {$unwind: '$products'},
-            { $match: { 
-                    createdAt: { $gte: lastYear },
-                    "products.link":{ $ne:"" }
-                 }
-            },
-            {
-                $project: {
-                month: { $month: "$createdAt" },
-                number:{$sum:'$products.quantity'}
+                {
+                    $group: {
+                    _id: "$month",
+                    total: { $sum: '$number' },
+                    },
                 },
-            },
-            {
-                $group: {
-                _id: "$month",
-                total: { $sum: '$number' },
+                { $sort : { _id : 1 } }
+            ]);
+             dataLink = await Order.aggregate([
+                {$unwind: '$products'},
+                { $match: { 
+                        createdAt: { $gte: lastYear },
+                        "products.link":{ $ne:"" },
+                        "products.productId":qProductId,
+                     }
                 },
-            },
-            { $sort : { _id : 1 } }
-        ]);
+                {
+                    $project: {
+                    month: { $month: "$createdAt" },
+                    number:{$sum:'$products.quantity'}
+                    },
+                },
+                {
+                    $group: {
+                    _id: "$month",
+                    total: { $sum: '$number' },
+                    },
+                },
+                { $sort : { _id : 1 } }
+            ]);
+        }else{            
+            data = await Order.aggregate([
+               {$unwind: '$products'},
+               { $match: { 
+                       createdAt: { $gte: lastYear },
+                    }
+               },
+               {
+                   $project: {
+                   month: { $month: "$createdAt" },
+                   number:{$sum:'$products.quantity'}
+                   },
+               },
+               {
+                   $group: {
+                   _id: "$month",
+                   total: { $sum: '$number' },
+                   },
+               },
+               { $sort : { _id : 1 } }
+           ]);
+            dataLink = await Order.aggregate([
+               {$unwind: '$products'},
+               { $match: { 
+                       createdAt: { $gte: lastYear },
+                       "products.link":{ $ne:"" }
+                    }
+               },
+               {
+                   $project: {
+                   month: { $month: "$createdAt" },
+                   number:{$sum:'$products.quantity'}
+                   },
+               },
+               {
+                   $group: {
+                   _id: "$month",
+                   total: { $sum: '$number' },
+                   },
+               },
+               { $sort : { _id : 1 } }
+           ]);
+        }
 
 
         res.status(200).json({"data":data,"dataLink":dataLink,'message':true});
@@ -186,4 +265,5 @@ module.exports = {
     getOrderWithKey,
     updateStatusOrder,
     countQuantityOrder,
+    countProductIdtWithDate,
 }

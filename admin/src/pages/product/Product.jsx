@@ -10,7 +10,7 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import {  storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { getProductById ,updateProductById} from "../../redux/apiCall"; 
+import { getProductById ,updateProductById,analyticsOrder} from "../../redux/apiCall"; 
 
 
 export default function Product() {
@@ -19,10 +19,40 @@ export default function Product() {
     const productId=location.pathname.split("/")[2];
     const [product,setProduct]=useState({});
     const [file,setFile]=useState(null);
+    const [orderStats, setOrderStats] = useState([]);
     useEffect(()=>{
+      let month=[
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
         const getProduct=async()=>{
           const res= await getProductById(productId);
           setProduct(res)
+
+          const res2=await analyticsOrder(admin,productId); 
+          let i=0;
+          res2.data.map((item) =>
+          setOrderStats((prev) => {
+            let arr=[];
+            if(item._id===res2.dataLink[i]._id){
+            arr= [...prev,{ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": res2.dataLink[i]?.total }];
+            i=i+1;
+            }else{
+              arr= [...prev,{ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": 0 }];
+            }
+            return arr;
+          })
+          )
         }
         getProduct();
     },[]);
@@ -110,7 +140,7 @@ export default function Product() {
       </div>
       <div className="productTop">
           <div className="productTopLeft">
-              <Chart data={productData} dataKey="Sales" title="Sales Performance"/>
+              <Chart data={orderStats} dataKey="Total Sales" title="Sales Performance"/>
           </div>
           <div className="productTopRight">
               <div className="productInfoTop">
@@ -119,19 +149,23 @@ export default function Product() {
               </div>
               <div className="productInfoBottom">
                   <div className="productInfoItem">
-                      <span className="productInfoKey">id:</span>
+                      <span className="productInfoKey">Id:</span>
                       <span className="productInfoValue">  { product._id}</span>
                   </div>
                   <div className="productInfoItem">
-                      <span className="productInfoKey">sales:</span>
-                      <span className="productInfoValue">{product.price}</span>
+                      <span className="productInfoKey">Price:</span>
+                      <span className="productInfoValue">{product.price}$</span>
                   </div>
                   <div className="productInfoItem">
-                      <span className="productInfoKey">active:</span>
+                      <span className="productInfoKey">Sold:</span>
+                      <span className="productInfoValue">{orderStats.reduce((sum,curr)=>sum+curr["Total Sales"],0)}</span>
+                  </div>
+                  <div className="productInfoItem">
+                      <span className="productInfoKey">Active:</span>
                       <span className="productInfoValue">{product.status}</span>
                   </div>
                   <div className="productInfoItem">
-                      <span className="productInfoKey">in stock:</span>
+                      <span className="productInfoKey">In stock:</span>
                       <span className="productInfoValue">{product.stock}</span>
                   </div>
               </div>

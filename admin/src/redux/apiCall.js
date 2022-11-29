@@ -136,11 +136,13 @@ export const updateUserById = async (userId,body,user) => {
   }
 }
 
-export const analyticsOrder = async (user)=>{
+export const analyticsOrder = async (user,productId)=>{
   try{
+    let url=BASE_URL+"orders";
+    if(productId) url=BASE_URL+`orders?productId=${productId}`;
     const res=await axios({
       method: 'get',
-      url: BASE_URL+"orders",
+      url: url,
       headers: { 
         Authorization: "Bearer " + user.accessToken,
       }, 

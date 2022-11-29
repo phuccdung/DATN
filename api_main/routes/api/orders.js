@@ -9,7 +9,8 @@ router.route('/')
     .get(verifyJWT,verifyRoles(ROLES_LIST.Admin),ordersController.countQuantityOrder)
     .post(ordersController.createOrder);
 
-    
+router.route('/analysis/:id')
+    .get(verifyJWT,ordersController.countProductIdtWithDate) ; 
 
 router.route('/:userId')
     .get(verifyJWT,ordersController.getOrdertByUserId);

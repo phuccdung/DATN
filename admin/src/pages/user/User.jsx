@@ -17,7 +17,7 @@ import {selectCurrentUser} from "../../redux/userRedux";
 import { getUserById } from "../../redux/apiCall";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {  storage } from "../../firebase";
-import { updateUserById,analyticsBehaviorByUserId,toVendor } from "../../redux/apiCall";
+import { updateUserById,analyticsBehaviorByUserId,toVendor,analyticsOrder } from "../../redux/apiCall";
 import Chart from "../../components/chart/Chart";
 
 export default function User() {
@@ -28,23 +28,55 @@ export default function User() {
   const [file,setFile]=useState(null);
   const [actionDataStats,setActionDataStats]=useState([]);
   const [keyDataStats,setKeyDataStats]=useState([]);
-
+  const [orderStats, setOrderStats] = useState([]);
 
 
   useEffect(()=>{
     const getProduct=async()=>{
       const res= await getUserById(userId,admin);
       setUser(res);
-      const analytics=await analyticsBehaviorByUserId(admin,userId);
-      if(analytics?.message){
-        let arr1= analytics.data.action.map((item) =>{
-          return {name:item._id,"Active Product": item.total}
-        });
-        setActionDataStats(arr1);
-        let arr2= analytics.data.search.map((item) =>{
-          return {name:item._id,"Active KeyWord": item.total}
-        });
-        setKeyDataStats(arr2);
+      console.log(res);
+      if(res.roles?.Editor){
+        let month=[
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        const res2=await analyticsOrder(admin); 
+        let i=0;
+        res2.data.map((item) =>
+        setOrderStats((prev) => {
+          let arr=[];
+          if(item._id===res2.dataLink[i]._id){
+          arr= [...prev,{ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": res2.dataLink[i]?.total }];
+          i=i+1;
+          }else{
+            arr= [...prev,{ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": 0 }];
+          }
+          return arr;
+        })
+        )
+      }else{
+        const analytics=await analyticsBehaviorByUserId(admin,userId);
+        if(analytics?.message){
+          let arr1= analytics.data.action.map((item) =>{
+            return {name:item._id,"Active Product": item.total}
+          });
+          setActionDataStats(arr1);
+          let arr2= analytics.data.search.map((item) =>{
+            return {name:item._id,"Active KeyWord": item.total}
+          });
+          setKeyDataStats(arr2);
+        }
       }
     }
     getProduct();
@@ -145,14 +177,33 @@ export default function User() {
           
         }
       </div>
-      <div className="analyticsTop">
-        <div className="chartLeft">
-        <Chart data={actionDataStats} title="Product Behavior Analytics" grid dataKey="Active Product"/>
-        </div>
-        <div className="chartLeft">
-        <Chart data={keyDataStats} title="KeyWord Analytics" grid dataKey="Active KeyWord"/>
-        </div>
-      </div>
+      {
+        user.roles?.Editor?
+        (
+          <>
+            <div className="inputDateToSearch">
+              
+            </div>
+            <div className="analyticsTop">
+              <div className="chartLeft">
+              <Chart data={orderStats} dataKey="Total Sales" title="Sales Performance"/>
+              </div>
+            </div>
+          </>
+        )
+        :
+        (
+          <div className="analyticsTop">
+            <div className="chartLeft">
+            <Chart data={actionDataStats} title="Product Behavior Analytics" grid dataKey="Active Product"/>
+            </div>
+            <div className="chartLeft">
+            <Chart data={keyDataStats} title="KeyWord Analytics" grid dataKey="Active KeyWord"/>
+            </div>
+          </div>
+        )
+      }
+      
       <div className="userContainer">
         <div className="userShow">
           <div className="userShowTop">
