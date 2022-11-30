@@ -160,3 +160,14 @@
 .chartLeft,.chartRight{
   flex: 1
 }
+.inputDateToSearch{
+  margin: 20px;
+}
+.input__date{
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 1rem;
+  margin-left: 20px;
+  background-color: whitesmoke;
+  color: #0A1D37;
+}

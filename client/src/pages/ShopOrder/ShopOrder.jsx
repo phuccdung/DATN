@@ -96,7 +96,7 @@ function ShopOrder() {
                         <select  onChange={e=>setStatus(e.currentTarget.value)}>
                           <option selected={status===""} value="" >All</option>
                           <option selected={status==="Pending"} value="Pending" >Pending</option>
-                          <option selected={status==="Accept"} value="Accept" >Delivering</option>
+                          <option selected={status==="Accept"} value="Accept" >Accept</option>
                           <option selected={status==="Delivering"} value="Delivering" >Delivering</option>
                           <option selected={status==="Delivered"} value="Delivered" >Delivered</option>
                           <option selected={status==="Cancelled"} value="Cancelled" >Cancelled</option>

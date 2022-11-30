@@ -10,14 +10,13 @@ import { Link,useLocation } from "react-router-dom";
 import "./user.css";
 import { NotificationManager} from 'react-notifications';
 import Moment from 'moment';
-
 import { useState,useEffect } from "react";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
 import { getUserById } from "../../redux/apiCall";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import {  storage } from "../../firebase";
-import { updateUserById,analyticsBehaviorByUserId,toVendor,analyticsOrder } from "../../redux/apiCall";
+import { updateUserById,analyticsBehaviorByUserId,toVendor,countOrderVendor } from "../../redux/apiCall";
 import Chart from "../../components/chart/Chart";
 
 export default function User() {
@@ -29,42 +28,36 @@ export default function User() {
   const [actionDataStats,setActionDataStats]=useState([]);
   const [keyDataStats,setKeyDataStats]=useState([]);
   const [orderStats, setOrderStats] = useState([]);
-
+  const [fromDate,setFromDate]=useState(Moment().subtract(7,"day").format("YYYY-MM-DD"));
+  const [toDate,setToDate]=useState(Moment().format("YYYY-MM-DD"));
 
   useEffect(()=>{
     const getProduct=async()=>{
       const res= await getUserById(userId,admin);
       setUser(res);
-      console.log(res);
       if(res.roles?.Editor){
-        let month=[
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ];
-        const res2=await analyticsOrder(admin); 
-        let i=0;
-        res2.data.map((item) =>
-        setOrderStats((prev) => {
+        let fd=Moment(fromDate).startOf("day");
+        let td=Moment(toDate).endOf("day");
+        const res2=await countOrderVendor(admin,res._id,fd,td); 
+        console.log(res2);   
+        if(res2?.message){
           let arr=[];
-          if(item._id===res2.dataLink[i]._id){
-          arr= [...prev,{ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": res2.dataLink[i]?.total }];
-          i=i+1;
-          }else{
-            arr= [...prev,{ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": 0 }];
-          }
-          return arr;
-        })
-        )
+          res2.data.forEach((item)=>{
+            let totalLink=res2.dataLink.filter((i)=>{return i._id===item._id.productId});
+            console.log(item,"/",totalLink)
+            if(totalLink.length>0){
+              console.log(totalLink[0]?.total);
+              arr.push({ name: item._id.productId, "Total Sales": item.total,"Sale By Link": totalLink[0].total,"Title":item._id.productName})
+            }else{
+              arr.push({ name: item._id.productId, "Total Sales": item.total,"Sale By Link": 0,"Title":item._id.productName})
+              console.log("0");
+            }
+
+          })
+          console.log(arr);
+          setOrderStats(arr);
+        }   
+        
       }else{
         const analytics=await analyticsBehaviorByUserId(admin,userId);
         if(analytics?.message){
@@ -80,8 +73,7 @@ export default function User() {
       }
     }
     getProduct();
-  },[]);
-  
+  },[fromDate,toDate]); 
  
 
   const handleChange=(e)=>{
@@ -182,7 +174,18 @@ export default function User() {
         (
           <>
             <div className="inputDateToSearch">
-              
+              <input
+                type="date"
+                className="input__date"
+                value={fromDate}
+                onChange={e=>setFromDate(e.currentTarget.value)}
+              />
+              <input
+                type="date"
+                className="input__date"
+                value={toDate}
+                onChange={e=>setToDate(e.currentTarget.value)}
+              />
             </div>
             <div className="analyticsTop">
               <div className="chartLeft">

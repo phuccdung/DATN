@@ -153,6 +153,21 @@ export const analyticsOrder = async (user,productId)=>{
     return null;
   }
 }
+export const countOrderVendor = async (user,id,fromDate,toDate)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`orders/analysis/${id}?fromDate=${fromDate}&toDate=${toDate}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 
 export const analyticsUser = async (user)=>{
   try{

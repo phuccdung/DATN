@@ -8,3 +8,6 @@
 .chartTitle {
   margin-bottom: 20px;
 }
+.recharts-text recharts-cartesian-axis-tick-value{
+  color: brown !important;
+}

@@ -88,27 +88,51 @@ const countProductIdtWithDate=async(req,res)=>{
     const toDate=new Date(req.query.toDate);
 
     try{
-      const  data = await Order.aggregate([
+        let data;
+        let dataLink;
+        data = await Order.aggregate([
             {$unwind: '$products'},
             { $match: { 
                 createdAt: { $gte: fromDate,$lt:toDate} ,
                 vendorId: req.params.id,
-                 }
-            },
-            {
-                $project: {
-                number:{$sum:'$products.quantity'}
-                },
+                }
             },
             {
                 $group: {
-                _id: "$products.productId",
-                total: { $sum: '$number' },
+                    _id:{
+                        productId:"$products.productId",
+                        productName:"$products.productName"
+                    } ,
+                    
+                    total:{$sum:"$products.quantity"}
                 },
             },
+            {
+                $project:{total:1,_id:1,}
+            }
             
         ]);
-        res.status(200).json({"data":data, "message":true})
+
+        dataLink = await Order.aggregate([
+            {$unwind: '$products'},
+            { $match: { 
+                createdAt: { $gte: fromDate,$lt:toDate} ,
+                vendorId: req.params.id,
+                "products.link":{ $ne:"" },
+                }
+            },
+            {
+                $group: {
+                    _id: "$products.productId",
+                    total:{$sum:"$products.quantity"}
+                },
+            },
+            {
+                $project:{total:1,_id:1}
+            }
+            
+        ]);
+        res.status(200).json({"data":data,"dataLink":dataLink, "message":true})
     }catch(err){
         res.status(500).json({ 'data': err.message, "message": false})
     }
