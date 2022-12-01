@@ -98,7 +98,14 @@ const analytics=async (req, res) => {
                         "actions.status":status
                          } 
                     },
-                    {$group: {_id: '$actions.find', total: {$sum: 1}}},
+                    {$group: 
+                        {
+                            _id: {
+                                id:'$actions.find',
+                                name:'$actions.name',
+                            }, 
+                            total: {$sum: 1}}
+                    },
                 ]
             );
         }else{
@@ -109,7 +116,14 @@ const analytics=async (req, res) => {
                         "actions.date": { $gte: lastDate } 
                          } 
                     },
-                    {$group: {_id: '$actions.find', total: {$sum: 1}}},
+                    {$group: 
+                        {
+                            _id: {
+                                id:'$actions.find',
+                                name:'$actions.name',
+                            }, 
+                            total: {$sum: 1}}
+                    },
                 ]
             );
         }
@@ -153,7 +167,12 @@ const analyticsByUserId=async (req, res) => {
                     "userId":req.params.userId
                         } 
                 },
-                {$group: {_id: '$actions.find', total: {$sum: 1}}},
+                {$group: {
+                    _id: {
+                        id:'$actions.find',
+                        name:'$actions.name',
+                    } , 
+                    total: {$sum: 1}}},
                 { $limit : 50 }
             ]
         );  

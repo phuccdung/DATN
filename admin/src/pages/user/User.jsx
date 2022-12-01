@@ -6,7 +6,7 @@ import {
   PhoneAndroid,
   Publish,
 } from "@material-ui/icons";
-import { Link,useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./user.css";
 import { NotificationManager} from 'react-notifications';
 import Moment from 'moment';
@@ -62,13 +62,14 @@ export default function User() {
         const analytics=await analyticsBehaviorByUserId(admin,userId);
         if(analytics?.message){
           let arr1= analytics.data.action.map((item) =>{
-            return {name:item._id,"Active Product": item.total}
+            return {name:item._id.id,"Active Product": item.total,"Title":item._id.name||""}
           });
           setActionDataStats(arr1);
           let arr2= analytics.data.search.map((item) =>{
             return {name:item._id,"Active KeyWord": item.total}
           });
           setKeyDataStats(arr2);
+          console.log(analytics);
         }
       }
     }
