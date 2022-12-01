@@ -13,6 +13,22 @@ export const addChipView= async(id)=>{
     });
 }
 
+export const checkBehaviorLink= async(userId,productId,user)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`behaviors?userId=${userId}&productId=${productId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const createLinks= async(body,user)=>{
   try{
     const res=await axios({
@@ -307,7 +323,7 @@ export const login = async (dispatch, user,cart,behavior) => {
     if(res.data){
       // await axios.get(BASE_URL+"refresh");
       loginUpdateCart(dispatch,cart,res.data);
-      addBehaviorArrActions(dispatch,behavior,res.data)
+      // addBehaviorArrActions(dispatch,behavior,res.data)
     }
     dispatch(loginSuccess(res.data));
     return true;
@@ -330,7 +346,7 @@ export const addBehaviorArrActions = async (dispatch,behavior,user) => {
     }
   }); 
   addBehaviorArrKey(behavior.keywords,user)
-  dispatch(behaviorActions.resetBehavior());
+  // dispatch(behaviorActions.resetBehavior());
 }
 
 export const addBehaviorArrKey = async (keywords,user) => {
@@ -383,7 +399,7 @@ export const createCartAndBehavior=async(body)=>{
 export const Logout=async(dispatch)=>{
   dispatch(logout());
   dispatch(behaviorActions.reSetKeywords());
-  dispatch(behaviorActions.resetBehavior());
+  // dispatch(behaviorActions.resetBehavior());
 }
 
 export const loginUpdateCart=async(dispatch,cart,user)=>{
@@ -458,7 +474,7 @@ export const loginUpdateCart=async(dispatch,cart,user)=>{
   }
 }
 
-export const updateCart=async(cart,user,ele,action)=>{
+export const updateCart=async(cart,user,ele,action,obj)=>{
    let body=cart.map((item)=>{
     let i={
        "productId":item.id,
@@ -472,7 +488,7 @@ export const updateCart=async(cart,user,ele,action)=>{
     return i;
   })
   if(action==="remove"){
-    if(typeof ele=== "Object"){
+    if(obj){
       body=body.filter(item=>item.productId!==ele.id)
     }else{
       ele.forEach(it=>{

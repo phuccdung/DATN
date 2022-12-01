@@ -24,7 +24,7 @@ const Cart = () => {
       let arr=cart.filter(item => item.id!==id);
       setCart(arr);
       if(currentUser){
-        updateCart(cartItems,currentUser,cartItems[index],"remove");
+        updateCart(cartItems,currentUser,cartItems[index],"remove",true);
       }
     };
 

@@ -16,12 +16,12 @@ const createLink= async (req, res) => {
 }
 
 const addChipView=async (req,res)=>{
-    if (!req?.params?.id) return  res.send({'message': false})
-    const foundLink = await Link.findOne({_id:req.params.id }).exec();
-    if(!foundLink) {
-        return res.status(204).json({ 'message': false });
-    }
     try{
+        if (!req?.params?.id) return  res.send({'message': false})
+        const foundLink = await Link.findOne({_id:req.params.id }).exec();
+        if(!foundLink) {
+            return res.status(204).json({ "data":"",'message': false });
+        }
         let view=foundLink.view+1;
         let chip=foundLink.chip+10;
         await Link.updateOne(

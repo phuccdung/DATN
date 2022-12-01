@@ -30,7 +30,7 @@ const addAction=async (req, res) => {
         return res.send({'message': false})
     }
     try{
-        if(time>12000){
+        if(time>7000){
 
             await Behavior.findByIdAndUpdate({_id:behavior._id},{$push:{actions:req.body.action}});
         }
@@ -175,6 +175,40 @@ const analyticsByUserId=async (req, res) => {
     }
 }
 
+const checkLinkByProduct=async(req,res)=>{
+    const userId=req.query.userId;
+    const productId=req.query.productId;
+    const date=new Date()
+    const lastDate=new Date(date.setDate(date.getDate()-7));
+    try{
+        if(userId&&productId){
+           const data = await Behavior.aggregate(
+                [
+                    {$unwind: '$actions'},
+                    { $match: { 
+                        "actions.date": { $gte: lastDate } ,
+                        "userId":userId,
+                        "actions.find":productId
+                         } 
+                    },
+                    {
+                        $project:{
+                            _id:0,
+                            link:"$actions.link",
+                            date:"$actions.date"
+                        }
+                    },
+                    { $sort : { date : -1 } },  
+                ]
+            );
+         return   res.status(200).json({"data":data, "message":true})
+        }
+        res.status(500).json({ 'data': "", "message": false})
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
+
 module.exports = {
     createBehavior,
     addAction,
@@ -183,4 +217,5 @@ module.exports = {
     analytics,
     analyticsKey,
     analyticsByUserId,
+    checkLinkByProduct
 }

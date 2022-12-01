@@ -7,6 +7,7 @@ const verifyRoles = require('../../middleware/verifyRoles');
 
 
 router.route('/')
+    .get(verifyJWT,behaviorController.checkLinkByProduct)
     .post(behaviorController.createBehavior);
 
 router.route('/:day')

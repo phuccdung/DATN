@@ -22,9 +22,11 @@ const behaviorSlice = createSlice({
           state.actions.push(newBehavior);
         }else{
           const different=newBehavior.date-existingItem.date;
-          if(different>6000){
-            state.actions.push(newBehavior);
-
+          if(different>5000){
+            existingItem.date=newBehavior.date;
+            if(newBehavior.link!==""){
+              existingItem.link=newBehavior.link;
+            }
           }
         }
     },

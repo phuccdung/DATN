@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import ProductList from "../../components/UI/ProductList/ProductList";
 import { useDispatch ,useSelector} from 'react-redux';
 import{cartActions} from "../../redux/slices/cartSlice";
-import { updateCart,addBehavior,getProductById,addComment,getComment,createLinks,addChipView } from '../../redux/apiCall';
+import { updateCart,addBehavior,getProductById,addComment,getComment,checkBehaviorLink,createLinks,addChipView } from '../../redux/apiCall';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 import {
@@ -43,10 +43,9 @@ const ProductDetail = () => {
   const {
     description,
   }=product;
-
+  const actionItems=useSelector(state=>state.behavior.actions);
   const submitHandler= async(e)=>{
     e.preventDefault();
-
     const reviewObj={
       userId:currentUser.username,
       productId:id,
@@ -70,23 +69,24 @@ const ProductDetail = () => {
     }else{
       NotificationManager.error("You must Login ",'Error', 2000);
     }
-    
   }
-
-  const addToCart=()=>{
-    dispatch(cartActions.addItem({
-      item:{
-      id,
-      "productName":dataProduct.title,
-      "price":dataProduct.price,
-      "imgUrl":dataProduct.img,
-      "vendorId":dataProduct.userId,
-      "link":linkReC,
-      },
-      qty:1
-    }));
+  const addToCart= async()=>{
+    let link=linkReC;
+     if(link===""){
+      const exisItem=actionItems.find(item=>item.find===id);
+      if(exisItem){
+        link=exisItem.link;
+      }
+    }
     NotificationManager.success("",'Product added successfully', 2000);
     if(currentUser){
+      if(link===""){
+        const res=await checkBehaviorLink(currentUser.id,id,currentUser)
+        if(res?.message){
+          const linkBehavior=res.data.find(item=>item.link!=="");
+          link=linkBehavior?.link;
+        }
+      }
       updateCart(cart,currentUser,{
         "productId":id,
         "quantity":1,
@@ -94,17 +94,48 @@ const ProductDetail = () => {
         "imgUrl":dataProduct.img,
         "productName":dataProduct.title,
         "vendorId":dataProduct.userId,
-        "link":linkReC,
+        "link":link,
       });
       addBehavior({
         "find":id,
         "date":new Date().getTime(),
-        "status":"want"
-      },currentUser)
-    }
+        "status":"want",
+        "name":dataProduct.title,
+        "link":link,
+      },currentUser);
+      dispatch(cartActions.addItem({
+        item:{
+        id,
+        "productName":dataProduct.title,
+        "price":dataProduct.price,
+        "imgUrl":dataProduct.img,
+        "vendorId":dataProduct.userId,
+        "link":link,
+        },
+        qty:1
+      }));
+      
+    }else{
+      dispatch(behaviorActions.addAction({
+        "find":id,
+        "date":new Date().getTime(),
+        "status":"want",
+        "name":dataProduct.title,
+        "link":link,
+      }));
+      dispatch(cartActions.addItem({
+        item:{
+        id,
+        "productName":dataProduct.title,
+        "price":dataProduct.price,
+        "imgUrl":dataProduct.img,
+        "vendorId":dataProduct.userId,
+        "link":link,
+        },
+        qty:1
+      }));
+    } 
   };
- 
-
   useEffect(()=>{
     window.scrollTo(0,0);
     const getData=async ()=>{
@@ -123,13 +154,10 @@ const ProductDetail = () => {
     setCounter(0);
     setBehavior(false);
   },[id])  
-
   useEffect(() => {
-    counter < 7 ? setTimeout(() => setCounter(counter +1), 1000)
-                : setBehavior(true);
-    
+    counter < 5 ? setTimeout(() => setCounter(counter +1), 1000)
+                : setBehavior(true); 
   }, [counter]);
-
   useEffect(() => {
     if(counter>0){
       if(linkReC){
@@ -139,23 +167,33 @@ const ProductDetail = () => {
         addBehavior({
           "find":id,
           "date":new Date().getTime(),
-          "status":"view"
+          "status":"view",
+          "name":dataProduct.title,
+          "link":linkReC,
         },currentUser)
+      }else{
+        dispatch(behaviorActions.addAction({
+          "find":id,
+          "date":new Date().getTime(),
+          "status":"view",
+          "name":dataProduct.title,
+          "link":linkReC,
+        }))
       }  
     }
   }, [behavior]);
-
   const changTab=(tab)=>{
     setTab(tab);
       if(currentUser){
         addBehavior({
           "find":id,
           "date":new Date().getTime(),
-          "status":"care"
+          "status":"care",
+          "name":dataProduct.title,
+          "link":linkReC,
         },currentUser)
       } 
   }
-
   const showStar=()=>{
     var indents =[  ]
     for(let i=0;i<Math.floor(star?.total/star?.count);i++){
@@ -172,7 +210,7 @@ const ProductDetail = () => {
   }
   const CreateLink=async()=>{
     let body={
-      userId:currentUser.id,
+      userId:currentUser?.id,
       productId:id
     }
     if(currentUser){
@@ -180,11 +218,6 @@ const ProductDetail = () => {
       if(res?.message){
         navigator.clipboard.writeText(`http://localhost:3000${location.pathname}?${res.data}`)
         NotificationManager.success('Copied!',"Success", 2000);
-        // addBehavior({
-        //   "find":id,
-        //   "date":new Date().getTime(),
-        //   "status":"link"
-        // },currentUser)
       }else{
         NotificationManager.error('Error!', 2000);
       }
@@ -192,11 +225,9 @@ const ProductDetail = () => {
       NotificationManager.error("You must Login ",'Error', 2000);
     }
   }
-
   return (
     <Helmet title={dataProduct.title}>
       <CommonSection title={dataProduct.title} />
-
       <section className='pt-0'>
         <Container>
           <Row>

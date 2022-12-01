@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 
 var action = new Schema({
     find: String,
+    name:String,
+    link:String,
     date: Date,
     status:String
   });
