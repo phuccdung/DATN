@@ -29,7 +29,7 @@ const cartSlice = createSlice({
                 price:newItem.price,
                 quantity:addQty,
                 totalPrice:newItem.price,
-                link:newItem?.link,
+                link:newItem?.link||"",
             })  
         }else{
             existingItem.link=newItem?.link;

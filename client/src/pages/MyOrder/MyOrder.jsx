@@ -3,28 +3,25 @@ import "./MyOrder.css";
 import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
 import Helmet from "../../components/Helmet/Helmet";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import Moment from 'moment';
-import { motion } from 'framer-motion';
 import { Container,Row,Col } from 'reactstrap';
-import { getMyOrderByUserId,getOrderByNameOrderItem} from "../../redux/apiCall";
+import { getMyOrderByUserId,getOrderByNameOrderItem,updateStatusOrderById} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import {useSelector} from "react-redux";
 import { NotificationManager} from 'react-notifications';
 
-
-import axios from "axios";
 function MyOrder() {
     const currentUser=useSelector(selectCurrentUser);
     const [data,setData]=useState([]);
     const [status,setStatus] = useState("Pending");
     const [search,setSearch]=useState("");
+    const [reset,setReset]=useState(true);
     useEffect(()=>{
       const getData=async()=>{
         const res = await getMyOrderByUserId(currentUser,status);
         setData(res.data);
       }
       getData();
-    },[status])
+    },[status,reset])
     const searcherOrder= async()=>{
         const res=await getOrderByNameOrderItem(currentUser,status,search)
         if(res?.message){
@@ -37,6 +34,22 @@ function MyOrder() {
     const handleKeyDown = (e) => {
       if (e.key === 'Enter') {
         searcherOrder();
+      }
+    }
+
+    const updateOrder=async(stt,orderId)=>{
+      let body={
+        "status":stt,
+        "userId":currentUser.id
+      }
+      const res=await updateStatusOrderById(currentUser,body,orderId);
+      console.log(res);
+      if(res?.message){
+        setReset(!reset);
+        NotificationManager.success( "Order has been update...",'Success message', 2000);
+      }else{
+        NotificationManager.error("",' Order can not update', 2000);
+        setReset(!reset);
       }
     }
   return (
@@ -60,10 +73,10 @@ function MyOrder() {
                       <div className="filter__widget text-center ">
                         <select onChange={(e)=>setStatus(e.currentTarget.value)} >
                           <option selected={status===""} value="" >All</option>
-                          <option selected={status==="Pending"} value="Pending" >Pending</option>
-                          <option selected={status==="Delivering"} value="Delivering" >Delivering</option>
-                          <option selected={status==="Delivered"} value="Delivered" >Delivered</option>
-                          <option selected={status==="Cancelled"} value="Cancelled" >Cancelled</option>
+                          <option selected={status==="Pending"} value="Pending" >Pending ({data.length})</option>
+                          <option selected={status==="Delivering"} value="Delivering" >Delivering ({data.length})</option>
+                          <option selected={status==="Delivered"} value="Delivered" >Delivered ({data.length})</option>
+                          <option selected={status==="Cancelled"} value="Cancelled" >Cancelled ({data.length})</option>
                         </select>
                       </div>
                     </Col>
@@ -95,7 +108,7 @@ function MyOrder() {
                                   {
                                     order.status==="Pending"?
                                     (
-                                      <button className="updateOrder">
+                                      <button className="updateOrder" onClick={()=>updateOrder("Cancelled",order._id)}>
                                         Cancel
                                       </button>
                                     ):null

@@ -59,6 +59,7 @@ const Cart = () => {
   }  
 
   const toCheckout=()=>{
+    // console.log(orderDetail);
     navigate('/checkout',{state:orderDetail});
   }
   return (

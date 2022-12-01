@@ -10,6 +10,24 @@ const createOrder= async (req, res) => {
         res.status(500).json(err);
     } 
 }
+const getOrder=async(req,res)=>{
+    try{
+        const fromDate=req.query.fromDate;
+        const toDate=req.query.toDate;
+        const qLimit=req.query.limit;
+        let data;
+        if(qLimit){
+            data= await Order.find().sort({createdAt:-1}).limit(4);
+        }else{
+            data= await Order.find({ 
+                createdAt: { $gte: fromDate,$lt:toDate} ,
+                }).sort({createdAt:-1});
+        }
+        res.status(200).json({ "data":data,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
 const getOrdertByUserId = async (req, res) => {
     const qStatus=req.query.status;
     if (!req?.params?.userId) return res.status(400).json({ "message": false });
@@ -158,7 +176,7 @@ const updateStatusOrder=async (req,res)=>{
         if (!order) {
             return res.status(204).json({ 'message': `Order ID ${req.params.id} not found` ,'message':false});
         }
-        if(order.vendorId==req.body.userId){
+        
             const updateOrder=  await Order.findByIdAndUpdate(
                 req.params.id,
                 {
@@ -167,7 +185,7 @@ const updateStatusOrder=async (req,res)=>{
                 { new: true }
               );
             res.status(200).json({ "data":updateOrder,'message':true});
-        }
+        
     }catch(err){
         res.status(500).json({ 'data': err.message, "message": false})
     }
@@ -290,4 +308,5 @@ module.exports = {
     updateStatusOrder,
     countQuantityOrder,
     countProductIdtWithDate,
+    getOrder
 }

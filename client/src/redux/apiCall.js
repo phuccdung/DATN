@@ -159,6 +159,7 @@ export const updateStatusOrderById = async (user,body,orderId) => {
       }, 
       data:body
     });
+    console.log(user);
     return res.data;
   }catch(err){
     console.log(err);

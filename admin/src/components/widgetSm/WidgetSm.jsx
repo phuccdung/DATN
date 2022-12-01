@@ -5,6 +5,7 @@ import axios from "axios";
 import {BASE_URL} from "../../requestMethods";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
+import { Link } from "react-router-dom";
 
 export default function WidgetSm() {
   const admin=useSelector(selectCurrentUser);
@@ -33,7 +34,7 @@ export default function WidgetSm() {
       <ul className="widgetSmList">
         {
           users.map((user,index)=>(
-            <li className="widgetSmListItem" key={index}>
+          <li className="widgetSmListItem" key={index}>
           <img
             src={user.img||"https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"}
             alt=""
@@ -43,15 +44,15 @@ export default function WidgetSm() {
             <span className="widgetSmUsername">{user.username}</span>
             <span className="widgetSmUserTitle">Software Engineer</span>
           </div>
-          <button className="widgetSmButton">
-            <Visibility className="widgetSmIcon" />
-            Display
-          </button>
+          <Link to={"/user/"+user._id}>
+            <button className="widgetSmButton">
+              <Visibility className="widgetSmIcon" />
+               <span>Display</span>
+            </button>
+          </Link>
         </li>
           ))
         }
-        
-        
       </ul>
     </div>
   );

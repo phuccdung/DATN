@@ -71,7 +71,7 @@ const ProductDetail = () => {
     }
   }
   const addToCart= async()=>{
-    let link=linkReC;
+    let link=linkReC||"";
      if(link===""){
       const exisItem=actionItems.find(item=>item.find===id);
       if(exisItem){
@@ -94,14 +94,14 @@ const ProductDetail = () => {
         "imgUrl":dataProduct.img,
         "productName":dataProduct.title,
         "vendorId":dataProduct.userId,
-        "link":link,
+        "link":link||"",
       });
       addBehavior({
         "find":id,
         "date":new Date().getTime(),
         "status":"want",
         "name":dataProduct.title,
-        "link":link,
+        "link":link||"",
       },currentUser);
       dispatch(cartActions.addItem({
         item:{
@@ -110,7 +110,7 @@ const ProductDetail = () => {
         "price":dataProduct.price,
         "imgUrl":dataProduct.img,
         "vendorId":dataProduct.userId,
-        "link":link,
+        "link":link||"",
         },
         qty:1
       }));
@@ -121,7 +121,7 @@ const ProductDetail = () => {
         "date":new Date().getTime(),
         "status":"want",
         "name":dataProduct.title,
-        "link":link,
+        "link":link||"",
       }));
       dispatch(cartActions.addItem({
         item:{
@@ -130,7 +130,7 @@ const ProductDetail = () => {
         "price":dataProduct.price,
         "imgUrl":dataProduct.img,
         "vendorId":dataProduct.userId,
-        "link":link,
+        "link":link||"",
         },
         qty:1
       }));

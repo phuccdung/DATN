@@ -19,6 +19,7 @@
 }
 
 .widgetSmList{
+    text-decoration: none;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -29,6 +30,9 @@
     align-items: center;
     justify-content: space-between;
     margin: 20px 0px;
+}
+.widgetSmListItem a{
+    text-decoration: none;
 }
 
 .widgetSmUser{
@@ -55,6 +59,9 @@
     cursor: pointer;
 }
 
+.widgetSmButton span{
+    text-decoration: none;
+}
 .widgetSmIcon{
     font-size: 16px !important;
     margin-right: 5px;

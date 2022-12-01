@@ -5,6 +5,9 @@ const ROLES_LIST = require('../../config/roles_list');
 const verifyRoles = require('../../middleware/verifyRoles');
 const verifyJWT = require('../../middleware/verifyJWT');
 
+router.route('/order')
+    .get(verifyJWT,ordersController.getOrder);
+
 router.route('/')
     .get(verifyJWT,verifyRoles(ROLES_LIST.Admin),ordersController.countQuantityOrder)
     .post(ordersController.createOrder);
@@ -19,7 +22,7 @@ router.route('/searchKey/:userId')
     .get(verifyJWT,ordersController.getOrderByNameOrderItem);
 
 router.route('/vendor/:id')
-    .put(verifyJWT,verifyRoles( ROLES_LIST.Editor),ordersController.updateStatusOrder)
+    .put(verifyJWT,ordersController.updateStatusOrder)
     .get(verifyJWT,ordersController.getOrderWithDate);
 
 router.route('/vendor/searchKey/:userId')

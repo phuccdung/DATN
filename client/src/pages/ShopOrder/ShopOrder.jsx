@@ -52,7 +52,7 @@ function ShopOrder() {
         "userId":currentUser.id
       }
       const res=await updateStatusOrderById(currentUser,body,orderId);
-      if(res.message){
+      if(res?.message){
         setReset(!reset);
         NotificationManager.success( "Order has been update...",'Success message', 2000);
       }else{
@@ -94,12 +94,12 @@ function ShopOrder() {
                     <Col lg="3" md="6">
                       <div className="filter__widget text-center ">
                         <select  onChange={e=>setStatus(e.currentTarget.value)}>
-                          <option selected={status===""} value="" >All</option>
-                          <option selected={status==="Pending"} value="Pending" >Pending</option>
-                          <option selected={status==="Accept"} value="Accept" >Accept</option>
-                          <option selected={status==="Delivering"} value="Delivering" >Delivering</option>
-                          <option selected={status==="Delivered"} value="Delivered" >Delivered</option>
-                          <option selected={status==="Cancelled"} value="Cancelled" >Cancelled</option>
+                          <option selected={status===""} value="" >All ({data.length})</option>
+                          <option selected={status==="Pending"} value="Pending" >Pending ({data.length})</option>
+                          <option selected={status==="Accept"} value="Accept" >Accept ({data.length})</option>
+                          <option selected={status==="Delivering"} value="Delivering" >Delivering ({data.length})</option>
+                          <option selected={status==="Delivered"} value="Delivered" >Delivered ({data.length})</option>
+                          <option selected={status==="Cancelled"} value="Cancelled" >Cancelled ({data.length})</option>
                         </select>
                       </div>
                     </Col>
@@ -143,25 +143,7 @@ function ShopOrder() {
                                     )
                                   :
                                   
-                                    // order.status==="Accept"?
-                                    // (
-                                      
-                                    //   <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivering",order._id)}>
-                                    //     Delivering
-                                    //   </button>
-                                      
-                                    // )
-                                    // :
-                                    // order.status==="Delivering"?
-                                    // (
-                                      
-                                    //   <button className="updateOrder br_blue" onClick={()=>updateOrder("Delivered",order._id)}>
-                                    //     Delivered
-                                    //   </button>
-                                      
-                                    // )
-                                    // :
-                                    null
+                                  null
                                 }
                                 
                               </div>
