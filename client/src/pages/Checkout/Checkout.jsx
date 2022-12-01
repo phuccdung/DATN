@@ -8,7 +8,7 @@ import {useLocation,useNavigate} from 'react-router-dom';
 import { NotificationManager} from 'react-notifications';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {cartActions} from "../../redux/slices/cartSlice";
-import { createOrder ,updateCart} from '../../redux/apiCall';
+import { createOrder ,updateCart,addBehavior} from '../../redux/apiCall';
 
 
 const Checkout = () => {
@@ -23,7 +23,6 @@ const Checkout = () => {
   const [phone,setPhone] = useState("");
   const [address,setAddress] = useState("");
   const [loading,setLoading]=useState(false);
-
 
     const handleClick=async (e)=>{
       e.preventDefault();
@@ -52,7 +51,6 @@ const Checkout = () => {
             "total":arr.reduce((sum,curr)=>sum+curr.price*curr.quantity,0).toFixed(3)
           }
           handleOrder(body)
-          // console.log(body);
         })
         await order.forEach(item=>{
           handleDelete(item);
@@ -74,6 +72,15 @@ const Checkout = () => {
 
     const handleDelete = async(item) => {
         dispatch(cartActions.deleteItem(item.productId));
+        if(currentUser){
+          addBehavior({
+            "find":item.productId,
+            "date":new Date().getTime(),
+            "status":"buy",
+            "name":item.productName,
+            "link":item.link,
+          },currentUser);
+        }
     };
   return (
     <Helmet title='Checkout'>
