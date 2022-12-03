@@ -13,6 +13,23 @@ export const login = async (dispatch, user) => {
   }
 };
 
+export const getOrder = async (user,fromDate,toDate,limit) => {
+  try{
+    const res= await axios({
+      method: 'get',
+      url: BASE_URL+`orders/order?fromDate=${fromDate}&toDate=${toDate}&limit=${limit}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+    // return true;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const getProduct = async (status) => {
   try{
     const res=await axios.get(BASE_URL+"products");

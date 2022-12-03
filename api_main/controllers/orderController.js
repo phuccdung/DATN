@@ -17,7 +17,7 @@ const getOrder=async(req,res)=>{
         const qLimit=req.query.limit;
         let data;
         if(qLimit){
-            data= await Order.find().sort({createdAt:-1}).limit(4);
+            data= await Order.find().sort({updatedAt:-1}).limit(5);
         }else{
             data= await Order.find({ 
                 createdAt: { $gte: fromDate,$lt:toDate} ,
