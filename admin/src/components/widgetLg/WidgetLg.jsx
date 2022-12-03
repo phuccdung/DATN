@@ -13,7 +13,6 @@ export default function WidgetLg() {
   useEffect(()=>{
     const getData=async()=>{
       const res=await getOrder(admin,fromDate,toDate,true);
-      console.log(res);
       if(res?.message){
         setDate(res.data);
       }
