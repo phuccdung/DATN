@@ -16,12 +16,36 @@ const getOrder=async(req,res)=>{
         const toDate=req.query.toDate;
         const qLimit=req.query.limit;
         let data;
-        if(qLimit){
+        if(qLimit==="true"){
             data= await Order.find().sort({updatedAt:-1}).limit(5);
+            return res.status(200).json({ "data":data,'message':true});
         }else{
-            data= await Order.find({ 
-                createdAt: { $gte: fromDate,$lt:toDate} ,
-                }).sort({createdAt:-1});
+            data= await Order.aggregate([
+            
+                { $addFields: { "vendor": { $toObjectId: "$vendorId" }}},
+                {
+                    $lookup:
+                    {
+                        from: "users",
+                        localField: "vendor",
+                        foreignField: "_id",
+                        as: "userInfo"
+                    }
+                },
+                {$unwind: '$userInfo'},
+                {
+                    $project:{
+                        _id:1,
+                        vendorName:"$userInfo.name",
+                        address:1,
+                        total:1,
+                        name:1,
+                        phone:1,
+                        status:1
+                    }
+                },
+                
+             ])
         }
         res.status(200).json({ "data":data,'message':true});
     }catch(err){

@@ -14,6 +14,7 @@ export const login = async (dispatch, user) => {
 };
 
 export const getOrder = async (user,fromDate,toDate,limit) => {
+  // console.log(limit);
   try{
     const res= await axios({
       method: 'get',
