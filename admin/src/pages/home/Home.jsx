@@ -46,7 +46,7 @@ export default function Home() {
         res2.data.map((item) =>
         setOrderStats((prev) => {
           let arr=[];
-          if(item._id===res2.dataLink[i]._id){
+          if(item._id===res2.dataLink[i]?._id){
            arr= [...prev,{ name: month[item._id - 1], "Total Item": item.total,"Sale By Link": res2.dataLink[i]?.total }];
            i=i+1;
           }else{

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {Container,Row,Col,Form,FormGroup} from "reactstrap";
 import Helmet from "../../components/Helmet/Helmet";
 import CommonSection from "../../components/UI/CommonSection/CommonSection";
@@ -8,7 +8,7 @@ import {useLocation,useNavigate} from 'react-router-dom';
 import { NotificationManager} from 'react-notifications';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {cartActions} from "../../redux/slices/cartSlice";
-import { createOrder ,updateCart,addBehavior} from '../../redux/apiCall';
+import { createOrder ,updateCart,addBehavior,getUserById} from '../../redux/apiCall';
 
 
 const Checkout = () => {
@@ -23,6 +23,19 @@ const Checkout = () => {
   const [phone,setPhone] = useState("");
   const [address,setAddress] = useState("");
   const [loading,setLoading]=useState(false);
+  const [data,setData]=useState({});
+
+  useEffect(()=>{
+    const getInfo=async()=>{
+        const res= await getUserById(currentUser);
+        setData(res);
+        setName(res.name);
+        setPhone(res.phone);
+        setAddress(res.address);
+        // console.log(res);
+    }
+    getInfo();
+},[])
 
     const handleClick=async (e)=>{
       e.preventDefault();
@@ -101,7 +114,7 @@ const Checkout = () => {
                 </h6>
                 <Form className='billing__form' >
                   <FormGroup className='form__group'>
-                    <input type="text" required placeholder='Enter your name' onChange={e=>setName(e.currentTarget.value)}/>
+                    <input type="text" required placeholder='Enter your name' value={data.name} onChange={e=>setName(e.currentTarget.value)}/>
                   </FormGroup>
 
                   {/* <FormGroup className='form__group'>
@@ -109,11 +122,11 @@ const Checkout = () => {
                   </FormGroup> */}
 
                   <FormGroup className='form__group'>
-                    <input type="number" required placeholder='Enter your phone' onChange={e=>setPhone(e.currentTarget.value)}/>
+                    <input type="number" required placeholder='Enter your phone' value={data.phone} onChange={e=>setPhone(e.currentTarget.value)}/>
                   </FormGroup>
 
                   <FormGroup className='form__group'>
-                    <input type="text" required placeholder='Enter your address'onChange={e=>setAddress(e.currentTarget.value)} />
+                    <input type="text" required placeholder='Enter your address' value={data.address}onChange={e=>setAddress(e.currentTarget.value)} />
                   </FormGroup>
 
                 </Form>

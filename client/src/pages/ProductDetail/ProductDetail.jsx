@@ -24,6 +24,7 @@ import products from "../../assets/data/products";
 
 const ProductDetail = () => {
 
+  const [quantityProduct,setQuantityProduct]=useState(1);
   const location=useLocation();
   const [tab,setTab]=useState('desc');
   const [reviewMsg,setReviewMsg]=useState('');
@@ -89,7 +90,7 @@ const ProductDetail = () => {
       }
       updateCart(cart,currentUser,{
         "productId":id,
-        "quantity":1,
+        "quantity":quantityProduct,
         "price":dataProduct.price,
         "imgUrl":dataProduct.img,
         "productName":dataProduct.title,
@@ -112,7 +113,7 @@ const ProductDetail = () => {
         "vendorId":dataProduct.userId,
         "link":link||"",
         },
-        qty:1
+        qty:quantityProduct
       }));
       
     }else{
@@ -132,7 +133,7 @@ const ProductDetail = () => {
         "vendorId":dataProduct.userId,
         "link":link||"",
         },
-        qty:1
+        qty:quantityProduct
       }));
     } 
   };
@@ -225,6 +226,12 @@ const ProductDetail = () => {
       NotificationManager.error("You must Login ",'Error', 2000);
     }
   }
+  const changeQty=(e)=>{
+    let quantityE=e.currentTarget.value;
+    if(quantityE>0){
+      setQuantityProduct(quantityE);
+    }
+  }
   return (
     <Helmet title={dataProduct.title}>
       <CommonSection title={dataProduct.title} />
@@ -248,8 +255,10 @@ const ProductDetail = () => {
                  <span>Category: {dataProduct.category}</span>
                 </div>
                 <p className='mt-3' >{dataProduct.desc}</p>
-
-                <motion.button  whileTap={{scale:1.2}} className="buy__btn" onClick={addToCart}>Add to Cart</motion.button>
+                <div className="">
+                  <input type="number" className='input__qty' value={quantityProduct} onChange={e=>changeQty(e)}/>
+                  <motion.button  whileTap={{scale:1.2}} className="buy__btn" onClick={addToCart}>Add to Cart</motion.button>
+                </div>
                 <div className="share__link">
                   <span>Share:</span>
                   <FacebookShareButton 

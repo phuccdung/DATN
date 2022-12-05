@@ -103,7 +103,7 @@ function Profile() {
             <div className="user">
                 <div className="userTitleContainer">
                     <div className="userTitle">User Information</div>
-                    <button className="userChangePassword">Become Vendor</button>
+                    {/* <button className="userChangePassword">Become Vendor</button> */}
                 </div>
                 <div className="userContainer">
                     <div className="userShow">

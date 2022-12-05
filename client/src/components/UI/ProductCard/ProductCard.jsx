@@ -9,26 +9,23 @@ import {useDispatch,useSelector} from "react-redux";
 import { selectCurrentUser } from '../../../redux/slices/userSlice';
 import {cartActions} from "../../../redux/slices/cartSlice";
 import {behaviorActions} from "../../../redux/slices/behaviorSlice";
-import { updateCart,addBehavior } from '../../../redux/apiCall';
+import { updateCart,addBehavior,checkBehaviorLink } from '../../../redux/apiCall';
 
 const ProductCard = ({item}) => {
 
   const dispatch=useDispatch();
   const currentUser=useSelector(selectCurrentUser);
   const cart=useSelector(state=>state.cart.cartItems);
-  const addToCart=()=>{
-    dispatch(cartActions.addItem({
-      "item":{
-      id:item._id,
-      vendorId:item.userId,
-      productName:item.title,
-      price:item.price,
-      imgUrl:item.img,
-      },
-      qty:1
-     }));
+  const actionItems=useSelector(state=>state.behavior.actions);
+  const addToCart= async()=>{
+    let link;
     NotificationManager.success("",'Product added successfully', 2000);
     if(currentUser){
+      const res=await checkBehaviorLink(currentUser.id,item._id,currentUser)
+        if(res?.message){
+          const linkBehavior=res.data.find(item=>item.link!=="");
+          link=linkBehavior?.link;
+        }
       updateCart(cart,currentUser,{
         "productId":item._id,
         "quantity":1,
@@ -36,18 +33,45 @@ const ProductCard = ({item}) => {
         "vendorId":item.userId,
         "imgUrl":item.img,
         "productName":item.title,
+        "link":link||"",
       });
       addBehavior({
         "find":item._id,
         "date":new Date().getTime(),
         "status":"want"
       },currentUser);
+      dispatch(cartActions.addItem({
+        "item":{
+        id:item._id,
+        vendorId:item.userId,
+        productName:item.title,
+        price:item.price,
+        imgUrl:item.img,
+        "link":link||"",
+        },
+        qty:1
+       }));
     }else{
+      const exisItem=actionItems.find(item=>item.find===item._id);
+      if(exisItem){
+        link=exisItem.link;
+      }
       dispatch(behaviorActions.addAction({
         "find":item._id,
         "date":new Date().getTime(),
         "status":"want"
       }));
+      dispatch(cartActions.addItem({
+        "item":{
+        id:item._id,
+        vendorId:item.userId,
+        productName:item.title,
+        price:item.price,
+        imgUrl:item.img,
+        "link":link||"",
+        },
+        qty:1
+       }));
     }
   }
 
