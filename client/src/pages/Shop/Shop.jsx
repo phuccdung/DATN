@@ -15,7 +15,7 @@ import {getProduct} from '../../redux/apiCall'
 
 const Shop = () => {
   const [data,setData]=useState([]);
-  const [keyWords,setKeyWords]=useState("");
+  const [filterData,setFilterData]=useState([]);
   const [searchKey,setSearchKey]=useState("");
   const dispatch=useDispatch();
   const currentUser=useSelector(selectCurrentUser);
@@ -27,42 +27,68 @@ const Shop = () => {
 
   useEffect(()=>{
     const getData=async()=>{
-      const res= await getProduct(keyWords);
+      const res= await getProduct("sale");
       if(res){
         setData(res);
+        setFilterData(res)
       }
     };
     getData();
-  },[keyWords])
+  },[])
   const handleFilter = (e) =>{
-    const filter = e.currentTarget.value;
-    dispatch(behaviorActions.addKeyWords({
-      "key":filter,
-      "date":new Date().getTime()
-    }));
-    if(currentUser){
-      addBehaviorArrKey([{
+    let filter = e.currentTarget.value;
+    if(filter){
+      const dataResult=data.filter(item=>item.category===filter)
+      setFilterData(dataResult);
+      dispatch(behaviorActions.addKeyWords({
         "key":filter,
         "date":new Date().getTime()
-      }],currentUser)
+      }));
+      if(currentUser){
+        addBehaviorArrKey([{
+          "key":filter,
+          "date":new Date().getTime()
+        }],currentUser)
+      }
+    }else{
+      setFilterData(data);
     }
-    setKeyWords(filter);
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }
   const handleSearch=()=>{
-    const search = searchKey ;
+    let search = searchKey ;
 
-    dispatch(behaviorActions.addKeyWords({
-      "key":search,
-      "date":new Date().getTime(),
-    }));
-    if(currentUser){
-      addBehaviorArrKey([{
+    if(search){
+      
+      const dataResult=data.filter(item=>{
+        if(item.title.toLowerCase().includes(search.toLowerCase())||
+          item.category.toLowerCase().includes(search.toLowerCase())||
+          item.name.toLowerCase().includes(search.toLowerCase())
+        ){
+          return item
+        }
+        return;
+      });
+      setFilterData(dataResult);
+      dispatch(behaviorActions.addKeyWords({
         "key":search,
         "date":new Date().getTime(),
-      }],currentUser)
+      }));
+      if(currentUser){
+        addBehaviorArrKey([{
+          "key":search,
+          "date":new Date().getTime(),
+        }],currentUser)
+      }
+    }else{
+      setFilterData(data);
     }
-    setKeyWords(search);
+    // setKeyWords(search);
   }
 
   return (
@@ -93,7 +119,7 @@ const Shop = () => {
             </Col>
             <Col lg="6" md="6">
               <div className="search__box">
-                <input type="text" placeholder="Search....." onChange={(e)=>changeSearch(e)}  />
+                <input type="text" placeholder="Search....."onKeyDown={e=>handleKeyDown(e)} onChange={(e)=>changeSearch(e)}  />
                 <span onClick={handleSearch}>
                   <i whileTap={{scale:1.2}} class="ri-search-line"></i>
                 </span>
@@ -107,10 +133,10 @@ const Shop = () => {
         <Container>
           <Row>
             {
-             data.length===0 ? 
+             filterData.length===0 ? 
              (<h1 className='text-center fs-4'>No Product are found!</h1>)
              :
-            (<ProductList data={data} />)
+            (<ProductList data={filterData} />)
             }
           </Row>
         </Container>

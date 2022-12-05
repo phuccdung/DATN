@@ -86,7 +86,7 @@ export default function Product() {
                 status: product.status,
                 category: product.category,
                 stock: product.stock,
-                userId:admin.id
+                userIdChange:admin.id
             }
             if(file){
                   const name = new Date().getTime() + file.name;

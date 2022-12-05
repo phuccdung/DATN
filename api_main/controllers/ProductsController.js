@@ -60,15 +60,74 @@ const getAllProductByVendorId=async(req,res)=>{
 }
 
 const getProduct=async(req,res)=>{
-    const key=req.query.key;
+    let key=req.query.key;
     try{
         let products;
-        if(key){
-            products=await Product.find({ $or: [ { category: {'$regex': key} }, { title: {$regex: key, $options: 'i'}  } ] });
-        }else{
-            products=await Product.find().sort({updatedAt:-1})   
+        if(key==="sale"){
+            products=await User.aggregate([
+                    { $addFields: { "vendorId": { $toString: "$_id" }}},
+                    {
+                        $lookup:
+                        {
+                            from: "products",
+                            localField: "vendorId",
+                            foreignField: "userId",
+                            as: "productInfo"
+                        }
+                    },
+                    {$unwind: '$productInfo'},
+                    { $match: { 
+                        "productInfo.status":"sale"
+                        }
+                    },
+                    {
+                        $project:{
+                            "name":"$name",
+                            "img":"$productInfo.img",
+                            "price":"$productInfo.price",
+                            "userId":"$productInfo.userId",
+                            "title":"$productInfo.title",
+                            "category":"$productInfo.category",
+                            "status":"$productInfo.status", 
+                            "_id":"$productInfo._id",
+                            "stock":"$productInfo.stock",
+                        }
+                    },
+                    
+            ])
+         return   res.status(200).json(products)
         }
-     res.status(200).json(products)
+
+        products=await User.aggregate([
+            
+            { $addFields: { "userId": { $toString: "$_id" }}},
+            {
+                $lookup:
+                {
+                    from: "products",
+                    localField: "userId",
+                    foreignField: "userId",
+                    as: "productInfo"
+                }
+            },
+            {$unwind: '$productInfo'},
+            {
+                $project:{
+                    "name":"$name",
+                    "img":"$productInfo.img",
+                    "price":"$productInfo.price",
+                    "userId":"$productInfo.userId",
+                    "title":"$productInfo.title",
+                    "category":"$productInfo.category",
+                    "status":"$productInfo.status", 
+                    "_id":"$productInfo._id",
+                    "stock":"$productInfo.stock",
+                }
+            },
+            
+         ])
+        
+        return res.status(200).json(products)
     }catch(err){
         res.status(500).json(err);
     }
@@ -115,8 +174,8 @@ const updateProduct = async (req, res) => {
     if (!product) {
         return res.status(204).json({ 'message': `Product ID ${req.params.id} not found` ,'message':false});
     }
-    const user=await User.findById(req.body.userId);
-    if(req.body.userId==product.userId||user.roles?.Admin){
+    const user=await User.findById(req.body.userIdChange);
+    if(req.body.userIdChange==product.userId||user.roles?.Admin){
       const updateProduct=  await Product.findByIdAndUpdate(
             req.params.id,
             {

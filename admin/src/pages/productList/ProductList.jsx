@@ -10,6 +10,9 @@ import { getProduct,deleteProductById } from "../../redux/apiCall";
 
 export default function ProductList() {
   const admin=useSelector(selectCurrentUser);
+  const [searchKey,setSearchKey]=useState("");
+  const [filterData,setFilterData]=useState([]);
+
 
   const [data, setData] = useState([]);
 
@@ -26,15 +29,57 @@ export default function ProductList() {
   };
   useEffect(()=>{
     const getData=async()=>{
-      const res= await getProduct("");
+      const res= await getProduct("admin");
+      console.log(res);
       setData(res);
+      setFilterData(res)
     }
     getData();
     
   },[])
 
+  const handleFilter=(e)=>{
+    let filter = e.currentTarget.value;
+    // console.log(filter);
+    if(filter){
+      const dataResult=data.filter(item=>item.status===filter)
+      setFilterData(dataResult);
+    }else{
+      setFilterData(data);
+    }
+  }
+  const changeSearch=(e)=>{
+    setSearchKey(e.currentTarget.value);
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }
+
+  const handleSearch=()=>{
+    let search = searchKey ;
+
+    if(search){
+      const dataResult=data.filter(item=>{
+        if(item.title.toLowerCase().includes(search.toLowerCase())||
+          item.category.toLowerCase().includes(search.toLowerCase())||
+          item.name.toLowerCase().includes(search.toLowerCase())
+        ){
+          return item
+        }
+        return;
+      });
+      setFilterData(dataResult);
+    }else{
+      setFilterData(data);
+    }
+  }
+
   const columns = [
     { field: "_id", headerName: "ID", width: 200 },
+    { field: "name", headerName: "Vendor", width: 150 },
     {
       field: "title",
       headerName: "Product",
@@ -49,6 +94,7 @@ export default function ProductList() {
       },
     },
     { field: "stock", headerName: "Stock", width: 150 },
+    { field: "category", headerName: "Category", width: 150 },
     {
       field: "status",
       headerName: "Status",
@@ -67,12 +113,12 @@ export default function ProductList() {
         return (
           <>
             <Link to={"/product/" + params.row._id}>
-              <button className="productListEdit">Edit</button>
+              <button className="productListEdit">Detail</button>
             </Link>
-            <DeleteOutline
+            {/* <DeleteOutline
               className="productListDelete"
               onClick={() => handleDelete(params.row._id)}
-            />
+            /> */}
           </>
         );
       },
@@ -81,11 +127,26 @@ export default function ProductList() {
 
   return (
     <div className="productList">
+      <div className="top_page">
+        <div className="search_box">
+          <input type="text" placeholder="Search....." onKeyDown={e=>handleKeyDown(e)} onChange={(e)=>changeSearch(e)}/>
+          <span onClick={handleSearch}>Search</span>
+        </div>
+        <div className="status_product">
+          <select onChange={(e)=>handleFilter(e)}>
+            <option  value="" >Choose Status</option>
+            <option  value="waiting" >Waiting</option>
+            <option  value="sale" >Sale</option>
+            <option  value="cancel" >Cancel</option>
+            <option  value="pause" >Pause</option>
+          </select>
+        </div>
+      </div>
       <DataGrid
-        rows={data}
+        rows={filterData}
         disableSelectionOnClick
         columns={columns}
-        pageSize={10}
+        pageSize={20}
         getRowId={(row)=>row._id}
         checkboxSelection
       />

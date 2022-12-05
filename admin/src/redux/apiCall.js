@@ -30,10 +30,11 @@ export const getOrder = async (user,fromDate,toDate,limit) => {
   }
 }
 
-export const getProduct = async (status) => {
+export const getProduct = async (key) => {
   try{
-    const res=await axios.get(BASE_URL+"products");
+    const res=await axios.get(BASE_URL+`products?key=${key}`);
     return res.data;
+    // return key;
   }catch(err){
     console.log(err);
     return null;

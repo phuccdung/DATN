@@ -29,3 +29,38 @@
     color: red;
     cursor: pointer;
 }
+
+.top_page{
+    display: flex;
+    margin: 30px;
+    
+}
+.search_box{
+    margin-right: 30px;
+    width: 50%;
+}
+.search_box input{
+    width: 80%;
+    height: 30px;
+    font-size: 1.2rem;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.search_box span{
+    background-color: #0a1d37;
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.status_product{
+    height: 30px;
+    padding: 5px;
+}
+.status_product select{
+ font-size: 1.2rem;
+ background-color: #0a1d37;
+ color: aliceblue;
+ border-radius: 5px;
+}
