@@ -11,6 +11,8 @@ import { getUser } from "../../redux/apiCall";
 export default function UserList() {
   const [data, setData] = useState([]);
   const admin=useSelector(selectCurrentUser);
+  const [filterData,setFilterData]=useState([]);
+  const [searchKey,setSearchKey]=useState("");
 
 
   const handleDelete = (id) => {
@@ -19,11 +21,67 @@ export default function UserList() {
   useEffect(()=>{
     const getData=async()=>{
       const res= await getUser("",admin);
-      setData(res)
+      setData(res);
+      setFilterData(res);
+      // console.log(res)
     }
     getData();
     
-  },[])
+  },[]);
+
+
+  const handleFilter=(e)=>{
+    let filter = e.currentTarget.value;
+    console.log(filter);
+    if(filter==="c"){
+      const dataResult=data.filter(item=>{
+        if(!item.roles?.Editor){
+          return item;
+        }
+        return;
+      })
+      setFilterData(dataResult);
+    }else{
+      if(filter==="v"){
+        const dataResult=data.filter(item=>{
+          if(item.roles?.Editor){
+            return item;
+          }
+          return;
+        })
+        setFilterData(dataResult);
+      }else{
+
+        setFilterData(data);
+      }
+    }
+  }
+  const changeSearch=(e)=>{
+    setSearchKey(e.currentTarget.value);
+  }
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }
+  const handleSearch=()=>{
+    let search = searchKey ;
+
+    if(search){
+      const dataResult=data.filter(item=>{
+        if(item.name.toLowerCase().includes(search.toLowerCase())||
+          item.username.toLowerCase().includes(search.toLowerCase())||
+          item._id.toLowerCase().includes(search.toLowerCase())
+        ){
+          return item
+        }
+        return;
+      });
+      setFilterData(dataResult);
+    }else{
+      setFilterData(data);
+    }
+  }
   
   const columns = [
     { field: "_id", headerName: "ID", width: 200 },
@@ -80,8 +138,22 @@ export default function UserList() {
 
   return (
     <div className="userList">
+      <div className="top_page">
+        <div className="search_box">
+          <input type="text" placeholder="Search....." onKeyDown={e=>handleKeyDown(e)} onChange={(e)=>changeSearch(e)}/>
+          <span onClick={handleSearch}>Search</span>
+        </div>
+        <div className="status_product">
+          <select onChange={(e)=>handleFilter(e)} >
+            <option  value="" >Choose Status</option>
+            <option  value="v" >Vendor</option>
+            <option  value="c" >Customer</option>
+
+          </select>
+        </div>
+      </div>
       <DataGrid
-        rows={data}
+        rows={filterData}
         disableSelectionOnClick
         columns={columns}
         pageSize={10}
