@@ -1,3 +1,11 @@
 .OrderList{
     flex: 4;
 }
+.inputDate{
+    margin: 5px 20px;
+}
+.inputDate input{
+    font-size: 1.1rem;
+    border-radius: 5px;
+    margin-left: 10px;
+}

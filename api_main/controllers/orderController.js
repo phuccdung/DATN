@@ -12,8 +12,8 @@ const createOrder= async (req, res) => {
 }
 const getOrder=async(req,res)=>{
     try{
-        const fromDate=req.query.fromDate;
-        const toDate=req.query.toDate;
+        const fromDate=new Date(req.query.fromDate);
+        const toDate=new Date(req.query.toDate);
         const qLimit=req.query.limit;
         let data;
         if(qLimit==="true"){
@@ -21,7 +21,6 @@ const getOrder=async(req,res)=>{
             return res.status(200).json({ "data":data,'message':true});
         }else{
             data= await Order.aggregate([
-            
                 { $addFields: { "vendor": { $toObjectId: "$vendorId" }}},
                 {
                     $lookup:
@@ -33,6 +32,9 @@ const getOrder=async(req,res)=>{
                     }
                 },
                 {$unwind: '$userInfo'},
+                {$match:{
+                    "createdAt": { $gte: fromDate,$lt:toDate} ,
+                }},
                 {
                     $project:{
                         _id:1,

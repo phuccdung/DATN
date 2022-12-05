@@ -12,8 +12,8 @@ export default function OrderList() {
   const admin=useSelector(selectCurrentUser);
   const [filterData,setFilterData]=useState([]);
   const [searchKey,setSearchKey]=useState("");
-  const fromDate=Moment().startOf("day").format();
-  const toDate=Moment().endOf("day").format();
+  const [fromDate,setFromDate]=useState(Moment().startOf("day").subtract(3,"day").format("YYYY-MM-DD"));
+  const [toDate,setToDate]=useState(Moment().endOf("day").format("YYYY-MM-DD"));
 
 
   const handleDelete = (id) => {
@@ -21,16 +21,16 @@ export default function OrderList() {
   };
   useEffect(()=>{
     const getData=async()=>{
-      const res=await getOrder(admin,fromDate,toDate,false);
+      const res=await getOrder(admin,Moment(fromDate).startOf("date").toString(),Moment(toDate).endOf("date").toString(),false);
       if(res?.message){
-        console.log(res.data);
         setData(res.data);
         setFilterData(res.data);
+        // console.log(res.data)
       }
     }
     getData()
     
-  },[]);
+  },[fromDate,toDate]);
 
 
   const handleFilter=(e)=>{
@@ -107,7 +107,7 @@ export default function OrderList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/user/" + params.row._id}>
+            <Link to={"/order/" + params.row._id}>
               <button className="userListEdit">View</button>
             </Link>
             {/* <DeleteOutline
@@ -121,11 +121,19 @@ export default function OrderList() {
   ];
 
   return (
-    <div className="userList">
+    <div className="OrderList">
       <div className="top_page">
         <div className="search_box">
           <input type="text" placeholder="Search....." onKeyDown={e=>handleKeyDown(e)} onChange={(e)=>changeSearch(e)}/>
           <span onClick={handleSearch}>Search</span>
+        </div>
+        <div className="inputDate">
+          <input type="date"
+                 value={fromDate}
+                 onChange={e=>setFromDate(e.currentTarget.value)} />
+          <input type="date"
+                 value={toDate}
+                 onChange={e=>setToDate(e.currentTarget.value)} />
         </div>
         <div className="status_product">
           <select onChange={(e)=>handleFilter(e)} >
