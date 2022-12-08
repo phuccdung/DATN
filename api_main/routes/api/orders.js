@@ -7,6 +7,8 @@ const verifyJWT = require('../../middleware/verifyJWT');
 
 router.route('/order')
     .get(verifyJWT,ordersController.getOrder);
+router.route('/order/:id')
+    .get(verifyJWT,ordersController.getOrderByOrderId);
 
 router.route('/')
     .get(verifyJWT,verifyRoles(ROLES_LIST.Admin),ordersController.countQuantityOrder)

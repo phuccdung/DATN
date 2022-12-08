@@ -1,0 +1,144 @@
+.orderDetail{
+    flex: 4;
+}
+.orderContainer{
+    width: 90%;
+  margin: 30px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+.orderShow{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #0b7013;
+    border-radius: 5px;
+}
+.orderTimeInfo{
+   
+}
+.DateRange{
+    margin-top: 5px;
+}
+.orderTimeInfo span{
+    padding: 5px;
+    font-size: 1.4rem;
+    color: aliceblue;
+}
+.orderId{
+    color: aliceblue;
+    margin:5px;
+}
+.changStatus span{
+    font-size: 1.4rem;
+    margin: 10px;
+}
+.selectStatus{
+    margin-top: 5px;
+    font-size: 1.4rem;
+    border-radius: 10px;
+    height: 40px;
+    padding: 5px;
+    padding-right: 30px;
+}
+.orderInfo_Top{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: aliceblue;
+}
+.info{
+    display: flex;
+    width: 200px;
+}
+
+.infoShow{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.infoShow span{
+    width: 100%;
+    display: block;
+}
+.infoShow p{
+    width: 100%;
+    word-wrap:break-word;
+}
+.orderProducts{
+    display: flex;
+    background-color: whitesmoke;
+}
+.table_Product{
+    flex: 5;
+}
+.table  {
+    width: 100%;
+    padding: 20px;
+}
+
+th{
+    padding: 20px;
+    border-bottom: 3px solid black;
+
+}
+td{
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 2px solid rgb(99, 99, 99);
+}
+.td_product{
+    display: flex; 
+   
+}
+.td_product span{
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.table img{
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    object-fit: contain;
+    margin-left: 20px;
+}
+.checkPayVendor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    max-height: 200px;
+}
+
+.btn__mark{
+    padding: 20px;
+    background-color: #0a1d37;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;   
+}
+.total_order{
+    display: flex;
+    justify-content:flex-end;
+    padding: 20px;
+}
+.total_item{
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    margin: 5px;
+}
+.blue{
+    padding: 5px;
+    background-color: #0e8f199d;
+    border-radius: 10px;
+}
+.red{
+    padding: 5px;
+    background-color: #910a429d;
+    border-radius: 10px; 
+}

@@ -12,6 +12,23 @@ export const login = async (dispatch, user) => {
     dispatch(loginFailure());
   }
 };
+export const getOrderByOrderId = async (user,orderId) => {
+  try{
+    const res= await axios({
+      method: 'get',
+      url: BASE_URL+`orders/order/${orderId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+    // return true;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 
 export const getOrder = async (user,fromDate,toDate,limit) => {
   // console.log(limit);

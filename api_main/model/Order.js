@@ -41,6 +41,10 @@ const orderSchema = new Schema({
     status:{
         type:String,
         default:"Pending"
+    },
+    isPay:{
+        type:Boolean,
+        default:false
     }
     
 },

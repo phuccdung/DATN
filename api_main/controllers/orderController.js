@@ -10,6 +10,15 @@ const createOrder= async (req, res) => {
         res.status(500).json(err);
     } 
 }
+const getOrderByOrderId=async(req,res)=>{
+    try{
+        if (!req?.params?.id) return res.status(400).json({ "message": false });
+        const data=await Order.findById(req.params.id);
+        res.status(200).json({ "data":data,'message':true});
+    }catch(err){
+        res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
 const getOrder=async(req,res)=>{
     try{
         const fromDate=new Date(req.query.fromDate);
@@ -334,5 +343,6 @@ module.exports = {
     updateStatusOrder,
     countQuantityOrder,
     countProductIdtWithDate,
-    getOrder
+    getOrder,
+    getOrderByOrderId
 }
