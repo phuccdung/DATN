@@ -3,7 +3,8 @@ import "./order.css";
 import { useLocation } from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
-import { getOrderByOrderId} from "../../redux/apiCall"; 
+import { getOrderByOrderId,updateStatusOrderById} from "../../redux/apiCall"; 
+import { NotificationManager} from 'react-notifications';
 import {
   DateRange,
   AccountCircle,
@@ -14,7 +15,7 @@ import {
 export default function Order() {
   const admin=useSelector(selectCurrentUser);
   const [data,setData]=useState({});
-  const [status,setStatus]=useState();
+  const [reset,setReset]=useState(false);
   const location=useLocation();
   const orderId=location.pathname.split("/")[2];
   
@@ -23,11 +24,27 @@ export default function Order() {
       const res=await getOrderByOrderId(admin,orderId);
       if(res?.message){
         setData(res.data);
-        setStatus(res.data.status);
       }
     }
     getData();
   },[])
+
+  const changStatus=async(e)=>{
+    const stt=e.currentTarget.value;
+    let body={
+      "status":stt,
+      "userId":admin.id
+    }
+    const res=await updateStatusOrderById(admin,body,orderId);
+    console.log(res);
+    if(res?.message){
+      setData(res.data)
+      NotificationManager.success( "Order has been update...",'Success message', 2000);
+    }else{
+      NotificationManager.error("",' Order can not update', 2000);
+      // setReset(!reset);
+    }
+  }
   return (
     <div className='orderDetail'>
       <div className="orderContainer">
@@ -41,12 +58,12 @@ export default function Order() {
           </div>
           <div className="changStatus">
             <span> Change Status:</span>
-            <select  className='selectStatus'  onChange={(e)=>setStatus(e.currentTarget.value)}>
-              <option selected={status==="Pending"} value="Pending" >Pending </option>
-              <option selected={status==="Accept"} value="Accept" >Accept </option>
-              <option selected={status==="Delivering"} value="Delivering" >Delivering </option>
-              <option selected={status==="Delivered"} value="Delivered" >Delivered </option>
-              <option selected={status==="Cancelled"} value="Cancelled" >Cancelled </option>
+            <select  className='selectStatus'  onChange={(e)=>changStatus(e)}>
+              <option selected={data?.status==="Cancelled"} value="Cancelled" >Cancelled </option>
+              <option selected={data?.status==="Pending"} value="Pending" >Pending </option>
+              <option selected={data?.status==="Accept"} value="Accept" >Accept </option>
+              <option selected={data?.status==="Delivering"} value="Delivering" >Delivering </option>
+              <option selected={data?.status==="Delivered"} value="Delivered" >Delivered </option>
             </select>
           </div>
         </div>
@@ -118,9 +135,9 @@ export default function Order() {
                   <span>$0</span>
                 </div>
                 <div className="total_item">
-                  <span>Status:</span>
+                  <span>Payment:</span>
                   {
-                    status==="Delivered"?
+                    data?.status==="Delivered"?
                      <span className='blue'>Payment Done</span>
                      :
                      <span className='red'>Unpaid</span>

@@ -12,6 +12,23 @@ export const login = async (dispatch, user) => {
     dispatch(loginFailure());
   }
 };
+
+export const updateStatusOrderById = async (user,body,orderId) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`orders/vendor/${orderId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const getOrderByOrderId = async (user,orderId) => {
   try{
     const res= await axios({

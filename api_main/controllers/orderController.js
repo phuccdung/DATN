@@ -42,7 +42,7 @@ const getOrder=async(req,res)=>{
                 },
                 {$unwind: '$userInfo'},
                 {$match:{
-                    "createdAt": { $gte: fromDate,$lt:toDate} ,
+                    "updatedAt": { $gte: fromDate,$lt:toDate} ,
                 }},
                 {
                     $project:{
@@ -209,9 +209,12 @@ const updateStatusOrder=async (req,res)=>{
         if (!req?.params?.id) return res.status(400).json({ "success": 'Order ID required','message':false} );
         const order = await Order.findOne({ _id: req.params.id }).exec();
         if (!order) {
-            return res.status(204).json({ 'message': `Order ID ${req.params.id} not found` ,'message':false});
+            return res.status(204).json({ 'data': `Order ID ${req.params.id} not found` ,'message':false});
         }
-        
+        const user = await User.findOne({ _id: req.body.userId }).exec();
+        if(!user){
+            return res.status(204).json({ 'data': ` not found` ,'message':false});
+        }
             const updateOrder=  await Order.findByIdAndUpdate(
                 req.params.id,
                 {
@@ -219,7 +222,8 @@ const updateStatusOrder=async (req,res)=>{
                 },
                 { new: true }
               );
-            res.status(200).json({ "data":updateOrder,'message':true});
+         res.status(200).json({ "data":updateOrder,'message':true});
+
         
     }catch(err){
         res.status(500).json({ 'data': err.message, "message": false})
