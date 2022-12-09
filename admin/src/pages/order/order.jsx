@@ -11,6 +11,7 @@ import {
   LocalShipping,
   LocationOn
 } from "@material-ui/icons";
+import Moment from 'moment';
 
 export default function Order() {
   const admin=useSelector(selectCurrentUser);
@@ -38,6 +39,7 @@ export default function Order() {
     const res=await updateStatusOrderById(admin,body,orderId);
     console.log(res);
     if(res?.message){
+      console.log(res.data);
       setData(res.data)
       NotificationManager.success( "Order has been update...",'Success message', 2000);
     }else{
@@ -52,9 +54,9 @@ export default function Order() {
           <div className="orderInfo">
             <div className="orderTimeInfo">
               <DateRange className='DateRange'/>
-              <span>Jun ,12,39300</span>
+              <span>{Moment(data?.createAt).format('MMMM Do YYYY, h:mm:ss a')}</span>
             </div>
-            <span className="orderId">Order ID: 129238273827</span>
+            <span className="orderId">Order ID: {data?._id}</span>
           </div>
           <div className="changStatus">
             <span> Change Status:</span>
@@ -149,6 +151,25 @@ export default function Order() {
                   
           </div>
           <div className="checkPayVendor">
+            <table className='table'>
+              <thead>
+                <tr>
+                  <th>History</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  data.history?.map((item,index)=>(
+                  <tr key={index}>
+                    <td className='history_Detail'>
+                      <span>{item.status}</span>
+                      <span>{ Moment(item.date).format('MMMM Do YYYY, h:mm:ss a')}</span>
+                    </td>
+                  </tr>
+                  ))
+                }
+              </tbody>
+            </table>
             <button className='btn__mark'> MARK AS PAY VENDOR</button>
           </div>
         </div>

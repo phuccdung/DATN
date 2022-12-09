@@ -215,10 +215,15 @@ const updateStatusOrder=async (req,res)=>{
         if(!user){
             return res.status(204).json({ 'data': ` not found` ,'message':false});
         }
+        const item={
+            status:req.body.status,
+            date:new Date().getTime(),
+        }
             const updateOrder=  await Order.findByIdAndUpdate(
                 req.params.id,
                 {
-                    status:req.body.status
+                    status:req.body.status,
+                    $push:{history:item}
                 },
                 { new: true }
               );

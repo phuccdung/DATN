@@ -9,6 +9,10 @@ var productDetail = new Schema({
     imgUrl:String,
     link:String,
   });
+var historyDetail=new Schema({
+    status:String,
+    date:Date,
+})
 const orderSchema = new Schema({
     userId:{
         type:String,
@@ -23,6 +27,9 @@ const orderSchema = new Schema({
     },
     products:[
         productDetail
+    ],
+    history:[
+        historyDetail
     ],
     total:{
         type:Number,

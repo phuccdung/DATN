@@ -105,14 +105,25 @@ td{
 }
 .checkPayVendor{
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     width: 25%;
-    max-height: 200px;
+    /* justify-content: center;
+    max-height: 200px; */
+}
+.history_Detail{
+    height: 50px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+.history_Detail{
+    margin: 0px 10px;
 }
 
 .btn__mark{
-    padding: 20px;
+    height: 50px;
+    padding: 5px;
     background-color: #0a1d37;
     border: none;
     border-radius: 5px;
