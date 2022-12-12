@@ -23,7 +23,6 @@ export default function UserList() {
       const res= await getUser("",admin);
       setData(res);
       setFilterData(res);
-      // console.log(res)
     }
     getData();
     
@@ -115,7 +114,7 @@ export default function UserList() {
         </>
       },
     },
-
+    { field: "chip", headerName: "Chip", width: 200 },
     {
       field: "action",
       headerName: "Action",

@@ -15,6 +15,7 @@ const getAllUsers = async (req, res) => {
                 img:1,
                 name:1,
                 roles:1,
+                chip:1
             });
         }
         
