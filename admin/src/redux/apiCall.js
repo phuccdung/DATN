@@ -3,6 +3,24 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
+
+export const addChipOrder = async (user,body) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`links/order/${body.link}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+      data:body
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {

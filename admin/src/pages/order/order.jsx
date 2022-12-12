@@ -3,7 +3,7 @@ import "./order.css";
 import { useLocation } from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
-import { getOrderByOrderId,updateStatusOrderById,updateIsPay} from "../../redux/apiCall"; 
+import { getOrderByOrderId,updateStatusOrderById,updateIsPay,addChipOrder} from "../../redux/apiCall"; 
 import { NotificationManager} from 'react-notifications';
 import {
   DateRange,
@@ -40,16 +40,24 @@ export default function Order() {
     if(res?.message){
       setData(res.data)
       NotificationManager.success( "Order has been update...",'Success message', 2000);
+      if(stt==="Delivered")
+      {
+        data.products?.forEach(item=>{
+          if(item.link){
+           addChip(item);
+          }
+        })
+      }
     }else{
       NotificationManager.error("",' Order can not update', 2000);
-      // setReset(!reset);
     }
+  }
+  const addChip=async(body)=>{
+    await addChipOrder(admin,body);
   }
   const changeIsPay=async()=>{
     const res=await updateIsPay(admin,orderId);
-    console.log(res);
     if(res?.message){
-      console.log(res.data);
       setData(res.data)
       NotificationManager.success( "Order has been update...",'Success message', 2000);
     }else{
