@@ -1,4 +1,5 @@
 const Link = require('../model/Link');
+const User=require('../model/User');
 
 const createLink= async (req, res) => {
     const duplicate = await Link.findOne({ userId: req.body.userId,productId:req.body.productId }).exec();
@@ -30,6 +31,20 @@ const addChipView=async (req,res)=>{
                 $set:{
                     view:view,
                     chip:chip,
+                }
+            }
+        )
+        const user=await User.findOne({_id:foundLink.userId}).exec();
+        if(!user) {
+            return res.status(204).json({ "data":"",'message': false });
+        }
+        let c=user.chip+10;
+        await User.updateOne(
+            {_id:user._id},
+            {
+                $set:{
+                    
+                    chip:c,
                 }
             }
         )
