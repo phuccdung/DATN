@@ -52,7 +52,8 @@ const getOrder=async(req,res)=>{
                         total:1,
                         name:1,
                         phone:1,
-                        status:1
+                        status:1,
+                        isPay:1
                     }
                 },
                 

@@ -12,6 +12,7 @@ export default function OrderList() {
   const admin=useSelector(selectCurrentUser);
   const [filterData,setFilterData]=useState([]);
   const [searchKey,setSearchKey]=useState("");
+  const [status,setStatus]=useState("")
   const [fromDate,setFromDate]=useState(Moment().startOf("day").subtract(3,"day").format("YYYY-MM-DD"));
   const [toDate,setToDate]=useState(Moment().endOf("day").format("YYYY-MM-DD"));
 
@@ -25,7 +26,6 @@ export default function OrderList() {
       if(res?.message){
         setData(res.data);
         setFilterData(res.data);
-        // console.log(res.data)
       }
     }
     getData()
@@ -35,12 +35,10 @@ export default function OrderList() {
 
   const handleFilter=(e)=>{
     let filter = e.currentTarget.value;
-    console.log(filter);
     if(filter){
       const dataResult=data.filter(item=>item.status===filter)
       setFilterData(dataResult);
     }else{
-
       setFilterData(data);
     }
     
@@ -55,7 +53,6 @@ export default function OrderList() {
   }
   const handleSearch=()=>{
     let search = searchKey ;
-
     if(search){
       const dataResult=data.filter(item=>{
         if(item.vendorName.toLowerCase().includes(search.toLowerCase())||
@@ -101,6 +98,11 @@ export default function OrderList() {
       width: 120,
     },
     {
+      field: "isPay",
+      headerName: "Payment to Vendor",
+      width: 200,
+    },
+    {
       field: "action",
       headerName: "Action",
       width: 150,
@@ -137,12 +139,12 @@ export default function OrderList() {
         </div>
         <div className="status_product">
           <select onChange={(e)=>handleFilter(e)} >
-            <option  value="" >All </option>
-            <option  value="Pending" >Pending </option>
-            <option  value="Accept" >Accept </option>
-            <option  value="Delivering" >Delivering</option>
-            <option value="Delivered" >Delivered </option>
-            <option  value="Cancelled" >Cancelled </option>
+            <option selected={status===""} value="" >All </option>
+            <option selected={status==="Pending"} value="Pending" >Pending </option>
+            <option selected={status==="Accept"} value="Accept" >Accept </option>
+            <option selected={status==="Delivering"} value="Delivering" >Delivering</option>
+            <option selected={status==="Delivered"} value="Delivered" >Delivered </option>
+            <option selected={status==="Cancelled"} value="Cancelled" >Cancelled </option>
 
           </select>
         </div>
