@@ -33,6 +33,7 @@ function ShopProductDetail() {
       } 
 
     const updateProduct=async(body)=>{
+        console.log(body);
         const res=await updateProductById(currentUser,body,id);
         if(res.message){
             NotificationManager.success( "Product has been update...",'Success message', 3000);
@@ -71,13 +72,13 @@ function ShopProductDetail() {
             },
             () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-               let body = { ...data, img: downloadURL };
+               let body = { ...data, img: downloadURL,userIdChange:currentUser.id };
                updateProduct(body);
             });
             }
         );
     }else{
-        updateProduct(data)
+        updateProduct({...data,userIdChange:currentUser.id})
     }
     }
   return (
@@ -133,8 +134,8 @@ function ShopProductDetail() {
                                         :
                                         (   
                                             <>
-                                            <option value="sale" >Sale</option>
-                                            <option value="pause" >Pause</option>
+                                            <option selected={data.status==="sale"} value="sale" >Sale</option>
+                                            <option selected={data.status==="pause"} value="pause" >Pause</option>
                                             </>
                                         
                                         )
