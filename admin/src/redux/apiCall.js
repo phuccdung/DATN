@@ -13,6 +13,22 @@ export const login = async (dispatch, user) => {
   }
 };
 
+export const updateIsPay = async (user,orderId) => {
+  try{
+    const res=await axios({
+      method: 'put',
+      url: BASE_URL+`orders/order/${orderId}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const updateStatusOrderById = async (user,body,orderId) => {
   try{
     const res=await axios({

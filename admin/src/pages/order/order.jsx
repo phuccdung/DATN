@@ -3,7 +3,7 @@ import "./order.css";
 import { useLocation } from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
-import { getOrderByOrderId,updateStatusOrderById} from "../../redux/apiCall"; 
+import { getOrderByOrderId,updateStatusOrderById,updateIsPay} from "../../redux/apiCall"; 
 import { NotificationManager} from 'react-notifications';
 import {
   DateRange,
@@ -37,6 +37,16 @@ export default function Order() {
       "userId":admin.id
     }
     const res=await updateStatusOrderById(admin,body,orderId);
+    if(res?.message){
+      setData(res.data)
+      NotificationManager.success( "Order has been update...",'Success message', 2000);
+    }else{
+      NotificationManager.error("",' Order can not update', 2000);
+      // setReset(!reset);
+    }
+  }
+  const changeIsPay=async()=>{
+    const res=await updateIsPay(admin,orderId);
     console.log(res);
     if(res?.message){
       console.log(res.data);
@@ -44,7 +54,6 @@ export default function Order() {
       NotificationManager.success( "Order has been update...",'Success message', 2000);
     }else{
       NotificationManager.error("",' Order can not update', 2000);
-      // setReset(!reset);
     }
   }
   return (
@@ -61,11 +70,19 @@ export default function Order() {
           <div className="changStatus">
             <span> Change Status:</span>
             <select  className='selectStatus'  onChange={(e)=>changStatus(e)}>
-              <option selected={data?.status==="Cancelled"} value="Cancelled" >Cancelled </option>
-              <option selected={data?.status==="Pending"} value="Pending" >Pending </option>
-              <option selected={data?.status==="Accept"} value="Accept" >Accept </option>
-              <option selected={data?.status==="Delivering"} value="Delivering" >Delivering </option>
-              <option selected={data?.status==="Delivered"} value="Delivered" >Delivered </option>
+              {
+                data.status==="Delivered"?
+                 <option selected={data?.status==="Delivered"} value="Delivered" >Delivered </option>
+                :
+                <>
+                   <option selected={data?.status==="Cancelled"} value="Cancelled" >Cancelled </option>
+                  <option selected={data?.status==="Pending"} value="Pending" >Pending </option>
+                  <option selected={data?.status==="Accept"} value="Accept" >Accept </option>
+                  <option selected={data?.status==="Delivering"} value="Delivering" >Delivering </option>
+                  <option selected={data?.status==="Delivered"} value="Delivered" >Delivered </option>
+                </>
+              }
+             
             </select>
           </div>
         </div>
@@ -139,7 +156,7 @@ export default function Order() {
                 <div className="total_item">
                   <span>Payment:</span>
                   {
-                    data?.status==="Delivered"?
+                    data?.isPay?
                      <span className='blue'>Payment Done</span>
                      :
                      <span className='red'>Unpaid</span>
@@ -170,7 +187,12 @@ export default function Order() {
                 }
               </tbody>
             </table>
-            <button className='btn__mark'> MARK AS PAY VENDOR</button>
+            {
+              data?.isPay?
+              null:
+
+              <button className='btn__mark' onClick={()=>changeIsPay()}> MARK AS PAY VENDOR</button>
+            }
           </div>
         </div>
       </div>

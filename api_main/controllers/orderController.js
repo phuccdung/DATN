@@ -204,6 +204,22 @@ const getOrderWithKey=async (req,res)=>{
         res.status(500).json({ 'data': err.message, "message": false})
     }
 }
+const updatePayVendor=async(req,res)=>{
+    try{
+        if (!req?.params?.id) return res.status(400).json({ "data": 'Order ID required','message':false} );
+        const updateOrder=  await Order.findByIdAndUpdate(
+            req.params.id,
+            {
+                isPay:true,
+     
+            },
+            { new: true }
+          );
+          res.status(200).json({ "data":updateOrder,'message':true});
+    }catch(err){
+         res.status(500).json({ 'data': err.message, "message": false})
+    }
+}
 const updateStatusOrder=async (req,res)=>{
     try {
         if (!req?.params?.id) return res.status(400).json({ "success": 'Order ID required','message':false} );
@@ -353,5 +369,6 @@ module.exports = {
     countQuantityOrder,
     countProductIdtWithDate,
     getOrder,
-    getOrderByOrderId
+    getOrderByOrderId,
+    updatePayVendor
 }
