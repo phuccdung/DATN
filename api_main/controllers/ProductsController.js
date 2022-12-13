@@ -1,5 +1,6 @@
 const Product = require('../model/Product');
 const User = require('../model/User');
+const Order = require('../model/Order');
 const CryptoJS=require("crypto-js");
 
 const createProduct= async (req, res) => {
@@ -10,6 +11,16 @@ const createProduct= async (req, res) => {
     }catch(err){
         res.status(500).json(err);
     } 
+}
+
+const getProductHomePage=async(req,res)=>{
+    try{
+        const newProduct=await Product.find({status:"sale"}).sort({updatedAt:-1}).limit(12)
+        res.json({"data":{new:newProduct},'message':true});
+
+    }catch(err){
+        res.status(500).json(err);
+    }
 }
 
 const getAllProductByVendorId=async(req,res)=>{
@@ -228,4 +239,5 @@ module.exports = {
     deleteProducts,
     getAllProductByVendorId,
     addComment,
+    getProductHomePage
 }

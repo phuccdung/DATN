@@ -86,7 +86,7 @@ export default function UserList() {
     { field: "_id", headerName: "ID", width: 200 },
     {
       field: "name",
-      headerName: "User",
+      headerName: "Name",
       width: 200,
       renderCell: (params) => {
         return (
@@ -155,7 +155,7 @@ export default function UserList() {
         rows={filterData}
         disableSelectionOnClick
         columns={columns}
-        pageSize={10}
+        pageSize={15}
         getRowId={(row)=>row._id}
         checkboxSelection
       />

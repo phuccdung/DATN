@@ -11,6 +11,11 @@ import Services from "../../services/services";
 import ProductList from "../../components/UI/ProductList/ProductList";
 import Clock from "../../components/UI/Clock/Clock"
 
+import { selectCurrentUser } from '../../redux/slices/userSlice';
+import { useSelector} from 'react-redux';
+import { getProductHome} from '../../redux/apiCall';
+
+
 
 import products from "../../assets/data/products";
 import countterimg from "../../assets/images/counter-timer-img.png"
@@ -23,6 +28,10 @@ const Home = () => {
   const [mobileProduct,setMobileProduct]=useState([]);
   const [wirelessProduct,setWirelessProduct]=useState([]);
   const [popularProduct,setPopularProduct]=useState([]);
+  const [newProducts,setNewProducts]=useState([]);
+
+  const currentUser=useSelector(selectCurrentUser);
+  
 
 
 
@@ -39,6 +48,14 @@ const Home = () => {
     setWirelessProduct(filterProduct3);
     setMobileProduct(filterProduct4);
     setPopularProduct(filterProduct5);
+
+    const getData=async()=>{
+      const res=await getProductHome();
+      if(res?.message){
+        setNewProducts(res.data.new)
+      }
+    };
+    getData();
 
   },[])
   return ( 
@@ -119,8 +136,7 @@ const Home = () => {
               <Col lg="12" className="text-center mb-5">
                 <h2 className="section__title">New Arrivals</h2>
               </Col>
-              <ProductList data={mobileProduct}/>
-              <ProductList data={wirelessProduct}/>
+              <ProductList data={newProducts}/>
             </Row>
           </Container>
         </section>

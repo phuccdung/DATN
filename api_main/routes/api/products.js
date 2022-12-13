@@ -9,6 +9,9 @@ router.route('/')
     .get(productsController.getProduct)
     .post(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.createProduct);
 
+router.route('/home')
+    .get(productsController.getProductHomePage);
+    
 router.route('/:id')
     .get(productsController.getProductById)
     .put(verifyJWT,verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),productsController.updateProduct)

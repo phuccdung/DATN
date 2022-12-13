@@ -29,6 +29,19 @@ export const checkBehaviorLink= async(userId,productId,user)=>{
   }
 }
 
+export const getProductHome= async(user)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`products/home`, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+
 export const createLinks= async(body,user)=>{
   try{
     const res=await axios({
