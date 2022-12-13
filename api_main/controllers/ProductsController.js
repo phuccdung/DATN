@@ -13,10 +13,29 @@ const createProduct= async (req, res) => {
     } 
 }
 
+
 const getProductHomePage=async(req,res)=>{
     try{
-        const newProduct=await Product.find({status:"sale"}).sort({updatedAt:-1}).limit(12)
-        res.json({"data":{new:newProduct},'message':true});
+        const newProduct=await Product.find({status:"sale"}).sort({updatedAt:-1}).limit(12);
+        const bestProduct=await Order.aggregate([
+            {$unwind: '$products'},
+            
+            {
+                $group:{
+                    _id:"$products.productId",
+                    total:{$sum:"$products.quantity"}
+                }
+            },
+            
+            {
+                $project:{total:1,_id:1,}
+            },
+            {$sort:{total:-1}}
+        ])
+        res.json({"data":{
+            new:newProduct,
+            best:bestProduct
+        },'message':true});
 
     }catch(err){
         res.status(500).json(err);
@@ -185,6 +204,9 @@ const updateProduct = async (req, res) => {
     if (!product) {
         return res.status(204).json({ 'message': `Product ID ${req.params.id} not found` ,'message':false});
     }
+    if(req.body.sold){
+        req.body.sold=product.sold+req.body.sold;
+    }
     const user=await User.findById(req.body.userIdChange);
     if(req.body.userIdChange==product.userId||user.roles?.Admin){
       const updateProduct=  await Product.findByIdAndUpdate(
@@ -239,5 +261,6 @@ module.exports = {
     deleteProducts,
     getAllProductByVendorId,
     addComment,
-    getProductHomePage
+    getProductHomePage,
+
 }

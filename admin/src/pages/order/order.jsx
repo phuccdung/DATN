@@ -3,7 +3,7 @@ import "./order.css";
 import { useLocation } from "react-router-dom";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
-import { getOrderByOrderId,updateStatusOrderById,updateIsPay,addChipOrder} from "../../redux/apiCall"; 
+import { getOrderByOrderId,updateStatusOrderById,updateIsPay,addChipOrder,updateProductById} from "../../redux/apiCall"; 
 import { NotificationManager} from 'react-notifications';
 import {
   DateRange,
@@ -43,6 +43,11 @@ export default function Order() {
       if(stt==="Delivered")
       {
         data.products?.forEach(item=>{
+          let body={
+            sold:item.quantity,
+            userIdChange:admin.id,
+          }
+          updateProduct(item.productId,body);
           if(item.link){
            addChip(item);
           }
@@ -51,6 +56,9 @@ export default function Order() {
     }else{
       NotificationManager.error("",' Order can not update', 2000);
     }
+  }
+  const updateProduct=async(productId,body)=>{
+    await updateProductById(productId,body,admin)
   }
   const addChip=async(body)=>{
     await addChipOrder(admin,body);

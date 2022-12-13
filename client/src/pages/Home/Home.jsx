@@ -52,6 +52,7 @@ const Home = () => {
     const getData=async()=>{
       const res=await getProductHome();
       if(res?.message){
+        console.log(res.data)
         setNewProducts(res.data.new)
       }
     };

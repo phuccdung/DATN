@@ -30,14 +30,15 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    userName:{
-        type: String,
-    },
     status:{
         type:String,
         default:"waiting",
     },
     stock:{
+        type:Number,
+        default:0,
+    },
+    sold:{
         type:Number,
         default:0,
     },
