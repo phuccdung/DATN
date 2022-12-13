@@ -42,7 +42,7 @@ const getOrder=async(req,res)=>{
                 },
                 {$unwind: '$userInfo'},
                 {$match:{
-                    "updatedAt": { $gte: fromDate,$lt:toDate} ,
+                    "createdAt": { $gte: fromDate,$lt:toDate} ,
                 }},
                 {
                     $project:{
