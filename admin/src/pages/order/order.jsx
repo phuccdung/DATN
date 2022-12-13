@@ -179,7 +179,7 @@ export default function Order() {
             <table className='table'>
               <thead>
                 <tr>
-                  <th>History</th>
+                  <th className='title_history'>History</th>
                 </tr>
               </thead>
               <tbody>
