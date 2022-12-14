@@ -25,9 +25,9 @@ export default function OrderList() {
       const res=await getOrder(admin,Moment(fromDate).startOf("date").toString(),Moment(toDate).endOf("date").toString(),false);
       if(res?.message){
         setData(res.data);
-        console.log(res.data);
         setFilterData(res.data);
         setStatus("")
+
       }
     }
     getData()
