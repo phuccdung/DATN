@@ -1,8 +1,11 @@
 .product__img{
-    
+    height: 270px !important;
+}
+.product__img img{
+    height: 100% !important;
 }
 .product__name{
-
+    height: 40px;
 }
 .product__card{
 }
