@@ -205,8 +205,7 @@ export default function Order() {
             </table>
             {
               data?.isPay?
-              null:
-
+              null:data.status==="Cancelled"?null:
               <button className='btn__mark' onClick={()=>changeIsPay()}> MARK AS PAY VENDOR</button>
             }
           </div>

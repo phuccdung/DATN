@@ -27,6 +27,7 @@ export default function OrderList() {
         setData(res.data);
         console.log(res.data);
         setFilterData(res.data);
+        setStatus("")
       }
     }
     getData()
