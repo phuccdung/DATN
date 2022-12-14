@@ -73,7 +73,7 @@ const getUser = async (req, res) => {
 const updateUser=async(req, res)=>{
     if (!req?.params?.id) return res.status(400).json({ "message": false });
     if (req.body.roles) return res.status(400).json({ "message": false });
-    if (req.body.chip) return res.status(400).json({ "message": false });
+    // if (req.body.chip) return res.status(400).json({ "message": false });
     const user = await User.findOne({ _id: req.body.userId }).exec();
     if (!user) {
         return res.status(204).json({ 'message': false });

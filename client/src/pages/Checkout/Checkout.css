@@ -31,3 +31,13 @@
     height: 2.5rem;
     font-size: 1.5rem;
 }
+.input_discount{
+    border: none;
+    color: white;
+    background-color: #0a1d37;
+    font-size: 1.2rem;
+    text-align: right;
+}
+.div_discount{
+    display: inline-block;
+}

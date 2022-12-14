@@ -45,6 +45,10 @@ const orderSchema = new Schema({
     img:{
         type:String,
     },
+    discount:{
+        type:Number,
+        default:0
+    },
     status:{
         type:String,
         default:"Pending"

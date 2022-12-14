@@ -8,7 +8,7 @@ import {useLocation,useNavigate} from 'react-router-dom';
 import { NotificationManager} from 'react-notifications';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {cartActions} from "../../redux/slices/cartSlice";
-import { createOrder ,updateCart,addBehavior,getUserById} from '../../redux/apiCall';
+import { createOrder ,updateCart,addBehavior,getUserById,updateUserById} from '../../redux/apiCall';
 
 
 const Checkout = () => {
@@ -22,6 +22,7 @@ const Checkout = () => {
   const [name,setName] = useState("");
   const [phone,setPhone] = useState("");
   const [address,setAddress] = useState("");
+  const [discount,setDiscount]=useState(0);
   const [loading,setLoading]=useState(false);
   const [data,setData]=useState({});
 
@@ -32,7 +33,7 @@ const Checkout = () => {
         setName(res.name);
         setPhone(res.phone);
         setAddress(res.address);
-        // console.log(res);
+        setDiscount(res.chip);
     }
     getInfo();
 },[])
@@ -61,7 +62,8 @@ const Checkout = () => {
             "address":address,
             "vendorId":item,
             "products":arr,
-            "total":arr.reduce((sum,curr)=>sum+curr.price*curr.quantity,0).toFixed(3)
+            "total":(arr.reduce((sum,curr)=>sum+curr.price*curr.quantity,0)-discount/uniqueVals.length).toFixed(3),
+            "discount":discount/uniqueVals.length
           }
           handleOrder(body)
         })
@@ -69,7 +71,12 @@ const Checkout = () => {
           handleDelete(item);
         });
         if(currentUser){
+          let body={
+              chip:Number(data.chip)-discount,
+              "userId":currentUser.id,
+          }
           updateCart(cartItems,currentUser,order,"remove");
+          await updateUserById(body,currentUser);
         }
         setLoading(false);
         navigate('/cart');
@@ -95,6 +102,18 @@ const Checkout = () => {
           },currentUser);
         }
     };
+    const changDiscount=(e)=>{
+      let d=Number(e.currentTarget.value);
+      if(currentUser){
+        if(d>data.chip||d<0){
+          NotificationManager.error("",'you do not have enough Chip!', 2000);
+        }else{
+          setDiscount(d);
+        }
+      }else{
+        NotificationManager.error("",'You must Login!', 2000);
+      }
+    }
   return (
     <Helmet title='Checkout'>
       <CommonSection title='Checkout'/>
@@ -114,19 +133,15 @@ const Checkout = () => {
                 </h6>
                 <Form className='billing__form' >
                   <FormGroup className='form__group'>
-                    <input type="text" required placeholder='Enter your name' value={data.name} onChange={e=>setName(e.currentTarget.value)}/>
-                  </FormGroup>
-
-                  {/* <FormGroup className='form__group'>
-                    <input type="email" placeholder='Enter your email' />
-                  </FormGroup> */}
-
-                  <FormGroup className='form__group'>
-                    <input type="number" required placeholder='Enter your phone' value={data.phone} onChange={e=>setPhone(e.currentTarget.value)}/>
+                    <input type="text" required placeholder='Enter your name' value={name} onChange={e=>setName(e.currentTarget.value)}/>
                   </FormGroup>
 
                   <FormGroup className='form__group'>
-                    <input type="text" required placeholder='Enter your address' value={data.address}onChange={e=>setAddress(e.currentTarget.value)} />
+                    <input type="number" required placeholder='Enter your phone' value={phone} onChange={e=>setPhone(e.currentTarget.value)}/>
+                  </FormGroup>
+
+                  <FormGroup className='form__group'>
+                    <input type="text" required placeholder='Enter your address' value={address}onChange={e=>setAddress(e.currentTarget.value)} />
                   </FormGroup>
 
                 </Form>
@@ -135,13 +150,14 @@ const Checkout = () => {
               <Col lg='4'>
                 <div className="checkout__cart">
                   <h6>Total Qty:<span>{order.reduce((sum,curr)=>sum+curr.quantity,0)} items</span> </h6>
-                  <h6>Subtotal:<span>${(order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)).toFixed(3)}</span> </h6>
-                  <h6>Shipping: <br/>
-                      free shipping
-                    <span>$0</span> 
+                  <h6>Subtotal:<span>{(order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)).toFixed(3)}$</span> </h6>
+                  <h6>Discount: 
+                    <div className='div_discount'>
+                      <input type="number" className='input_discount' value={discount}  onChange={e=>changDiscount(e)} />$
+                    </div>
                   </h6>
                   <h6>Free shipping</h6>
-                  <h4>Total Cost: <span>${order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0).toFixed(3)}</span> </h4>
+                  <h4>Total Cost: <span>{order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0).toFixed(3)-discount}$</span> </h4>
 
                   <button onClick={handleClick} className="order__btn">
                   Place an order
