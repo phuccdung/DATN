@@ -21,6 +21,7 @@ function Profile() {
         const getInfo=async()=>{
             const res= await getUserById(currentUser);
             setData(res);
+            console.log(res);
         }
         getInfo();
     },[])
@@ -113,7 +114,7 @@ function Profile() {
                                 src={data.img||user_icon} alt="" />  
                             <div className="userShowTopTitle">
                                 <div className="userShowUsername">{data.name}</div>
-                                <div className="userShowTypeCustomer">2000đ</div>
+                                <div className="userShowTypeCustomer">{data.chip} Chip</div>
                             </div>
                         </div>
                         

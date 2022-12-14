@@ -63,6 +63,7 @@ const getUser = async (req, res) => {
         birthday:1,
         address:1,
         gender:1,
+        chip:1
     }).exec();
     if (!user) {
         return res.status(204).json({"data":"", 'message': false });

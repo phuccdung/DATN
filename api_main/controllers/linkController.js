@@ -22,8 +22,8 @@ const addChipOrder=async(req,res)=>{
         if(!foundLink) {
             return res.status(204).json({ "data":"",'message': false });
         }
-        let sold=foundLink.sold+req.body.quantity;
-        let chip=foundLink.chip+10+(req.body.quantity*req.body.price/10).toFixed(0);
+        let sold=Number(foundLink.sold)+Number(req.body.quantity);
+        let chip=Number(foundLink.chip)+Number(10)+Number((req.body.quantity*req.body.price/10).toFixed(0));
         await Link.updateOne(
             {_id:req.params.id},
             {
@@ -37,7 +37,7 @@ const addChipOrder=async(req,res)=>{
         if(!user) {
             return res.status(204).json({ "data":"",'message': false });
         }
-        let c=user.chip+10+(req.body.quantity*req.body.price/10).toFixed(0);
+        let c=Number(user.chip)+Number(10)+Number((req.body.quantity*req.body.price/10).toFixed(0));
         await User.updateOne(
             {_id:user._id},
             {

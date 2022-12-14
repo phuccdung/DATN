@@ -217,7 +217,7 @@ const updateProduct = async (req, res) => {
         return res.status(204).json({ 'message': `Product ID ${req.params.id} not found` ,'message':false});
     }
     if(req.body.sold){
-        req.body.sold=product.sold+req.body.sold;
+        req.body.sold=Number(product.sold)+Number(req.body.sold);
     }
     const user=await User.findById(req.body.userIdChange);
     if(req.body.userIdChange==product.userId||user.roles?.Admin){
