@@ -1,7 +1,7 @@
 const Product = require('../model/Product');
 const User = require('../model/User');
-const Order = require('../model/Order');
-const CryptoJS=require("crypto-js");
+const Behavior =require("../model/Behavior");
+
 
 const createProduct= async (req, res) => {
     const newProduct=new Product(req.body);
@@ -16,31 +16,43 @@ const createProduct= async (req, res) => {
 
 const getProductHomePage=async(req,res)=>{
     try{
+        const date=new Date()
+        const lastDate=new Date(date.setDate(date.getDate()-7));
         const newProduct=await Product.find({status:"sale"}).sort({updatedAt:-1}).limit(12);
-        const bestProduct=await Order.aggregate([
-            {$unwind: '$products'},
-            
-            {
-                $group:{
-                    _id:"$products.productId",
-                    total:{$sum:"$products.quantity"}
+        const bestProduct=await Product.find({status:"sale"}).sort({sold:-1}).limit(12);
+        const topProduct= await Behavior.aggregate([
+            {$unwind: '$actions'},
+            { $match: { 
+                "actions.date": { $gte: lastDate } 
+                 } 
+            },
+            {$group: 
+                {
+                    _id: '$actions.find',                   
+                    total: {$sum: 1}
                 }
             },
-            
             {
-                $project:{total:1,_id:1,}
+                $sort:{
+                    total:-1
+                }
             },
-            {$sort:{total:-1}}
+            {
+                $limit:12
+            }
         ])
+        
         res.json({"data":{
             new:newProduct,
-            best:bestProduct
+            best:bestProduct,
+            trending:topProduct
         },'message':true});
 
     }catch(err){
         res.status(500).json(err);
     }
 }
+
 
 const getAllProductByVendorId=async(req,res)=>{
     const qStatus=req.query?.status;

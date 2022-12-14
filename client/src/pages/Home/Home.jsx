@@ -13,7 +13,7 @@ import Clock from "../../components/UI/Clock/Clock"
 
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import { useSelector} from 'react-redux';
-import { getProductHome} from '../../redux/apiCall';
+import { getProductHome,getProductById} from '../../redux/apiCall';
 
 
 
@@ -25,8 +25,7 @@ const Home = () => {
 
   const [trenProduct,setTrenProduct]=useState([]);
   const [bestProduct,setBestProduct]=useState([]);
-  const [mobileProduct,setMobileProduct]=useState([]);
-  const [wirelessProduct,setWirelessProduct]=useState([]);
+
   const [popularProduct,setPopularProduct]=useState([]);
   const [newProducts,setNewProducts]=useState([]);
 
@@ -37,23 +36,19 @@ const Home = () => {
 
 
   useEffect(()=>{
-    const filterProduct1=products.filter(product=> {return product.category==="chair"})
-    const filterProduct2=products.filter(product=> {return product.category==="sofa"})
-    const filterProduct3=products.filter(product=> {return product.category==="wireless"})
-    const filterProduct4=products.filter(product=> {return product.category==="mobile"})
-    const filterProduct5=products.filter(product=> {return product.category==="watch"})
-
-    setTrenProduct(filterProduct1);
-    setBestProduct(filterProduct2);
-    setWirelessProduct(filterProduct3);
-    setMobileProduct(filterProduct4);
-    setPopularProduct(filterProduct5);
-
     const getData=async()=>{
       const res=await getProductHome();
       if(res?.message){
-        console.log(res.data)
-        setNewProducts(res.data.new)
+        setNewProducts(res.data.new);
+        setBestProduct(res.data.best);
+        let arr=[];
+        res.data?.trending.forEach(async(item)=>{
+          const p=await getProductById(item._id);
+          if(p?.message){
+            arr.push(p.data);
+            setTrenProduct(arr);
+          }
+        })
       }
     };
     getData();
@@ -88,15 +83,15 @@ const Home = () => {
         </Container>
         </section>
         <Services/>
-        <section className="trending__products">
-            <Container>
-                <Row>
-                    <Col lg="12" className="text-center">
-                        <h2 className="section__title"> Trending Products</h2>
-                    </Col>
-                    <ProductList data={trenProduct}/>
-                </Row>
-            </Container>
+        <section className="new__arrivals">
+          <Container>
+            <Row>
+              <Col lg="12" className="text-center mb-5">
+                <h2 className="section__title">New Arrivals</h2>
+              </Col>
+              <ProductList data={newProducts}/>
+            </Row>
+          </Container>
         </section>
 
         <section className="best__sales">
@@ -131,18 +126,20 @@ const Home = () => {
           </Container>
         </section>
 
-        <section className="new__arrivals">
-          <Container>
-            <Row>
-              <Col lg="12" className="text-center mb-5">
-                <h2 className="section__title">New Arrivals</h2>
-              </Col>
-              <ProductList data={newProducts}/>
-            </Row>
-          </Container>
+        
+
+        <section className="trending__products">
+            <Container>
+                <Row>
+                    <Col lg="12" className="text-center">
+                        <h2 className="section__title"> Trending Products</h2>
+                    </Col>
+                    <ProductList data={trenProduct}/>
+                </Row>
+            </Container>
         </section>
 
-        <section className="popular__category">
+        {/* <section className="popular__category">
         <Container>
             <Row>
               <Col lg="12" className="text-center mb-5">
@@ -151,7 +148,7 @@ const Home = () => {
               <ProductList data={popularProduct}/>
             </Row>
           </Container>
-        </section>
+        </section> */}
     </Helmet>
   )
 }
