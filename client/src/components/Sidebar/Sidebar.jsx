@@ -23,6 +23,11 @@ function Sidebar({num}) {
                My Order
               </Link>
             </motion.li>
+            <motion.li whileTap={{scale:1.2}} className={num===5?"sidebarListItem  active":"sidebarListItem "}>
+              <Link to="/link">
+               My Link
+              </Link>
+            </motion.li>
           </ul>
         </div>
         {

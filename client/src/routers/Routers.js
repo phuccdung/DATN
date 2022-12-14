@@ -17,6 +17,7 @@ import ShopOrder from "../pages/ShopOrder/ShopOrder";
 import ShopProductDetail from "../pages/ShopPoroductDetail/ShopProductDetail";
 import ShopNewProduct from "../pages/ShopNewProduct/ShopNewProduct";
 import ImportProduct from "../pages/ImportPage/ImportPage";
+import Link from "../pages/Link/Link";
 
 
 const Routers = () => {
@@ -32,6 +33,7 @@ const Routers = () => {
     <Route path="/login" element={currentUser?<Navigate to="/home"/>: <Login/>}> </Route>
     <Route path="/signup" element={<Signup/>}> </Route>
     <Route path="/profile" element={<Profile/>}> </Route>
+    <Route path="/link" element={<Link/>}> </Route>
     <Route path="/myorder" element={<MyOrder/>}> </Route>
     {
       currentUser?.role?.Editor?
