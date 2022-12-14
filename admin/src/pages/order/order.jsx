@@ -16,7 +16,6 @@ import Moment from 'moment';
 export default function Order() {
   const admin=useSelector(selectCurrentUser);
   const [data,setData]=useState({});
-  const [reset,setReset]=useState(false);
   const location=useLocation();
   const orderId=location.pathname.split("/")[2];
   
@@ -25,6 +24,7 @@ export default function Order() {
       const res=await getOrderByOrderId(admin,orderId);
       if(res?.message){
         setData(res.data);
+        console.log(res.data);
       }
     }
     getData();
@@ -159,15 +159,15 @@ export default function Order() {
               <div>
                 <div className="total_item">
                   <span>Subtotal:</span>
-                  <span>${data?.total}</span>
+                  <span>${data?.total-data?.discount}</span>
                 </div>
                 <div className="total_item">
-                  <span>Shipping cost:</span>
-                  <span>$0</span>
+                  <span>Discount:</span>
+                  <span>${data?.discount||0}</span>
                 </div>
                 <div className="total_item">
                   <span>Grand total:</span>
-                  <span>$0</span>
+                  <span>${data?.total}</span>
                 </div>
                 <div className="total_item">
                   <span>Payment:</span>

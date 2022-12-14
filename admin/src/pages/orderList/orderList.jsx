@@ -90,6 +90,16 @@ export default function OrderList() {
       width: 150,
     },
     {
+      field: "discount",
+      headerName: "Discount",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <span>{params.row.discount||0}</span>
+        );
+      },
+    },
+    {
       field: "total",
       headerName: "Total",
       width: 120,

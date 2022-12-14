@@ -54,7 +54,8 @@ const getOrder=async(req,res)=>{
                         phone:1,
                         status:1,
                         isPay:1,
-                        createdAt:1
+                        createdAt:1,
+                        discount:1,
                     }
                 },
                 {
