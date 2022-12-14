@@ -25,6 +25,7 @@ export default function OrderList() {
       const res=await getOrder(admin,Moment(fromDate).startOf("date").toString(),Moment(toDate).endOf("date").toString(),false);
       if(res?.message){
         setData(res.data);
+        console.log(res.data);
         setFilterData(res.data);
       }
     }
@@ -69,11 +70,11 @@ export default function OrderList() {
   }
   
   const columns = [
-    { field: "_id", headerName: "ID", width: 200 },
+    { field: "_id", headerName: "ID", width: 150 },
     {
       field: "name",
       headerName: "Customer",
-      width: 200,
+      width: 150,
       
     },
     { field: "address", headerName: "Address", width: 200 },

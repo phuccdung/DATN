@@ -26,7 +26,7 @@ const getOrder=async(req,res)=>{
         const qLimit=req.query.limit;
         let data;
         if(qLimit==="true"){
-            data= await Order.find().sort({updatedAt:-1}).limit(5);
+            data= await Order.find().sort({createdAt:-1}).limit(5);
             return res.status(200).json({ "data":data,'message':true});
         }else{
             data= await Order.aggregate([
@@ -53,9 +53,15 @@ const getOrder=async(req,res)=>{
                         name:1,
                         phone:1,
                         status:1,
-                        isPay:1
+                        isPay:1,
+                        createdAt:1
                     }
                 },
+                {
+                    $sort:{
+                        createdAt:-1
+                    }
+                }
                 
              ])
         }
