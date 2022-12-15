@@ -12,6 +12,21 @@ export const addChipView= async(id)=>{
       url: BASE_URL+`links/view/${id}`,
     });
 }
+export const getLinkById= async(user)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`links/${user.id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 
 export const checkBehaviorLink= async(userId,productId,user)=>{
   try{

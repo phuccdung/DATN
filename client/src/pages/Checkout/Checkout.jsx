@@ -151,9 +151,9 @@ const Checkout = () => {
                 <div className="checkout__cart">
                   <h6>Total Qty:<span>{order.reduce((sum,curr)=>sum+curr.quantity,0)} items</span> </h6>
                   <h6>Subtotal:<span>{(order.reduce((sum,curr)=>sum+curr.quantity*curr.price,0)).toFixed(3)}$</span> </h6>
-                  <h6>Discount: 
+                  <h6>Use Chip: 
                     <div className='div_discount'>
-                      <input type="number" className='input_discount' value={discount}  onChange={e=>changDiscount(e)} />$
+                      <input type="number" className='input_discount' value={discount}  onChange={e=>changDiscount(e)} />
                     </div>
                   </h6>
                   <h6>Free shipping</h6>

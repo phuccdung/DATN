@@ -7,6 +7,8 @@ const verifyRoles = require('../../middleware/verifyRoles');
 
 router.route('/')
     .post(verifyJWT,linkController.createLink);
+router.route('/:userId')
+    .get(verifyJWT,linkController.getLinkByUserId);
 
 router.route('/view/:id')
     .post(linkController.addChipView);    

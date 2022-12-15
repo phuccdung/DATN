@@ -1,5 +1,6 @@
 const Link = require('../model/Link');
 const User=require('../model/User');
+const Product = require('../model/Product');
 
 const createLink= async (req, res) => {
     const duplicate = await Link.findOne({ userId: req.body.userId,productId:req.body.productId }).exec();
@@ -88,10 +89,46 @@ const addChipView=async (req,res)=>{
         res.status(500).json(err);
     }
 }
+const getLinkByUserId= async (req, res) => {
+    try{ 
+        const data=await Product.aggregate([
+            { $addFields: { "productId": { $toString: "$_id" }}},
+            {
+                $lookup:
+                {
+                    from: "links",
+                    localField: "productId",
+                    foreignField: "productId",
+                    as: "linkInfo"
+                }
+            },
+            {$unwind: '$linkInfo'},
+            { $match: { 
+                "linkInfo.userId":req.params.userId
+                }
+            },
+            {
+                $project:{
+                    _id:1,
+                    img:1,
+                    title:1,
+                    "chip":'$linkInfo.chip',
+                    "sold":'$linkInfo.sold',
+                    "view":'$linkInfo.view',
+                    "link":'$linkInfo._id',
 
+                }
+            },
+        ])
+        res.json({"data":data,'message':true});
+    }catch(err){
+        res.status(500).json(err);
+    } 
+}
 
 module.exports = {
     createLink,
     addChipView,
-    addChipOrder
+    addChipOrder,
+    getLinkByUserId
 }

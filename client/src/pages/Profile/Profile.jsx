@@ -21,7 +21,6 @@ function Profile() {
         const getInfo=async()=>{
             const res= await getUserById(currentUser);
             setData(res);
-            console.log(res);
         }
         getInfo();
     },[])
