@@ -39,22 +39,17 @@ export default function User() {
         let fd=Moment(fromDate).startOf("day");
         let td=Moment(toDate).endOf("day");
         const res2=await countOrderVendor(admin,res._id,fd,td); 
-        console.log(res2);   
         if(res2?.message){
           let arr=[];
           res2.data.forEach((item)=>{
             let totalLink=res2.dataLink.filter((i)=>{return i._id===item._id.productId});
-            console.log(item,"/",totalLink)
             if(totalLink.length>0){
-              console.log(totalLink[0]?.total);
               arr.push({ name: item._id.productId, "Total Sales": item.total,"Sale By Link": totalLink[0].total,"Title":item._id.productName})
             }else{
               arr.push({ name: item._id.productId, "Total Sales": item.total,"Sale By Link": 0,"Title":item._id.productName})
-              console.log("0");
             }
 
           })
-          console.log(arr);
           setOrderStats(arr);
         }   
         
@@ -69,7 +64,6 @@ export default function User() {
             return {name:item._id,"Active KeyWord": item.total}
           });
           setKeyDataStats(arr2);
-          console.log(analytics);
         }
       }
     }
@@ -101,7 +95,6 @@ export default function User() {
                 (snapshot) => {
                   const progress =
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                  console.log("Upload is " + progress + "% done");
                   switch (snapshot.state) {
                     case "paused":
                       NotificationManager.info("Upload is paused");
@@ -131,7 +124,6 @@ export default function User() {
   const updateUser =async (body) => {
     try{
       const res= await updateUserById(user._id,body,admin);
-      console.log(res);
       if(res.message){
         NotificationManager.success( "User has been update...",'Success message', 3000);
         setUser(res.data);
@@ -161,7 +153,7 @@ export default function User() {
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Profile User</h1>
+        <h1 className="userTitle"> {user.roles?.Editor? "User Profile - Vendor":"User Profile - Customer"}</h1>
         {
           user.roles?.Editor?
           null

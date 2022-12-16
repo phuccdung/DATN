@@ -3,6 +3,21 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:3500/";
 
+export const income = async (user,date) => {
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`orders/income?date=${date}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 
 export const addChipOrder = async (user,body) => {
   try{

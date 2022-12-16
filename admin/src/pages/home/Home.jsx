@@ -105,8 +105,8 @@ export default function Home() {
         <select onChange={(e)=>handleFilterStatus(e)} >
           <option value="">ALL</option>
           <option value="view">View Product</option>
-          <option value="care">Care to Product</option>
-          <option value="want">Want to buy Product</option>
+          <option value="care">Concern Product</option>
+          <option value="want">Want To Buy Product</option>
           <option value="buy">Buy Product</option>
           <option value="key">KeyWords</option>
         </select>

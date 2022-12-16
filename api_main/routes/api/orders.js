@@ -11,6 +11,8 @@ router.route('/order/:id')
     .get(verifyJWT,ordersController.getOrderByOrderId)
     .put(verifyJWT,verifyRoles(ROLES_LIST.Admin),ordersController.updatePayVendor);
 
+router.route('/income')
+    .get(verifyJWT,ordersController.income);    
 router.route('/')
     .get(verifyJWT,verifyRoles(ROLES_LIST.Admin),ordersController.countQuantityOrder)
     .post(ordersController.createOrder);
