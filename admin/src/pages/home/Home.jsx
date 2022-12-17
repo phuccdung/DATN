@@ -38,7 +38,7 @@ export default function Home() {
       res.map((item) =>
         setUserStats((prev) => [
           ...prev,
-          { name: month[item._id - 1], "Active User": item.total },
+          { name: month[item._id - 1], "User Register": item.total },
         ])
       )
       const res2=await analyticsOrder(admin); 
@@ -93,8 +93,8 @@ export default function Home() {
     <div className="home">
       {!admin?.role.Admin&&(<Redirect to="/login" ></Redirect>)}
       <FeaturedInfo />
-      <Chart data={orderStats} title="Order Analytics" grid dataKey="Total Item" />
-      <Chart data={userStats} title="User Analytics" grid dataKey="Active User" />
+      <Chart data={orderStats} title="Order Analytics" grid dataKey="Total Item" line={true}/>
+      <Chart data={userStats} title="User Analytics" grid dataKey="User Register" line={true}/>
       <div className="">
       <div className="filter__widget">
         <select onChange={(e)=>handleFilterDay(e)} >

@@ -182,7 +182,7 @@ export default function User() {
             </div>
             <div className="analyticsTop">
               <div className="chartLeft">
-              <Chart data={orderStats} dataKey="Total Sales" title="Sales Performance"/>
+              <Chart data={orderStats} dataKey="Total Sales" title="Sales Performance" />
               </div>
             </div>
           </>
@@ -191,7 +191,7 @@ export default function User() {
         (
           <div className="analyticsTop">
             <div className="chartLeft">
-            <Chart data={actionDataStats} title="Product Behavior Analytics" grid dataKey="Active Product"/>
+            <Chart data={actionDataStats} title="Behavior Analytics" grid dataKey="Active Product"/>
             </div>
             <div className="chartLeft">
             <Chart data={keyDataStats} title="KeyWord Analytics" grid dataKey="Active KeyWord"/>
