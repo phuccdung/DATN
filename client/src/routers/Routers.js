@@ -18,6 +18,7 @@ import ShopProductDetail from "../pages/ShopPoroductDetail/ShopProductDetail";
 import ShopNewProduct from "../pages/ShopNewProduct/ShopNewProduct";
 import ImportProduct from "../pages/ImportPage/ImportPage";
 import Link from "../pages/Link/Link";
+import Analytics from '../pages/Analytic/Analytic';
 
 
 const Routers = () => {
@@ -43,6 +44,7 @@ const Routers = () => {
         <Route path="/product/:id" element={<ShopProductDetail/>}> </Route>
         <Route path="/newproduct" element={<ShopNewProduct/>}> </Route>
         <Route path="/import" element={<ImportProduct/>}> </Route>
+        <Route path="/analytic" element={<Analytics/>}> </Route>
       </>
       :null
     }

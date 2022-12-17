@@ -45,6 +45,11 @@ function Sidebar({num}) {
                   Orders
                 </Link>
               </motion.li>
+              <motion.li whileTap={{scale:1.2}}  className={num===6?"sidebarListItem  active":"sidebarListItem "}>
+                <Link to="/analytic">
+                  Analytics
+                </Link>
+              </motion.li>
             </ul>
           </div>
           : null
