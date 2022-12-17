@@ -124,7 +124,7 @@ function ShopOrder() {
                             <div className="topOrderDetail">
                               <div className="leftDetail">
                                 {/* <span className="vendorName">Name: {order.name}  </span> */}
-                                <span className="totalOrder">Total: ${order.total}</span>
+                                <span className="totalOrder">Total: ${(order.total+order.discount)}</span>
                               </div>
 
                               <div className="rightDetail">
