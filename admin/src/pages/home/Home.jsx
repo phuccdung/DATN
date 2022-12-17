@@ -100,7 +100,7 @@ export default function Home() {
         <select onChange={(e)=>handleFilterDay(e)} >
           <option value="7">One week</option>
           <option value="30">One Month</option>
-          <option value="90">Three Month</option>
+          <option value="90">Three Months</option>
         </select>
         <select onChange={(e)=>handleFilterStatus(e)} >
           <option value="">ALL</option>

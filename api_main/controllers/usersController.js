@@ -30,7 +30,7 @@ const getAllVendor=async (req,res)=>{
     try{
         let user;
         if(qNew){
-             user=await User.find({"roles.Editor":1984}).sort({createdAt:-1}).limit(5);
+             user=await User.find().sort({createdAt:-1}).limit(5);
         }else{
              user=await User.find({"roles.Editor":1984});
         }

@@ -42,7 +42,6 @@ export default function WidgetSm() {
           />
           <div className="widgetSmUser">
             <span className="widgetSmUsername">{user.username}</span>
-            <span className="widgetSmUserTitle">Software Engineer</span>
           </div>
           <Link to={"/user/"+user._id}>
             <button className="widgetSmButton">
