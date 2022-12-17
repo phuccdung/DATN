@@ -108,7 +108,8 @@ export default function Home() {
           <option value="care">Concern Product</option>
           <option value="want">Want To Buy Product</option>
           <option value="buy">Buy Product</option>
-          <option value="key">KeyWords</option>
+          <option value="key">Existent KeyWords</option>
+          <option value="key">Inexistent KeyWords</option>
         </select>
       </div>
         <Chart data={findStats} title="Behavior Analytics" grid dataKey="Active Product"/>

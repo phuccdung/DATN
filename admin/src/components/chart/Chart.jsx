@@ -13,7 +13,6 @@ import {
 } from "recharts";
 
 export default function Chart({ title, data, dataKey, grid,line }) {
-
   return (
     <div className="chart">
       <h3 className="chartTitle">{title}</h3>
@@ -44,19 +43,29 @@ export default function Chart({ title, data, dataKey, grid,line }) {
             <BarChart width={730}
               height={250}
               data={data}
-              margin={{ top: 20, right: 100, left: 20, bottom: 15 }}
+              margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              {
+              {/* {
                 title==="KeyWord Analytics"?
                 <XAxis  dataKey="name" stroke="#5550bd" label ={"Keyword"} />
                   :
                 <XAxis  dataKey="name" stroke="#5550bd" label ={"ID of Product"} />
-              }
-              <YAxis label ={"Count"}/>
+              } */}
+              <XAxis  dataKey="name" stroke="#5550bd"  />
+              <YAxis />
+              
+                  <Bar  dataKey="Sale By Link" fill="#82ca9d"  />                
+                
+              
               <Bar   dataKey={dataKey} fill="#5550bd" />
-              <Bar  dataKey="Sale By Link" fill="#82ca9d"  />
-              <Bar  dataKey="Title" fill="#00008B"  />
+             
+                 <Bar  dataKey="Title" fill="#00008B"  />              
+                
+              
+                  
+
+              
               <Tooltip />
               <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />
             </BarChart>
