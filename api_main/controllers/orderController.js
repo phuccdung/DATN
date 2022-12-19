@@ -418,11 +418,61 @@ const income=async(req,res)=>{
 
 const incomeIdVendor=async(req,res)=>{
     try{
-        res.status(200).json({"data":"data",'message':true});
+        const month=new Date(req.query.date);
+        const data= await Order.aggregate([
+            { $match: { 
+                createdAt: { $gte: month },
+                vendorId:req.params.id
+               },            
+            },
+            {
+                $project: {
+                 month: { $month: "$createdAt" },
+                 amount:"$total",
+                 discount:"$discount"
+                },
+            },
+            {
+                $group: {
+                _id: "$month",    
+                number:{$sum:'$amount'},
+                quantity:{$sum:1},
+                dis:{$sum:'$discount'},
+                },
+            },
+            { $sort : { _id : 1 } }
+        ]);
+        const dataLink = await Order.aggregate([
+            {$unwind: '$products'},
+            { $match: { 
+                createdAt: { $gte: month} ,
+                "products.link":{ $ne:"" },
+                vendorId:req.params.id
+                }
+            },
+            {
+                $project: {
+                 month: { $month: "$createdAt" },
+                 multiply: { $multiply: [ "$products.price", "$products.quantity" ] }
+                },
+            },
+            {
+                $group: {
+                _id: "$month",    
+                total:{ $sum:"$multiply" },
+                
+                },
+            },
+            { $sort : { _id : 1 } }
+            
+        ]);
+        res.status(200).json({"data":data,"dataLink":dataLink,'message':true});
     }catch(err){
         res.status(500).json(err); 
     }
 }
+
+
 
 
 
@@ -439,5 +489,5 @@ module.exports = {
     getOrderByOrderId,
     updatePayVendor,
     income,
-    incomeIdVendor
+    incomeIdVendor,
 }

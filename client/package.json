@@ -21,6 +21,7 @@
     "react-scripts": "5.0.1",
     "react-share": "^4.4.1",
     "reactstrap": "^9.1.4",
+    "recharts": "^2.2.0",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
     "remixicon": "^2.5.0",

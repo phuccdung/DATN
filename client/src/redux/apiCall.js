@@ -27,11 +27,26 @@ export const getLinkById= async(user)=>{
     return null;
   }
 }
-export const incomeIdVendor= async(user)=>{
+export const incomeIdVendor= async(user,date)=>{
   try{
     const res=await axios({
       method: 'get',
-      url: BASE_URL+`orders/income/${user.id}`,
+      url: BASE_URL+`orders/income/${user.id}?date=${date}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
+export const countOrderVendor = async (user,fromDate,toDate)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`orders/analysis/${user.id}?fromDate=${fromDate}&toDate=${toDate}`,
       headers: { 
         Authorization: "Bearer " + user.accessToken,
       }, 

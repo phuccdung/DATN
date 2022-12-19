@@ -3,7 +3,19 @@
 }
 .analytic{
     flex: 4;
+    flex-direction: column;
+    padding: 10px;   
+}
+.analytic_card_3{
+    width: 25%;
+    justify-items: center;
+    text-align: center;
+    -webkit-box-shadow:0px 0px 5px -10px rgb(0, 0, 0,0.75);
+    box-shadow:  0px 0px 15px -10px rgb(0, 0, 0,0.75); 
     padding: 10px;
-    margin-left: 30px;
-    margin: 30px;
+    font-size: 2rem;
+    border-radius: 10px;
+}
+.search__box{
+    margin-left: 20px;
 }
