@@ -24,7 +24,7 @@ const addChipOrder=async(req,res)=>{
             return res.status(204).json({ "data":"",'message': false });
         }
         let sold=Number(foundLink.sold)+Number(req.body.quantity);
-        let chip=Number(foundLink.chip)+Number(10)+Number((req.body.quantity*req.body.price/10).toFixed(0));
+        let chip=Number(foundLink.chip)+Number(1)+Number((req.body.quantity*req.body.price/10).toFixed(0));
         await Link.updateOne(
             {_id:req.params.id},
             {
@@ -38,7 +38,7 @@ const addChipOrder=async(req,res)=>{
         if(!user) {
             return res.status(204).json({ "data":"",'message': false });
         }
-        let c=Number(user.chip)+Number(10)+Number((req.body.quantity*req.body.price/10).toFixed(0));
+        let c=Number(user.chip)+Number(1)+Number((req.body.quantity*req.body.price/10).toFixed(0));
         await User.updateOne(
             {_id:user._id},
             {
@@ -61,7 +61,7 @@ const addChipView=async (req,res)=>{
             return res.status(204).json({ "data":"",'message': false });
         }
         let view=foundLink.view+1;
-        let chip=foundLink.chip+10;
+        let chip=foundLink.chip+0.1;
         await Link.updateOne(
             {_id:req.params.id},
             {
@@ -75,7 +75,7 @@ const addChipView=async (req,res)=>{
         if(!user) {
             return res.status(204).json({ "data":"",'message': false });
         }
-        let c=user.chip+10;
+        let c=user.chip+0.1;
         await User.updateOne(
             {_id:user._id},
             {
@@ -91,40 +91,94 @@ const addChipView=async (req,res)=>{
 }
 const getLinkByUserId= async (req, res) => {
     try{ 
-        const data=await Product.aggregate([
-            { $addFields: { "productId": { $toString: "$_id" }}},
-            {
-                $lookup:
+        const isVendor=req.query.isVendor;
+        if(isVendor=="true"){
+            const data =await Link.aggregate([
+                { $addFields: { "product": { $toObjectId: "$productId" }}},
+                { $addFields: { "user": { $toObjectId: "$userId" }}},
                 {
-                    from: "links",
-                    localField: "productId",
-                    foreignField: "productId",
-                    as: "linkInfo"
+                    $lookup:{
+                        from:"products",
+                        localField:"product",
+                        foreignField:"_id",
+                        as:"productInfo"
+                    }
+                },
+                {$unwind: '$productInfo'},
+                {
+                    $match:{
+                        "productInfo.userId":req.params.userId,
+                    }
+                },
+                {
+                    $lookup:{
+                        from:"users",
+                        localField:"user",
+                        foreignField:"_id",
+                        as:"userinfo"
+                    }
+                },
+                {$unwind: '$userinfo'},
+                {
+                    $project:{
+                        chip:1,
+                        view:1,
+                        sold:1,
+                        "title":"$productInfo.title",
+                        "img":"$productInfo.img",
+                        "username":"$userinfo.username",
+                        
+                    }
+                },
+                {$sort:{chip:-1}},
+                {
+                    $limit:10
                 }
-            },
-            {$unwind: '$linkInfo'},
-            { $match: { 
-                "linkInfo.userId":req.params.userId
-                }
-            },
-            {
-                $project:{
-                    _id:1,
-                    img:1,
-                    title:1,
-                    "chip":'$linkInfo.chip',
-                    "sold":'$linkInfo.sold',
-                    "view":'$linkInfo.view',
-                    "link":'$linkInfo._id',
 
+            ])
+            res.json({"data":data,'message':true});
+        }else{
+            const data=await Product.aggregate([
+                { $addFields: { "productId": { $toString: "$_id" }}},
+                {
+                    $lookup:
+                    {
+                        from: "links",
+                        localField: "productId",
+                        foreignField: "productId",
+                        as: "linkInfo"
+                    }
+                },
+                {$unwind: '$linkInfo'},
+                { $match: { 
+                    "linkInfo.userId":req.params.userId
+                    }
+                },
+                {
+                    $project:{
+                        _id:1,
+                        img:1,
+                        title:1,
+                        "chip":'$linkInfo.chip',
+                        "sold":'$linkInfo.sold',
+                        "view":'$linkInfo.view',
+                        "link":'$linkInfo._id',
+    
+                    }
+                },
+                {
+                    $sort:{
+                        chip:-1
+                    }
                 }
-            },
-        ])
-        res.json({"data":data,'message':true});
+            ])
+            res.json({"data":data,'message':true});
+        }
     }catch(err){
         res.status(500).json(err);
     } 
 }
+
 
 module.exports = {
     createLink,

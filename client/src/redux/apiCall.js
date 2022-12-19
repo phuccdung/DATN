@@ -12,11 +12,11 @@ export const addChipView= async(id)=>{
       url: BASE_URL+`links/view/${id}`,
     });
 }
-export const getLinkById= async(user)=>{
+export const getLinkById= async(user,isVendor)=>{
   try{
     const res=await axios({
       method: 'get',
-      url: BASE_URL+`links/${user.id}`,
+      url: BASE_URL+`links/${user.id}?isVendor=${isVendor}`,
       headers: { 
         Authorization: "Bearer " + user.accessToken,
       }, 

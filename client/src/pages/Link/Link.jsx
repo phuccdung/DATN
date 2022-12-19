@@ -15,7 +15,7 @@ const Link = () => {
   const [data,setData]=useState([])
   useEffect(()=>{
     const getData=async()=>{
-      const res=await getLinkById(currentUser);
+      const res=await getLinkById(currentUser,false);
       if(res?.message){
         setData(res.data);
       }
@@ -42,15 +42,15 @@ const Link = () => {
                       </div>
                       <div className="analytic_card">
                       <h4>Sales</h4>
-                        <span>{data.reduce((sum,curr)=>sum+curr?.sold,0)}</span>
+                        <span>{Array.isArray(data)? data?.reduce((sum,curr)=>sum+curr?.sold,0):0}</span>
                       </div>
                       <div className="analytic_card">
                         <h4>Views</h4>
-                        <span>{data.reduce((sum,curr)=>sum+curr?.view,0)}</span>
+                        <span>{Array.isArray(data)? data?.reduce((sum,curr)=>sum+curr?.view,0):0}</span>
                       </div>
                       <div className="analytic_card">
                         <h4>Total Chip</h4>
-                        <span>{data.reduce((sum,curr)=>sum+curr?.chip,0).toFixed(1)}</span>
+                        <span>{Array.isArray(data)?data?.reduce((sum,curr)=>sum+curr?.chip,0).toFixed(0):0} $</span>
                       </div>
                     </div>
                   </Col>
@@ -73,8 +73,8 @@ const Link = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {
-                              data.map((item,index)=>(
+                            { Array.isArray(data)?
+                              data?.map((item,index)=>(
                                 <tr key={index}>
                                   
                                   <td>
@@ -90,6 +90,7 @@ const Link = () => {
                                   </td>
                                 </tr>
                               ))
+                              :null
                             }
                           </tbody>
                         </table>

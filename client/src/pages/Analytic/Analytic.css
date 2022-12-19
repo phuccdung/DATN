@@ -19,3 +19,45 @@
 .search__box{
     margin-left: 20px;
 }
+.md_l_20{
+    margin-left: 20px;
+}
+.table_analytic{
+    padding: 10px;
+    width: 100%;
+    margin-top: 20px;
+    -webkit-box-shadow:0px 0px 5px -10px rgb(0, 0, 0,0.75);
+    box-shadow:  0px 0px 15px -10px rgb(0, 0, 0,0.75);
+}
+.table_analytic thead{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.table_analytic tr{
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.555);
+}
+.table_analytic th{
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+.table_analytic tr img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.text_start{
+    text-align: start;
+}
+.td_border{
+    border-top: 0.5px solid rgba(0, 0, 0, 0.555);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.555);
+}
+td span{
+    margin: 5px;
+    font-size: 12px;
+    margin-left: 60px;
+}
+.text_user_analytic{
+    font-size: 14px !important;
+}

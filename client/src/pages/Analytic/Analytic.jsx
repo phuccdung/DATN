@@ -6,20 +6,20 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { Container,Row,Col } from 'reactstrap';
 import Chart from "../../components/UI/Chart/Chart";
 import Moment from 'moment';
+import user_icon from "../../assets/images/user-icon.png"
 
 import {useSelector} from "react-redux";
 import { selectCurrentUser } from '../../redux/slices/userSlice';
-import { incomeIdVendor,countOrderVendor } from '../../redux/apiCall';
+import { incomeIdVendor,countOrderVendor,getLinkById } from '../../redux/apiCall';
 
 const Analytics = () => {
     const currentUser=useSelector(selectCurrentUser);
     const [fromDate,setFromDate]=useState(Moment().startOf('month').format("YYYY-MM-DD"));
     const [toDate,setToDate]=useState(Moment().endOf('day').format("YYYY-MM-DD"));
-
     const [data,setData]=useState();
     const [dataLink,setDataLink]=useState();
-
-    const [orderAnalytic,setOrderAnalytic]=useState([])
+    const [orderAnalytic,setOrderAnalytic]=useState([]);
+    const [topAffi,setTopAffi]=useState([]);
     useEffect(()=>{
       const getData=async()=>{
         const res=await incomeIdVendor(currentUser,fromDate);
@@ -41,6 +41,10 @@ const Analytics = () => {
           })
           setOrderAnalytic(arr);
         } 
+        const res3=await getLinkById(currentUser,true);
+        if(res3?.message){
+          setTopAffi(res3.data);
+        }
       }
       getData();
     },[])
@@ -98,6 +102,55 @@ const Analytics = () => {
                       <Col lg="12" md="3">
                         <Chart data={orderAnalytic} title="Product Analytics"  dataKey="Total Sales" grid />
                       </Col>                      
+                    </Row>
+                  </Container>
+                </section>
+
+                <section>
+                  <Container>
+                  <Row>
+                      <Col lg='3' >
+                        <h3 className=''>Top Affiliate</h3>
+                      </Col>
+
+                      
+                    </Row>
+                    <Row>
+                      <Col lg='12'>
+                        <table className='table_analytic' >
+                          <thead>
+                            <tr>
+                              <th>User</th>
+                              <th>Image</th>
+                              <th >Title</th>
+                              <th>Sold</th>
+                              <th>View</th>
+                              <th>Total Chip</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {
+                              topAffi.map((item,index)=>(
+                                <tr key={index}>
+                                  <td className='text_start '>
+                                    <span className='text_user_analytic'> {item.username}</span>
+                                  </td>
+                                  <td>
+                                    <img src={item.img} alt="" />
+                                  </td>
+                                  <td className='text_start '>
+                                    <span >{item.title}</span>
+                                  </td>
+                                  <td>{item.sold}</td>
+                                  <td>{item.view}</td>
+                                  <td>{Number(item.chip).toFixed(1)} $</td>
+
+                                </tr>
+                              ))
+                            }
+                          </tbody>
+                        </table>
+                      </Col>                     
                     </Row>
                   </Container>
                 </section>
