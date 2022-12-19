@@ -416,6 +416,13 @@ const income=async(req,res)=>{
     }
 }
 
+const incomeIdVendor=async(req,res)=>{
+    try{
+        res.status(200).json({"data":"data",'message':true});
+    }catch(err){
+        res.status(500).json(err); 
+    }
+}
 
 
 
@@ -431,5 +438,6 @@ module.exports = {
     getOrder,
     getOrderByOrderId,
     updatePayVendor,
-    income
+    income,
+    incomeIdVendor
 }

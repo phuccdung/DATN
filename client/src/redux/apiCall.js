@@ -27,6 +27,21 @@ export const getLinkById= async(user)=>{
     return null;
   }
 }
+export const incomeIdVendor= async(user)=>{
+  try{
+    const res=await axios({
+      method: 'get',
+      url: BASE_URL+`orders/income/${user.id}`,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 
 export const checkBehaviorLink= async(userId,productId,user)=>{
   try{
