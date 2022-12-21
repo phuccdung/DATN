@@ -48,7 +48,6 @@ const Analytics = () => {
       }
       getData();
     },[])
-    
     return (
       <Helmet title="Link">
           <CommonSectionfrom title='Analytic'/>
@@ -62,15 +61,15 @@ const Analytics = () => {
                         <div className="top_analytic">
                           <div className="analytic_card_3">
                             <h3>Total Order</h3>
-                            <span> {data?.quantity}</span>
+                            <span> {data?.quantity?data?.quantity:0}</span>
                           </div>
                           <div className="analytic_card_3">
                           <h3>Revenue</h3>
-                            <span>{(Number(data?.number)+Number(data?.dis)).toFixed(0)} $</span>
+                            <span>{data?.number? (Number(data?.number)+Number(data?.dis)).toFixed(0):0} $</span>
                           </div>
                           <div className="analytic_card_3">
                             <h3> Sales By Link</h3>
-                            <span>{Number(dataLink?.total).toFixed(0)} $</span>
+                            <span>{dataLink?.total? Number(dataLink?.total).toFixed(0):0} $</span>
                           </div>
                           
                         </div>
