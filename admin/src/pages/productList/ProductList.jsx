@@ -146,7 +146,7 @@ export default function ProductList() {
         rows={filterData}
         disableSelectionOnClick
         columns={columns}
-        pageSize={20}
+        pageSize={15}
         getRowId={(row)=>row._id}
         checkboxSelection
       />

@@ -165,7 +165,7 @@ export default function OrderList() {
         rows={filterData}
         disableSelectionOnClick
         columns={columns}
-        pageSize={10}
+        pageSize={15}
         getRowId={(row)=>row._id}
         checkboxSelection
       />
