@@ -31,6 +31,7 @@ const Shop = () => {
       if(res){
         setData(res);
         setFilterData(res)
+        console.log(res);
       }
     };
     getData();
@@ -90,6 +91,17 @@ const Shop = () => {
     }
     // setKeyWords(search);
   }
+  const sortPrice=(e)=>{
+    let arr=[...filterData]
+    if(e.currentTarget.value==="ascending"){
+       arr.sort((a,b)=>{return a.price-b.price});
+      
+    }
+    if(e.currentTarget.value==="descending"){
+       arr.sort((a,b)=>{return b.price-a.price});
+    }
+    setFilterData(arr)
+  }
 
   return (
     <Helmet title="Shop">
@@ -110,8 +122,8 @@ const Shop = () => {
             </Col>
             <Col lg="3" md="6" className='text-end'>
               <div className="filter__widget">
-                <select >
-                  <option value>Sort By</option>
+                <select  onChange={(e)=>sortPrice(e)}>
+                  <option value >Sort By</option>
                   <option value="ascending">Ascending</option>
                   <option value="descending">Descending</option> 
                 </select>

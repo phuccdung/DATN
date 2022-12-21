@@ -65,7 +65,7 @@ const Home = () => {
                   Trending product in {years}
                 </p>
                 <h2>
-                  Make Your Interior More Minimalistic & Modern
+                 Affordable. Gorgeous and Beauty which you deserve.
                 </h2>
                 <p>
                 The all-round RF radio frequency regenerating beauty device is equipped with the unique DYHP (Dynamic Hyper Pulse) ultra-pulse penetration technology to penetrate the skin care ingredients into the stratum corneum

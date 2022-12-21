@@ -63,6 +63,7 @@ const ProductDetail = () => {
         const resCmt= await getComment(id);
         if(resCmt?.message){
           setComments(resCmt.data)
+          console.log()
         }
       }else{
         NotificationManager.error("",'Error', 2000);
@@ -253,6 +254,7 @@ const ProductDetail = () => {
                 <div className="d-flex align-items-center gap-5">
                  <span className='product__price'>${dataProduct.price}</span>
                  <span>Category: {dataProduct.category}</span>
+                 <span>Sales: {dataProduct.sold}</span>
                 </div>
                 <p className='mt-3' >{dataProduct.desc}</p>
                 <div className="">
@@ -308,7 +310,7 @@ const ProductDetail = () => {
                 tab==="desc"?
                 (
                   <div className="tab__content mt-5">
-                    <p>{description}</p>
+                    <p>{dataProduct.desc}</p>
                   </div>
                 )
                 :

@@ -77,7 +77,7 @@ function ShopProduct() {
                     <Col lg="3" md="3">
                       <div className="filter__widget text-center ">
                         <select onChange={(e)=>setStatus(e.currentTarget.value)} >
-                          <option selected={status===""} value="" >All</option>
+                          <option selected={status===""} value="" >Choose Status</option>
                             <option selected={status==="waiting"} value="waiting" >Waiting</option>
                             <option selected={status==="sale"} value="sale" >Sale</option>
                             <option selected={status==="cancel"} value="cancel" >Cancel</option>
