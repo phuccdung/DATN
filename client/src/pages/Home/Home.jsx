@@ -10,14 +10,10 @@ import Helmet from "../../components/Helmet/Helmet";
 import Services from "../../services/services";
 import ProductList from "../../components/UI/ProductList/ProductList";
 import Clock from "../../components/UI/Clock/Clock"
-
-import { selectCurrentUser } from '../../redux/slices/userSlice';
-import { useSelector} from 'react-redux';
 import { getProductHome,getProductById} from '../../redux/apiCall';
 
 
 
-import products from "../../assets/data/products";
 import countterimg from "../../assets/images/counter-timer-img.png"
 
 const Home = () => {
@@ -25,15 +21,7 @@ const Home = () => {
 
   const [trenProduct,setTrenProduct]=useState([]);
   const [bestProduct,setBestProduct]=useState([]);
-
-  const [popularProduct,setPopularProduct]=useState([]);
   const [newProducts,setNewProducts]=useState([]);
-
-  const currentUser=useSelector(selectCurrentUser);
-  
-
-
-
 
   useEffect(()=>{
     const getData=async()=>{
@@ -41,14 +29,7 @@ const Home = () => {
       if(res?.message){
         setNewProducts(res.data.new);
         setBestProduct(res.data.best);
-        let arr=[];
-        res.data?.trending.forEach(async(item)=>{
-          const p=await getProductById(item._id);
-          if(p?.message){
-            arr.push(p.data);
-            setTrenProduct(arr);
-          }
-        })
+        setTrenProduct(res.data?.trending)
       }
     };
     getData();
@@ -67,9 +48,9 @@ const Home = () => {
                 <h2>
                  Affordable. Gorgeous and Beauty which you deserve.
                 </h2>
-                <p>
+                {/* <p>
                 The all-round RF radio frequency regenerating beauty device is equipped with the unique DYHP (Dynamic Hyper Pulse) ultra-pulse penetration technology to penetrate the skin care ingredients into the stratum corneum
-                </p>
+                </p> */}
                 <motion.button whileTap={{scale:1.2}} className="buy__btn"><Link to="/shop"> SHOP NOW</Link> </motion.button>
               </div>
             </Col>
@@ -111,7 +92,7 @@ const Home = () => {
               <Col lg="6" md="6">
                 <div className="clock__top-content">
                   <h4 className="text-white fs-6 mb-2"> Limited offers </h4>
-                  <h3 className="text-white fs-5 mb-3">Quality Armchair</h3>
+                  <h3 className="text-white fs-5 mb-3">FreeShipping All Orders </h3>
                 </div>
                 <Clock/>
                 <motion.button whileTap={{scale:1.2}} className="buy__btn store__btn">
@@ -138,17 +119,6 @@ const Home = () => {
                 </Row>
             </Container>
         </section>
-
-        {/* <section className="popular__category">
-        <Container>
-            <Row>
-              <Col lg="12" className="text-center mb-5">
-                <h2 className="section__title">Popular in Category</h2>
-              </Col>
-              <ProductList data={popularProduct}/>
-            </Row>
-          </Container>
-        </section> */}
     </Helmet>
   )
 }

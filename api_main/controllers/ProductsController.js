@@ -32,6 +32,34 @@ const getProductHomePage=async(req,res)=>{
                     total: {$sum: 1}
                 }
             },
+            { $addFields: { "product_id": { $toObjectId: "$_id" }}},
+            {
+                $lookup:{
+                    from:"products",
+                    localField:"product_id",
+                    foreignField:"_id",
+                    as:"productInfo"
+                }
+            },
+            {$unwind: '$productInfo'},
+            {
+                $match:{
+                    "productInfo.status":"sale",
+                }
+            },
+            {
+                $project:{
+                    _id:1,
+                    total:1,
+                    "category":"$productInfo.category",
+                    "img":"$productInfo.img",
+                    "price":"$productInfo.price",
+                    "title":"$productInfo.title",
+                    "userId":"$productInfo.userId",
+
+
+                }
+            },
             {
                 $sort:{
                     total:-1

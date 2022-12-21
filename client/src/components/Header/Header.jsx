@@ -111,7 +111,7 @@ const Header = () => {
                   onClick={profileActionsToggle}
                 />
               
-                <div className="profile__actions" ref={profileActions} onClick={profileActionsToggle}>
+                <div className="profile__actions" ref={profileActions} onClick={profileActionsToggle} >
                   {
                     currentUser?
                     <div className=" d-flex align-items-center justify-content-center flex-column"> 
