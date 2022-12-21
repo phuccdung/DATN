@@ -20,7 +20,7 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "react-share";
-import products from "../../assets/data/products";
+
 
 const ProductDetail = () => {
 
@@ -38,12 +38,8 @@ const ProductDetail = () => {
   const [behavior,setBehavior]=useState(false);
   const [dataProduct,setDataProduct] = useState({});
   const [dataOther,setDataOther] = useState([]);
-  const product=products.find(item=> item.id==="08");
   const [comments,setComments]=useState([]);
   const linkReC=location.search.split("?")[1]||"";
-  const {
-    description,
-  }=product;
   const actionItems=useSelector(state=>state.behavior.actions);
   const submitHandler= async(e)=>{
     e.preventDefault();

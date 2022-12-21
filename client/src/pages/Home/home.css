@@ -1,11 +1,23 @@
 .hero__section{
-    background: var(--hero-bg);
+    /* background: var(--hero-bg); */
+    background-image: url(../../assets/images/common.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 400px;
 }
 .hero__content h2{
     color: var(--primary-color);
     font-size:2.5rem;
     font-weight:600;
     margin: 20px 0px;
+}
+.hero__content{
+    position: absolute;
+    right: 100px;
+    top:40px;
+    max-width: 800px;
 }
 .hero__content p{
     color: var(--primary-color);
@@ -42,8 +54,8 @@
     height:300px;
 }   
 .timer__count img{
-    width: 70% !important;
-    height: 70% !important;
+    width: 55% !important;
+    height: 55% !important;
     object-fit: contain;
 }
 .store__btn{

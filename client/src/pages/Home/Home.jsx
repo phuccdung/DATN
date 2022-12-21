@@ -10,11 +10,11 @@ import Helmet from "../../components/Helmet/Helmet";
 import Services from "../../services/services";
 import ProductList from "../../components/UI/ProductList/ProductList";
 import Clock from "../../components/UI/Clock/Clock"
-import { getProductHome,getProductById} from '../../redux/apiCall';
+import { getProductHome} from '../../redux/apiCall';
 
 
 
-import countterimg from "../../assets/images/counter-timer-img.png"
+import countterimg from "../../assets/images/zyro-image.png"
 
 const Home = () => {
   const years =new Date().getFullYear();
@@ -41,7 +41,7 @@ const Home = () => {
         <Container>
           <Row>
             <Col lg="6" md="6">
-              <div className="hero__content">
+              <div className="hero__content ">
                 <p className="hero__subtitle">
                   Trending product in {years}
                 </p>
@@ -57,7 +57,7 @@ const Home = () => {
 
             <Col lg="6" md="6">
               <div className="hero__img">
-                <img src={heroImg} alt="" />
+                {/* <img src={heroImg} alt="" /> */}
               </div>
             </Col>
           </Row>
