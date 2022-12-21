@@ -27,6 +27,24 @@ export const getLinkById= async(user,isVendor)=>{
     return null;
   }
 }
+
+export const analyticsProductId = async (user,productId)=>{
+  try{
+    let url=BASE_URL+"orders";
+    if(productId) url=BASE_URL+`orders?productId=${productId}`;
+    const res=await axios({
+      method: 'get',
+      url: url,
+      headers: { 
+        Authorization: "Bearer " + user.accessToken,
+      }, 
+    });
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return null;
+  }
+}
 export const incomeIdVendor= async(user,date)=>{
   try{
     const res=await axios({

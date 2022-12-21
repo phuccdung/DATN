@@ -4,8 +4,9 @@ import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection"
 import {NotificationManager} from 'react-notifications';
 import Helmet from "../../components/Helmet/Helmet";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import Chart from "../../components/UI/Chart/Chart";
 import {useSelector} from "react-redux";
-import {getProductById,updateProductById } from "../../redux/apiCall";
+import {getProductById,updateProductById ,analyticsProductId} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
 import {Link, useParams } from 'react-router-dom';
 import {  storage } from "../../firebase.config";
@@ -17,11 +18,42 @@ function ShopProductDetail() {
     const [data,setData]=useState({});
     const {id}=useParams();
     const [file,setFile]=useState(null);
+    const [orderStats, setOrderStats] = useState([]);
     useEffect(()=>{
+        let month=[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
         const getData=async()=>{
             const res =await getProductById(id,"");
             if(res?.message){
                 setData(res.data);
+            }
+            const res2=await analyticsProductId(currentUser,id); 
+            console.log(res2);
+            let i=0;
+            if(res2?.message){
+                
+                let arr=[];
+                res2.data.forEach(item=>{
+                    if(item._id===res2.dataLink[i]?._id){
+                        arr.push({name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": res2.dataLink[i]?.total});
+                        i=i+1;
+                    }else{
+                        arr.push({ name: month[item._id - 1], "Total Sales": item.total,"Sale By Link": 0 });
+                    }
+                })
+                setOrderStats(arr);
             }
         }
         getData();
@@ -94,7 +126,10 @@ function ShopProductDetail() {
                             Create Product
                         </Link>
                     </button>    
-                </div>             
+                </div> 
+                <div className="chart_product_detail">
+                <Chart data={orderStats} dataKey="Total Sales" title="Sales Performance"/>
+                </div>            
                 <div className="product__container">
                     <div className="info__newProductForm">
                         <form  className="newProductForm">
