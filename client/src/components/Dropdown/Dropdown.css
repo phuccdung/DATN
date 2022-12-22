@@ -1,0 +1,16 @@
+.dropDown_content{
+    /* width: 55%; */
+    /* background-color: antiquewhite; */
+    /* position: absolute; */
+    /* top:70px; */
+    list-style:none;
+    display: flex;
+    /* z-index: 999; */
+}
+.link_submenu li{
+    cursor: pointer;
+}
+.dropDownItem{
+    display: block;
+    text-decoration: none;
+}

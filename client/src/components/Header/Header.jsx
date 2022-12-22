@@ -1,4 +1,4 @@
-import React,{useRef,useEffect} from 'react';
+import React,{useRef,useEffect,useState} from 'react';
 import {Link, NavLink,useNavigate} from 'react-router-dom'
 import './Header.css'
 import logo from "../../assets/images/eco-logo.png";
@@ -10,6 +10,7 @@ import {  selectCurrentUser } from '../../redux/slices/userSlice';
 import { Logout } from '../../redux/apiCall';
 import {cartActions} from "../../redux/slices/cartSlice";
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
+import Dropdown from '../Dropdown/Dropdown';
 
 const nav__link=[
   {
@@ -34,6 +35,7 @@ const Header = () => {
   const currentUser=useSelector(selectCurrentUser);
   const profileActions=useRef(null);
   const dispatch=useDispatch();
+  const [isShowDrop,setIsShowDrop]=useState(false);
   
 
   const handleLogout=()=>{
@@ -68,6 +70,7 @@ const Header = () => {
   const profileActionsToggle=()=>profileActions.current.classList.toggle('show__profileActions')
 
   const menuToggle=()=> menuRef.current.classList.toggle('active__menu')
+
   return (
     <header className="header" ref={headerRef}>
       <Container>
@@ -83,22 +86,30 @@ const Header = () => {
             <div className="navigation" ref={menuRef} onClick={menuToggle}>
               <ul className="menu">
                 {
-                  nav__link.map((item,index)=>(
-                    <li className="nav__item" key={index}>
-                      <NavLink to={item.path} className={(navClass)=>navClass.isActive?"nav__active":""}>
-                        {item.display}
-                      </NavLink>
-                    </li>
-                  ))
+                  nav__link.map((item,index)=>
+                    (
+                      index===1?
+                        <li className="nav__item" onMouseEnter={()=>setIsShowDrop(true)}  key={index}>
+                          <NavLink to={item.path} className={(navClass)=>navClass.isActive?"nav__active":""} >
+                            {item.display}
+                          </NavLink>
+                          <div className={isShowDrop?"div_show":"div_block"} onMouseLeave={()=>setIsShowDrop(false)}>
+                              <Dropdown/>
+                          </div>
+                        </li>
+                        :
+                        <li className="nav__item"  key={index}>
+                          <NavLink to={item.path} className={(navClass)=>navClass.isActive?"nav__active":""} >
+                            {item.display}
+                          </NavLink>
+                        </li>
+                    )
+                  )
                 }
               </ul>
             </div>
-
+            
             <div className="nav__icons">
-              {/* <span className="fav__icon">
-                <i class="ri-heart-line"></i>
-                <span className="badge" >1</span>
-              </span> */}
               <span className="cart__icon" onClick={navigateToCart}>
                 <i class="ri-shopping-bag-line"></i>
                 <span className="badge">{totalQuantity}</span>

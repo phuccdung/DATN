@@ -39,6 +39,26 @@
     font-weight:500;
     cursor: pointer;
 }
+.div_show{
+    width: 50%;
+    position: absolute;
+    background-color: #ddd;
+    top: 70px;
+    left: 25%;
+    z-index: 999;
+}
+.div_block{
+    width: 50%;
+    position: absolute;
+    background-color: #ddd;
+    top: 70px;
+    left: 25%;
+    z-index: 999;
+    display: none;
+
+}
+
+
 .nav__icons{
     display: flex;
     align-items:center;
@@ -124,6 +144,7 @@
     box-shadow: 3px 3px 8px -3px #ddd;
     background: var(--card-bg-01);
 }
+
 
 @media only screen and (max-width: 768px) {
     .navigation{
