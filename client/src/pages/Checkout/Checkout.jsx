@@ -33,7 +33,7 @@ const Checkout = () => {
         setName(res.name);
         setPhone(res.phone);
         setAddress(res.address);
-        setDiscount(res.chip);
+        setDiscount(Number(res.chip).toFixed(0));
     }
     getInfo();
 },[])

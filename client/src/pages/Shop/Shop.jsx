@@ -32,6 +32,7 @@ const Shop = () => {
       const res= await getProduct("sale");
       if(res){
         setData(res);
+        console.log(res)
         if(keyWord){
           if(currentUser){
             addBehaviorArrKey([{
@@ -41,8 +42,7 @@ const Shop = () => {
             }],currentUser)
           }
           const dataResult=res.filter(item=>{
-            if(item.title.toLowerCase().includes(keyWord.toLowerCase())||
-              item.category.toLowerCase().includes(keyWord.toLowerCase())
+            if(item.title.includes(keyWord)
             ){
               return item
             }

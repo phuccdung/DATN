@@ -5,12 +5,28 @@
     /* top:70px; */
     list-style:none;
     display: flex;
+    justify-content: space-between;
+    padding: 30px 20px;
     /* z-index: 999; */
+}
+.link_submenu{
+    padding: 0 !important;
+}
+.skin_care_drop h3{
+    display: flex;
+    justify-content: center;
 }
 .link_submenu li{
     cursor: pointer;
 }
 .dropDownItem{
-    display: block;
+    display: flex;
     text-decoration: none;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
 }
+/* .link_submenu li a{
+    width: 100%;
+    align-items: center;
+} */

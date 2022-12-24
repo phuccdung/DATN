@@ -42,19 +42,21 @@
 .div_show{
     width: 50%;
     position: absolute;
-    background-color: #ddd;
+    background-color: rgba(221, 221, 221, 0.973);
     top: 70px;
     left: 25%;
+    border-radius: 5px;
     z-index: 999;
 }
 .div_block{
-    width: 50%;
+    /* width: 50%;
     position: absolute;
     background-color: #ddd;
     top: 70px;
     left: 25%;
-    z-index: 999;
+    z-index: 999; */
     display: none;
+    /* display: block; */
 
 }
 
