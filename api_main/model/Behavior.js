@@ -11,6 +11,7 @@ var action = new Schema({
 var key = new Schema({
     key: String,
     date: Date,
+    sysKey:Number,
 
 });
 const behaviorSchema = new Schema({

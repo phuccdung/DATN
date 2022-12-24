@@ -139,17 +139,35 @@ const analyticsKey=async (req, res) => {
     const date=new Date()
     const lastDate=new Date(date.setDate(date.getDate()-req.params.day));
     try {
-        const  data = await Behavior.aggregate(
-            [
-                {$unwind: '$search'},
-                { $match: { 
-                    "search.date": { $gte: lastDate } 
-                        } 
-                },
-                {$group: {_id: '$search.key', total: {$sum: 1}}},
-                { $limit : 50 }
-            ]
-        );        
+        let data;
+        if(req.query.type==="key_Ex"){
+
+            data = await Behavior.aggregate(
+              [
+                  {$unwind: '$search'},
+                  { $match: { 
+                      "search.date": { $gte: lastDate } ,
+                      "search.sysKey":1
+                          } 
+                  },
+                  {$group: {_id: '$search.key', total: {$sum: 1}}},
+                  { $limit : 50 }
+              ]
+          );        
+        }else{
+            data = await Behavior.aggregate(
+              [
+                  {$unwind: '$search'},
+                  { $match: { 
+                      "search.date": { $gte: lastDate } ,
+                      "search.sysKey":{ $ne:1 }
+                          } 
+                  },
+                  {$group: {_id: '$search.key', total: {$sum: 1}}},
+                  { $limit : 50 }
+              ]
+          ); 
+        }
         res.status(200).json({"data":data, "message":true})
     }catch(err){
         res.status(500).json({ 'data': err.message, "message": false})

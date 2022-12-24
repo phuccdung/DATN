@@ -309,11 +309,11 @@ export const analyticsFind = async (user,day,status)=>{
   }
 }
 
-export const analyticsKey = async (user,day)=>{
+export const analyticsKey = async (user,day,type)=>{
   try{
     const res=await axios({
       method: 'get',
-      url: BASE_URL+`behaviors/key/${day}`,
+      url: BASE_URL+`behaviors/key/${day}?type=${type}`,
       headers: { 
         Authorization: "Bearer " + user.accessToken,
       }, 

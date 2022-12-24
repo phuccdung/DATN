@@ -8,7 +8,7 @@ import { useDispatch ,useSelector} from 'react-redux';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
 import { addBehaviorArrKey } from '../../redux/apiCall';
-
+import { useLocation } from 'react-router-dom';
 import {getProduct} from '../../redux/apiCall'
 
 
@@ -16,9 +16,11 @@ import {getProduct} from '../../redux/apiCall'
 const Shop = () => {
   const [data,setData]=useState([]);
   const [filterData,setFilterData]=useState([]);
-  const [searchKey,setSearchKey]=useState("");
   const dispatch=useDispatch();
   const currentUser=useSelector(selectCurrentUser);
+  const location=useLocation();
+  const keyWord=location.search.split("?")[1]||"";
+  const [searchKey,setSearchKey]=useState("");
   
 
   const changeSearch=(e)=>{
@@ -30,25 +32,42 @@ const Shop = () => {
       const res= await getProduct("sale");
       if(res){
         setData(res);
-        setFilterData(res)
-        console.log(res);
+        if(keyWord){
+          if(currentUser){
+            addBehaviorArrKey([{
+              "key":keyWord,
+              "date":new Date().getTime(),
+              "sysKey":1
+            }],currentUser)
+          }
+          const dataResult=res.filter(item=>{
+            if(item.title.toLowerCase().includes(keyWord.toLowerCase())||
+              item.category.toLowerCase().includes(keyWord.toLowerCase())
+            ){
+              return item
+            }
+            return;
+          });
+          setFilterData(dataResult);
+
+        }else{
+          setFilterData(res)
+        }
       }
     };
     getData();
-  },[])
+  },[keyWord])
+
   const handleFilter = (e) =>{
     let filter = e.currentTarget.value;
     if(filter){
       const dataResult=data.filter(item=>item.category===filter)
       setFilterData(dataResult);
-      dispatch(behaviorActions.addKeyWords({
-        "key":filter,
-        "date":new Date().getTime()
-      }));
       if(currentUser){
         addBehaviorArrKey([{
           "key":filter,
-          "date":new Date().getTime()
+          "date":new Date().getTime(),
+          "sysKey":1
         }],currentUser)
       }
     }else{
@@ -76,10 +95,6 @@ const Shop = () => {
         return;
       });
       setFilterData(dataResult);
-      dispatch(behaviorActions.addKeyWords({
-        "key":search,
-        "date":new Date().getTime(),
-      }));
       if(currentUser){
         addBehaviorArrKey([{
           "key":search,
@@ -89,7 +104,6 @@ const Shop = () => {
     }else{
       setFilterData(data);
     }
-    // setKeyWords(search);
   }
   const sortPrice=(e)=>{
     let arr=[...filterData]

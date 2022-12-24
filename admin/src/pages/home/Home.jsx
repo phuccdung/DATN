@@ -62,14 +62,15 @@ export default function Home() {
   useEffect(()=>{
     const getStats = async () => {
     let res;
-    if(status==="key"){
-       res=await analyticsKey(admin,date); 
+    if(status==="key_Ex"||status==="key_In"){
+       res=await analyticsKey(admin,date,status); 
+       console.log(res);
     }else{
       res=await analyticsFind(admin,date,status);  
     }
     if(res?.message){
       let arr=[];
-      if(status==="key"){
+      if(status==="key_Ex"||status==="key_In"){
         arr= res.data.map((item) =>{
           return {name:item._id,"Active Product": item.total}
          })
@@ -108,8 +109,8 @@ export default function Home() {
           <option value="care">Concern Product</option>
           <option value="want">Want To Buy Product</option>
           <option value="buy">Buy Product</option>
-          <option value="key">Existent KeyWords</option>
-          <option value="key">Inexistent KeyWords</option>
+          <option value="key_Ex">Existent KeyWords</option>
+          <option value="key_In">Inexistent KeyWords</option>
         </select>
       </div>
         <Chart data={findStats} title="Behavior Analytics" grid dataKey="Active Product"/>
