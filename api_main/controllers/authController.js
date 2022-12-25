@@ -60,7 +60,7 @@ const handleLogin = async (req, res) => {
         }
 
         // Saving refreshToken with current user
-        foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+        // foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
         const result = await foundUser.save();
 
         // Creates Secure Cookie with refresh token
