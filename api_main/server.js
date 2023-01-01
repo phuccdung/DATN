@@ -24,8 +24,8 @@ app.use(logger);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+// app.use(cors());
 
 
 // built-in middleware to handle urlencoded form data
@@ -41,17 +41,17 @@ app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 // routes
-app.use('/', require('./routes/root'));
-app.use('/register', require('./routes/register'));
-app.use('/auth', require('./routes/auth'));
-app.use('/refresh', require('./routes/refresh'));
-app.use('/logout', require('./routes/logout'));
-app.use('/products', require('./routes/api/products'));
-app.use('/carts', require('./routes/api/carts'));
-app.use('/behaviors', require('./routes/api/behaviors'));
-app.use('/orders', require('./routes/api/orders'));
-app.use('/comments', require('./routes/api/comments'));
-app.use('/links', require('./routes/api/links'));
+app.use('api/', require('./routes/root'));
+app.use('api/register', require('./routes/register'));
+app.use('api/auth', require('./routes/auth'));
+app.use('api/refresh', require('./routes/refresh'));
+app.use('api/logout', require('./routes/logout'));
+app.use('api/products', require('./routes/api/products'));
+app.use('api/carts', require('./routes/api/carts'));
+app.use('api/behaviors', require('./routes/api/behaviors'));
+app.use('api/orders', require('./routes/api/orders'));
+app.use('api/comments', require('./routes/api/comments'));
+app.use('api/links', require('./routes/api/links'));
 
 app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees'));
