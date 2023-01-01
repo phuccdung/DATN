@@ -1,7 +1,7 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3500/";
+const BASE_URL = "http://156.67.219.180/api";
 
 export const income = async (user,date) => {
   try{

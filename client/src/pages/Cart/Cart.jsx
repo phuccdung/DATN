@@ -31,6 +31,7 @@ const Cart = () => {
   useEffect(()=>{
     let arr=cartItems.map(item=>{
       return {...item,checked:false}
+      
     });
     setCart(arr);
   },[])
