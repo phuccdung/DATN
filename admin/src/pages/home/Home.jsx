@@ -35,7 +35,7 @@ export default function Home() {
     const getStats = async () => {  
       const res=await analyticsUser(admin);
       
-      res.map((item) =>
+      res?.map((item) =>
         setUserStats((prev) => [
           ...prev,
           { name: month[item._id - 1], "User Register": item.total },

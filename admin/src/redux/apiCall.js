@@ -1,7 +1,7 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
 import axios from "axios";
 
-const BASE_URL = "http://156.67.219.180:3500";
+const BASE_URL = "http://156.67.219.180:3500/";
 
 export const income = async (user,date) => {
   try{
@@ -37,12 +37,15 @@ export const addChipOrder = async (user,body) => {
 }
 
 export const login = async (dispatch, user) => {
-  dispatch(loginStart());
   try {
     const res = await axios.post(BASE_URL+"auth", user);
-    dispatch(loginSuccess(res.data));
+    if(res?.data.role.Admin){
+      dispatch(loginSuccess(res.data));
+    }else{
+      return false
+    }
   } catch (err) {
-    dispatch(loginFailure());
+    return false
   }
 };
 

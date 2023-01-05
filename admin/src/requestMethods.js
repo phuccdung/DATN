@@ -1,6 +1,6 @@
 
 
-const BASE_URL = "http://156.67.219.180:3500";
+const BASE_URL = "http://156.67.219.180:3500/";
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.token;
 
 

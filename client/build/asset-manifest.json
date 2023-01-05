@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "./static/css/main.60338173.css",
+    "main.js": "./static/js/main.738fc8bc.js",
+    "static/media/remixicon.svg?t=1590207869815": "./static/media/remixicon.9cedd2150922ead84869.svg",
+    "static/media/common.jpg": "./static/media/common.52119c6dddd7596e2986.jpg",
+    "static/media/zyro-image.png": "./static/media/zyro-image.30e528ce7f1e86281efd.png",
+    "static/media/remixicon.eot?t=1590207869815": "./static/media/remixicon.5cb99e6cba5a4619063f.eot",
+    "static/media/remixicon.ttf?t=1590207869815": "./static/media/remixicon.f2616f597cf98f38d234.ttf",
+    "static/media/hero-img.png": "./static/media/hero-img.4cb525f5d6bac4b5af39.png",
+    "static/media/remixicon.woff?t=1590207869815": "./static/media/remixicon.8d09fa11700ed63cf96e.woff",
+    "static/media/remixicon.woff2?t=1590207869815": "./static/media/remixicon.90668f6f9b3c2c18a090.woff2",
+    "static/media/notification.svg?s3g3t9": "./static/media/notification.5d0158671dd860c714c4.svg",
+    "static/media/notification.eot": "./static/media/notification.3657084dc0419605a91c.eot",
+    "static/media/notification.woff?s3g3t9": "./static/media/notification.c392cd33d9d9de730f9d.woff",
+    "static/media/notification.ttf?s3g3t9": "./static/media/notification.c5d9251ea82e42f75381.ttf",
+    "index.html": "./index.html",
+    "main.60338173.css.map": "./static/css/main.60338173.css.map",
+    "main.738fc8bc.js.map": "./static/js/main.738fc8bc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.60338173.css",
+    "static/js/main.738fc8bc.js"
+  ]
+}
