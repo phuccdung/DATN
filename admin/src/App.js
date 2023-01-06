@@ -2,7 +2,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
 import Home from "./pages/home/Home";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route,Redirect } from "react-router-dom";
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
@@ -65,7 +65,10 @@ function App() {
               <NewProduct />
             </Route>
           </div>
-          </>:null}
+          </>:<Route exact path="/">
+              <Home />
+            </Route>
+          }
           
       </Switch>    
     </Router>
