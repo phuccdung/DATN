@@ -28,6 +28,10 @@ function App() {
             <NotificationContainer/>
             <Login />
           </Route>
+          <Route path="/admin">
+            <NotificationContainer/>
+            <Login />
+          </Route>
           {admin? <>
              <NotificationContainer/>
             <Topbar /> 
