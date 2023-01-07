@@ -24,7 +24,6 @@ export default function Order() {
       const res=await getOrderByOrderId(admin,orderId);
       if(res?.message){
         setData(res.data);
-        console.log(res.data);
       }
     }
     getData();

@@ -64,7 +64,6 @@ export default function Home() {
     let res;
     if(status==="key_Ex"||status==="key_In"){
        res=await analyticsKey(admin,date,status); 
-       console.log(res);
     }else{
       res=await analyticsFind(admin,date,status);  
     }

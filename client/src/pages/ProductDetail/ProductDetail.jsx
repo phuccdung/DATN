@@ -214,7 +214,7 @@ const ProductDetail = () => {
     if(currentUser){
       const res=await createLinks(body,currentUser)
       if(res?.message){
-        navigator.clipboard.writeText(`http://localhost:3000${location.pathname}?${res.data}`)
+        navigator.clipboard.writeText(`http://multi-mart.shop${location.pathname}?${res.data}`)
         NotificationManager.success('Copied!',"Success", 2000);
       }else{
         NotificationManager.error('Error!', 2000);
@@ -260,7 +260,7 @@ const ProductDetail = () => {
                 <div className="share__link">
                   <span>Share:</span>
                   <FacebookShareButton 
-                    url={`http://localhost:3000${location.pathname}`}
+                    url={`http://multi-mart.shop${location.pathname}`}
                     quote={dataProduct.title}
                     hashtag={"#MultiMart"}
                     className='icon_share'
@@ -268,7 +268,7 @@ const ProductDetail = () => {
                     <FacebookIcon size={30} round={true}/>
                   </FacebookShareButton>
                   <FacebookMessengerShareButton 
-                    url={`http://localhost:3000${location.pathname}`}
+                    url={`http://multi-mart.shop${location.pathname}`}
                     quote={dataProduct.title}
                     hashtag={"#MultiMart"}
                     className='icon_share'
@@ -277,7 +277,7 @@ const ProductDetail = () => {
                     <FacebookMessengerIcon size={30} round={true}/>
                   </FacebookMessengerShareButton>
                   <TwitterShareButton 
-                    url={`http://localhost:3000${location.pathname}`}
+                    url={`http://multi-mart.shop/${location.pathname}`}
                     quote={dataProduct.title}
                     hashtag={"#MultiMart"}
                     className='icon_share'

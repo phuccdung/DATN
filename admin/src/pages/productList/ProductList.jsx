@@ -30,7 +30,6 @@ export default function ProductList() {
   useEffect(()=>{
     const getData=async()=>{
       const res= await getProduct("admin");
-      console.log(res);
       setData(res);
       setFilterData(res)
     }
@@ -40,7 +39,6 @@ export default function ProductList() {
 
   const handleFilter=(e)=>{
     let filter = e.currentTarget.value;
-    // console.log(filter);
     if(filter){
       const dataResult=data.filter(item=>item.status===filter)
       setFilterData(dataResult);
