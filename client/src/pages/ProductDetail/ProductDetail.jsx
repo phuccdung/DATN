@@ -41,98 +41,100 @@ const ProductDetail = () => {
   const [comments,setComments]=useState([]);
   const linkReC=location.search.split("?")[1]||"";
   const actionItems=useSelector(state=>state.behavior.actions);
-  const submitHandler= async(e)=>{
-    e.preventDefault();
-    const reviewObj={
-      userId:currentUser?.username,
-      productId:id,
-      text:reviewMsg,
-      star:rating
-    };
-    if(currentUser){
-      const res=await addComment(reviewObj,currentUser);
-      if(res?.message){
-        NotificationManager.success("",'Review successfully', 2000);
-        setRating(5);
-        setReviewMsg("");
-        setStar(res.data);
-        const resCmt= await getComment(id);
-        if(resCmt?.message){
-          setComments(resCmt.data)
-          console.log()
-        }
-      }else{
-        NotificationManager.error("",'Error', 2000);
-      }
-    }else{
-      NotificationManager.error("You must Login ",'Error', 2000);
-    }
-  }
-  const addToCart= async()=>{
-    let link=linkReC||"";
-     if(link===""){
-      const exisItem=actionItems.find(item=>item.find===id);
-      if(exisItem){
-        link=exisItem.link;
-      }
-    }
-    NotificationManager.success("",'Product added successfully', 2000);
-    if(currentUser){
-      if(link===""){
-        const res=await checkBehaviorLink(currentUser.id,id,currentUser)
-        if(res?.message){
-          const linkBehavior=res.data.find(item=>item.link!=="");
-          link=linkBehavior?.link;
-        }
-      }
-      updateCart(cart,currentUser,{
-        "productId":id,
-        "quantity":quantityProduct,
-        "price":dataProduct.price,
-        "imgUrl":dataProduct.img,
-        "productName":dataProduct.title,
-        "vendorId":dataProduct.userId,
-        "link":link||"",
-      });
-      addBehavior({
-        "find":id,
-        "date":new Date().getTime(),
-        "status":"want",
-        "name":dataProduct.title,
-        "link":link||"",
-      },currentUser);
-      dispatch(cartActions.addItem({
-        item:{
-        id,
-        "productName":dataProduct.title,
-        "price":dataProduct.price,
-        "imgUrl":dataProduct.img,
-        "vendorId":dataProduct.userId,
-        "link":link||"",
-        },
-        qty:quantityProduct
-      }));
-    }else{
-      dispatch(behaviorActions.addAction({
-        "find":id,
-        "date":new Date().getTime(),
-        "status":"want",
-        "name":dataProduct.title,
-        "link":link||"",
-      }));
-      dispatch(cartActions.addItem({
-        item:{
-        id,
-        "productName":dataProduct.title,
-        "price":dataProduct.price,
-        "imgUrl":dataProduct.img,
-        "vendorId":dataProduct.userId,
-        "link":link||"",
-        },
-        qty:quantityProduct
-      }));
-    } 
-  };
+
+  // const submitHandler= async(e)=>{
+  //   e.preventDefault();
+  //   const reviewObj={
+  //     userId:currentUser?.username,
+  //     productId:id,
+  //     text:reviewMsg,
+  //     star:rating
+  //   };
+  //   if(currentUser){
+  //     const res=await addComment(reviewObj,currentUser);
+  //     if(res?.message){
+  //       NotificationManager.success("",'Review successfully', 2000);
+  //       setRating(5);
+  //       setReviewMsg("");
+  //       setStar(res.data);
+  //       const resCmt= await getComment(id);
+  //       if(resCmt?.message){
+  //         setComments(resCmt.data)
+  //         console.log()
+  //       }
+  //     }else{
+  //       NotificationManager.error("",'Error', 2000);
+  //     }
+  //   }else{
+  //     NotificationManager.error("You must Login ",'Error', 2000);
+  //   }
+  // }
+  // const addToCart= async()=>{
+  //   let link=linkReC||"";
+  //    if(link===""){
+  //     const exisItem=actionItems.find(item=>item.find===id);
+  //     if(exisItem){
+  //       link=exisItem.link;
+  //     }
+  //   }
+  //   NotificationManager.success("",'Product added successfully', 2000);
+  //   if(currentUser){
+  //     if(link===""){
+  //       const res=await checkBehaviorLink(currentUser.id,id,currentUser)
+  //       if(res?.message){
+  //         const linkBehavior=res.data.find(item=>item.link!=="");
+  //         link=linkBehavior?.link;
+  //       }
+  //     }
+  //     updateCart(cart,currentUser,{
+  //       "productId":id,
+  //       "quantity":quantityProduct,
+  //       "price":dataProduct.price,
+  //       "imgUrl":dataProduct.img,
+  //       "productName":dataProduct.title,
+  //       "vendorId":dataProduct.userId,
+  //       "link":link||"",
+  //     });
+  //     addBehavior({
+  //       "find":id,
+  //       "date":new Date().getTime(),
+  //       "status":"want",
+  //       "name":dataProduct.title,
+  //       "link":link||"",
+  //     },currentUser);
+  //     dispatch(cartActions.addItem({
+  //       item:{
+  //       id,
+  //       "productName":dataProduct.title,
+  //       "price":dataProduct.price,
+  //       "imgUrl":dataProduct.img,
+  //       "vendorId":dataProduct.userId,
+  //       "link":link||"",
+  //       },
+  //       qty:quantityProduct
+  //     }));
+  //   }else{
+  //     dispatch(behaviorActions.addAction({
+  //       "find":id,
+  //       "date":new Date().getTime(),
+  //       "status":"want",
+  //       "name":dataProduct.title,
+  //       "link":link||"",
+  //     }));
+  //     dispatch(cartActions.addItem({
+  //       item:{
+  //       id,
+  //       "productName":dataProduct.title,
+  //       "price":dataProduct.price,
+  //       "imgUrl":dataProduct.img,
+  //       "vendorId":dataProduct.userId,
+  //       "link":link||"",
+  //       },
+  //       qty:quantityProduct
+  //     }));
+  //   } 
+  // };
+
   useEffect(()=>{
     window.scrollTo(0,0);
     const getData=async ()=>{
@@ -151,70 +153,72 @@ const ProductDetail = () => {
     setCounter(0);
     setBehavior(false);
   },[id])  
-  useEffect(() => {
-    counter < 5 ? setTimeout(() => setCounter(counter +1), 1000)
-                : setBehavior(true); 
-  }, [counter]);
-  useEffect(() => {
-    if(counter>0){
-      if(linkReC){
-        addChipView(linkReC);
-      }
-      if(currentUser){
-        addBehavior({
-          "find":id,
-          "date":new Date().getTime(),
-          "status":"view",
-          "name":dataProduct.title,
-          "link":linkReC,
-        },currentUser)
-      }else{
-        dispatch(behaviorActions.addAction({
-          "find":id,
-          "date":new Date().getTime(),
-          "status":"view",
-          "name":dataProduct.title,
-          "link":linkReC,
-        }))
-      }  
-    }
-  }, [behavior]);
-  const changTab=(tab)=>{
-    setTab(tab);
-      if(currentUser){
-        addBehavior({
-          "find":id,
-          "date":new Date().getTime(),
-          "status":"care",
-          "name":dataProduct.title,
-          "link":linkReC,
-        },currentUser)
-      } 
-  }
 
-  const CreateLink=async()=>{
-    let body={
-      userId:currentUser?.id,
-      productId:id
-    }
-    if(currentUser){
-      const res=await createLinks(body,currentUser)
-      if(res?.message){
-        navigator.clipboard.writeText(`http://multi-mart.shop${location.pathname}?${res.data}`)
-        NotificationManager.success('Copied!',"Success", 2000);
-      }else{
-        NotificationManager.error('Error!', 2000);
-      }
-    }else{
-      NotificationManager.error("You must Login ",'Error', 2000);
-    }
-  }
-  const changeQty=(e)=>{
-    let quantityE=e.currentTarget.value;
-    if(quantityE>0){
-      setQuantityProduct(quantityE);
-    }
-  }
+  // useEffect(() => {
+  //   counter < 5 ? setTimeout(() => setCounter(counter +1), 1000)
+  //               : setBehavior(true); 
+  // }, [counter]);
+  // useEffect(() => {
+  //   if(counter>0){
+  //     if(linkReC){
+  //       addChipView(linkReC);
+  //     }
+  //     if(currentUser){
+  //       addBehavior({
+  //         "find":id,
+  //         "date":new Date().getTime(),
+  //         "status":"view",
+  //         "name":dataProduct.title,
+  //         "link":linkReC,
+  //       },currentUser)
+  //     }else{
+  //       dispatch(behaviorActions.addAction({
+  //         "find":id,
+  //         "date":new Date().getTime(),
+  //         "status":"view",
+  //         "name":dataProduct.title,
+  //         "link":linkReC,
+  //       }))
+  //     }  
+  //   }
+  // }, [behavior]);
+
+  // const changTab=(tab)=>{
+  //   setTab(tab);
+  //     if(currentUser){
+  //       addBehavior({
+  //         "find":id,
+  //         "date":new Date().getTime(),
+  //         "status":"care",
+  //         "name":dataProduct.title,
+  //         "link":linkReC,
+  //       },currentUser)
+  //     } 
+  // }
+
+  // const CreateLink=async()=>{
+  //   let body={
+  //     userId:currentUser?.id,
+  //     productId:id
+  //   }
+  //   if(currentUser){
+  //     const res=await createLinks(body,currentUser)
+  //     if(res?.message){
+  //       navigator.clipboard.writeText(`http://multi-mart.shop${location.pathname}?${res.data}`)
+  //       NotificationManager.success('Copied!',"Success", 2000);
+  //     }else{
+  //       NotificationManager.error('Error!', 2000);
+  //     }
+  //   }else{
+  //     NotificationManager.error("You must Login ",'Error', 2000);
+  //   }
+  // }
+  // const changeQty=(e)=>{
+  //   let quantityE=e.currentTarget.value;
+  //   if(quantityE>0){
+  //     setQuantityProduct(quantityE);
+  //   }
+  // }
   return (
     <Helmet title={dataProduct.title}>
       <CommonSection title={dataProduct.title} />
@@ -239,8 +243,10 @@ const ProductDetail = () => {
                 </div>
                 <p className='mt-3' >{dataProduct.desc}</p>
                 <div className="">
-                  <input type="number" className='input__qty' value={quantityProduct} onChange={e=>changeQty(e)}/>
-                  <motion.button  whileTap={{scale:1.2}} className="buy__btn" onClick={addToCart}>Add to Cart</motion.button>
+                  {/* <input type="number" className='input__qty' value={quantityProduct} onChange={e=>changeQty(e)}/>
+                  <motion.button  whileTap={{scale:1.2}} className="buy__btn" onClick={addToCart()}>Add to Cart</motion.button> */}
+                  <input type="number" className='input__qty' value={quantityProduct}/>
+                  <motion.button  whileTap={{scale:1.2}} className="buy__btn">Add to Cart</motion.button>
                 </div>
                 <div className="share__link">
                   <span>Share:</span>
@@ -270,7 +276,9 @@ const ProductDetail = () => {
                   >
                     <TwitterIcon size={30} round={true}/>
                   </TwitterShareButton>
-                  <motion.button  whileTap={{scale:1.2}} className="link__btn" onClick={CreateLink}>Link</motion.button>
+                  {/* <motion.button  whileTap={{scale:1.2}} className="link__btn" onClick={CreateLink}>Link</motion.button> */}
+                  <motion.button  whileTap={{scale:1.2}} className="link__btn" >Link</motion.button>
+
                 </div>
               </div>
             </Col>
@@ -279,7 +287,7 @@ const ProductDetail = () => {
       </section>
 
 
-      <section>
+      {/* <section>
         <Container>
           <Row>
             <Col lg='12'>
@@ -341,7 +349,7 @@ const ProductDetail = () => {
             <ProductList data={dataOther}/>
           </Row>
         </Container>
-      </section>
+      </section> */}
     </Helmet>
   )
 }
