@@ -3,7 +3,7 @@ import "./Shop.css";
 import CommonSection from "../../components/UI/CommonSection/CommonSection.jsx";
 import Helmet from "../../components/Helmet/Helmet";
 import {Container,Row,Col} from "reactstrap";
-import ProductList from "../../components/UI/ProductList/ProductList";
+import ProductList from "../../components/UI/ProductList/ProductList.jsx";
 import { useSelector} from 'react-redux';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import { addBehaviorArrKey } from '../../redux/apiCall';

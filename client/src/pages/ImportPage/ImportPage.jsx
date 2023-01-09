@@ -3,13 +3,13 @@ import "./ImportPage.css";
 import { motion } from 'framer-motion';
 import {NotificationManager} from 'react-notifications';
 import { Container,Row,Col } from 'reactstrap';
-import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
+import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection.jsx";
 import Helmet from "../../components/Helmet/Helmet";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import {useSelector} from "react-redux";
 import {createProduct} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";
-import {createDownLoadData} from "./DownloadFile";
+import {createDownLoadData} from "./DownloadFile.jsx";
 import * as XLSX from "xlsx";
 
 function ImportPage() {
