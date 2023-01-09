@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import "./ProductDetail.css"
 
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Helmet from "../../components/Helmet/Helmet";
 import CommonSection from "../../components/UI/CommonSection/CommonSection";
 
@@ -10,7 +10,8 @@ import { getProductById} from '../../redux/apiCall';
 
 
 const ProductDetail = () => {
-  const {id}=useParams();
+  const location=useLocation();
+  const id=location.pathname.split("/")[2];
   const [dataProduct,setDataProduct] = useState({});
 
 
@@ -20,8 +21,9 @@ const ProductDetail = () => {
       const res= await getProductById(id,4);
       if(res?.message){
         setDataProduct(res.data);
-        console.log(res.data);
       }
+      console.log(id);
+
     }
     getData();
   },[id])  
