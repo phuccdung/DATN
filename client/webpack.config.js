@@ -3,9 +3,10 @@ const path = require("path");
 module.exports = {
   entry: "./src/index.js", // Dẫn tới file index.js ta đã tạo
   output: {
-    path: path.join(__dirname, "/build"), // Thư mục chứa file được build ra
-    filename: "bundle.js" // Tên file được build ra
-  },
+    path: path.join(__dirname, "/build"),
+    publicPath: '/',
+    filename: 'bundle.js',
+},
   module: {
     rules: [
       {
