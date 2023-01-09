@@ -4,9 +4,8 @@ import CommonSection from "../../components/UI/CommonSection/CommonSection";
 import Helmet from "../../components/Helmet/Helmet";
 import {Container,Row,Col} from "reactstrap";
 import ProductList from "../../components/UI/ProductList/ProductList";
-import { useDispatch ,useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import { selectCurrentUser } from '../../redux/slices/userSlice';
-import {behaviorActions} from "../../redux/slices/behaviorSlice";
 import { addBehaviorArrKey } from '../../redux/apiCall';
 import { useLocation } from 'react-router-dom';
 import {getProduct} from '../../redux/apiCall'
@@ -16,7 +15,6 @@ import {getProduct} from '../../redux/apiCall'
 const Shop = () => {
   const [data,setData]=useState([]);
   const [filterData,setFilterData]=useState([]);
-  const dispatch=useDispatch();
   const currentUser=useSelector(selectCurrentUser);
   const location=useLocation();
   const keyWord=location.search.split("?")[1]||"";
@@ -32,7 +30,6 @@ const Shop = () => {
       const res= await getProduct("sale");
       if(res){
         setData(res);
-        console.log(res)
         if(keyWord){
           if(currentUser){
             addBehaviorArrKey([{

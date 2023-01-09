@@ -112,7 +112,6 @@ const ProductDetail = () => {
         },
         qty:quantityProduct
       }));
-      
     }else{
       dispatch(behaviorActions.addAction({
         "find":id,
@@ -195,10 +194,10 @@ const ProductDetail = () => {
   const showStar=()=>{
     var indents =[  ]
     for(let i=0;i<Math.floor(star?.total/star?.count);i++){
-      indents.push(<span key={i}><i class="ri-star-fill"></i></span>);
+      indents.push(<span key={i}> <i class="ri-star-fill"> </i> </span>);
     }
     if((star?.total/star?.count)-Math.floor(star?.total/star?.count)>0){
-      indents.push(<span ><i class="ri-star-half-line"></i></span>);
+      indents.push(<span > <i class="ri-star-half-line"> </i> </span>);
     }
     return (
       <div >
@@ -236,7 +235,7 @@ const ProductDetail = () => {
         <Container>
           <Row>
             <Col lg='6' >
-              <img src={dataProduct.img} alt="" />
+              <img src={dataProduct?.img} alt="" />
             </Col>
             <Col lg='6'>
               <div className="product__details">
