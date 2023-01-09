@@ -7,9 +7,9 @@ import {Container,Row,Col} from "reactstrap";
 
 import heroImg from "../../assets/images/hero-img.png";
 import Helmet from "../../components/Helmet/Helmet";
-import Services from "../../services/services";
-import ProductList from "../../components/UI/ProductList/ProductList";
-import Clock from "../../components/UI/Clock/Clock"
+import Services from "../../services/services.jsx";
+import ProductList from "../../components/UI/ProductList/ProductList.jsx";
+import Clock from "../../components/UI/Clock/Clock.jsx"
 import { getProductHome} from '../../redux/apiCall';
 
 

@@ -10,7 +10,7 @@ import {  selectCurrentUser } from '../../redux/slices/userSlice';
 import { Logout } from '../../redux/apiCall';
 import {cartActions} from "../../redux/slices/cartSlice";
 import {behaviorActions} from "../../redux/slices/behaviorSlice";
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown from '../Dropdown/Dropdown.jsx';
 
 const nav__link=[
   {

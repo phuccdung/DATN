@@ -1,10 +1,10 @@
 import React,{useState,useRef,useEffect} from 'react';
 import "./ShopProductDetail.css";
-import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
+import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection.jsx";
 import {NotificationManager} from 'react-notifications';
 import Helmet from "../../components/Helmet/Helmet";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import Chart from "../../components/UI/Chart/Chart";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import Chart from "../../components/UI/Chart/Chart.jsx";
 import {useSelector} from "react-redux";
 import {getProductById,updateProductById ,analyticsProductId} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice";

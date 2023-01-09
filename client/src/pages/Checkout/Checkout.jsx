@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import {Container,Row,Col,Form,FormGroup} from "reactstrap";
 import Helmet from "../../components/Helmet/Helmet";
-import CommonSection from "../../components/UI/CommonSection/CommonSection";
+import CommonSection from "../../components/UI/CommonSection/CommonSection.jsx";
 import "./Checkout.css";
 import { useSelector,useDispatch } from 'react-redux';
 import {useLocation,useNavigate} from 'react-router-dom';

@@ -1,6 +1,6 @@
 import React ,{useEffect,useState}from 'react';
 import "./Shop.css";
-import CommonSection from "../../components/UI/CommonSection/CommonSection";
+import CommonSection from "../../components/UI/CommonSection/CommonSection.jsx";
 import Helmet from "../../components/Helmet/Helmet";
 import {Container,Row,Col} from "reactstrap";
 import ProductList from "../../components/UI/ProductList/ProductList";

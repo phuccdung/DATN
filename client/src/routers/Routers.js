@@ -3,29 +3,29 @@ import { Routes,Route,Navigate} from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../redux/slices/userSlice';
 
-import Home from '../pages/Home/Home';
-import Shop from '../pages/Shop/Shop';
-import Cart from '../pages/Cart/Cart';
-import ProductDetail from '../pages/ProductDetail/ProductDetail';
-import Checkout from '../pages/Checkout/Checkout';
-import Login from '../pages/Login/Login';
-import Signup from '../pages/Signup/Signup';
-import Profile from '../pages/Profile/Profile';
-import MyOrder from "../pages/MyOrder/MyOrder";
-import ShopProduct from "../pages/ShopProduct/ShopProduct";
-import ShopOrder from "../pages/ShopOrder/ShopOrder";
-import ShopProductDetail from "../pages/ShopPoroductDetail/ShopProductDetail";
-import ShopNewProduct from "../pages/ShopNewProduct/ShopNewProduct";
-import ImportProduct from "../pages/ImportPage/ImportPage";
-import Link from "../pages/Link/Link";
-import Analytics from '../pages/Analytic/Analytic';
+import Home from '../pages/Home/Home.jsx';
+import Shop from '../pages/Shop/Shop.jsx';
+import Cart from '../pages/Cart/Cart.jsx';
+import ProductDetail from '../pages/ProductDetail/ProductDetail.jsx';
+import Checkout from '../pages/Checkout/Checkout.jsx';
+import Login from '../pages/Login/Login.jsx';
+import Signup from '../pages/Signup/Signup.jsx';
+import Profile from '../pages/Profile/Profile.jsx';
+import MyOrder from "../pages/MyOrder/MyOrder.jsx";
+import ShopProduct from "../pages/ShopProduct/ShopProduct.jsx";
+import ShopOrder from "../pages/ShopOrder/ShopOrder.jsx";
+import ShopProductDetail from "../pages/ShopPoroductDetail/ShopProductDetail.jsx";
+import ShopNewProduct from "../pages/ShopNewProduct/ShopNewProduct.jsx";
+import ImportProduct from "../pages/ImportPage/ImportPage.jsx";
+import Link from "../pages/Link/Link.jsx";
+import Analytics from '../pages/Analytic/Analytic.jsx';
 
 
 const Routers = () => {
 
   const currentUser=useSelector(selectCurrentUser);
   return <Routes>
-    <Route path="/" element={<Navigate to="/home"/>}></Route>
+    <Route exact path="/" element={<Home/>}></Route>
     <Route path="/home" element={<Home/>}> </Route>
     <Route path="/client" element={<Home/>}> </Route>
     <Route path="/shop" element={<Shop/>}> </Route>

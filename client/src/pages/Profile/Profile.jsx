@@ -1,9 +1,9 @@
 import React ,{ useState,useEffect } from 'react';
 import "./Profile.css";
-import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
+import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection.jsx";
 import Moment from 'moment';
 import Helmet from "../../components/Helmet/Helmet";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import {useSelector} from "react-redux";
 import { getUserById ,updateUserById} from "../../redux/apiCall";
 import {selectCurrentUser} from "../../redux/slices/userSlice"

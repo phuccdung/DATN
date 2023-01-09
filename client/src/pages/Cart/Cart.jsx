@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import './Cart.css';
 import Helmet from "../../components/Helmet/Helmet";
-import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection"
+import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection.jsx"
 import { Container,Row,Col } from 'reactstrap';
 import { motion } from 'framer-motion';
 import {cartActions} from "../../redux/slices/cartSlice";

@@ -1,10 +1,10 @@
 import React ,{useEffect,useState}from 'react';
 import "./Analytic.css";
-import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection";
+import CommonSectionfrom  from "../../components/UI/CommonSection/CommonSection.jsx";
 import Helmet from "../../components/Helmet/Helmet";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import { Container,Row,Col } from 'reactstrap';
-import Chart from "../../components/UI/Chart/Chart";
+import Chart from "../../components/UI/Chart/Chart.jsx";
 import Moment from 'moment';
 import user_icon from "../../assets/images/user-icon.png"
 
