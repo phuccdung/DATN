@@ -1,6 +1,8 @@
 const Link = require('../model/Link');
 const User=require('../model/User');
 const Product = require('../model/Product');
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const createLink= async (req, res) => {
     const duplicate = await Link.findOne({ userId: req.body.userId,productId:req.body.productId }).exec();
@@ -38,11 +40,16 @@ const addChipOrder=async(req,res)=>{
                 },
                 $push:{
                     history:{
-                        orderId:req.body.orderId,
-                        quantity:req.body.quantity,
-                        price:req.body.price,
-                        discount:foundProduct.discount,
-                        date:new Date().getTime(),
+                        $each: [ 
+                             {
+                                orderId:req.body.orderId,
+                                quantity:req.body.quantity,
+                                price:req.body.price,
+                                discount:foundProduct.discount,
+                                date:new Date().getTime(),
+                             }
+                         ],
+                        $position: 0
                     }
                 }
             }
@@ -192,9 +199,20 @@ const getLinkByUserId= async (req, res) => {
     } 
 }
 
+const getLinkById=async (req,res)=>{
+    try{
+        
+        const data=await Link.findById(req.params.id);
+        return res.status(200).json({"data":data,'message':true})
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
+
 
 module.exports = {
-    createLink,
+    getLinkById,
+    createLink, 
     addChipView,
     addChipOrder,
     getLinkByUserId

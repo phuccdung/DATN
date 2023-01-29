@@ -91,7 +91,7 @@ const MyLink = () => {
                                     <motion.button whileHover={{scale:1.5}} className='btn_copy' onClick={()=>copyLink(index)}>Copy</motion.button>
                                     
                                     <motion.button whileHover={{scale:1.5}} className='btn_copy btn_detail' >
-                                       <Link to={`/history/${item._id}`}>Detail</Link>
+                                       <Link to={`/history/${item.link}`}>Detail</Link>
                                     </motion.button>
                                    
 
