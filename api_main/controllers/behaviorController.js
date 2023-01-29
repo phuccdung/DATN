@@ -30,10 +30,7 @@ const addAction=async (req, res) => {
         return res.send({'message': false})
     }
     try{
-        if(time>7000){
-
-            await Behavior.findByIdAndUpdate({_id:behavior._id},{$push:{actions:req.body.action}});
-        }
+        await Behavior.findByIdAndUpdate({_id:behavior._id},{$push:{actions:req.body.action}}); 
         res.json({"data":time,'message':true});
     }catch(err){
         res.status(500).json({ 'data': err.message , "message": false});

@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+var historyDetail =new Schema({
+  quantity:Number,
+  price:Number,
+  discount:Number,
+  date:Date,
+})
+
 const linkSchema = new Schema({
   userId:{
     type: String,
@@ -21,7 +28,10 @@ const linkSchema = new Schema({
   chip:{
     type:Number,
     default:0,
-  }
+  },
+  history:[
+    historyDetail
+  ]
 },
 { timestamps: true }
 );
