@@ -6,11 +6,14 @@ import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import { Container,Row,Col } from 'reactstrap';
 import { motion } from 'framer-motion';
 
+import {Link} from "react-router-dom";
+
+
 import {useSelector} from "react-redux";
 import { selectCurrentUser } from '../../redux/slices/userSlice';
 import { getLinkById } from '../../redux/apiCall';
 
-const Link = () => {
+const MyLink = () => {
   const currentUser=useSelector(selectCurrentUser);
   const [data,setData]=useState([])
   useEffect(()=>{
@@ -84,9 +87,14 @@ const Link = () => {
                                   <td>{item.sold}</td>
                                   <td>{item.view}</td>
                                   <td>{(item.chip).toFixed(0)}$</td>
-                                  <td>
+                                  <td className='file__button'>
                                     <motion.button whileHover={{scale:1.5}} className='btn_copy' onClick={()=>copyLink(index)}>Copy</motion.button>
-                                    {/* <motion.i onClick={()=>handleDelete(item.id,index)} whileHover={{scale:1.5}} class="ri-delete-bin-6-line"></motion.i> */}
+                                    
+                                    <motion.button whileHover={{scale:1.5}} className='btn_copy btn_detail' >
+                                       <Link to={`/history/${item._id}`}>Detail</Link>
+                                    </motion.button>
+                                   
+
                                   </td>
                                 </tr>
                               ))
@@ -106,4 +114,4 @@ const Link = () => {
   )
 }
 
-export default Link
+export default MyLink

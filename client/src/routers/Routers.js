@@ -19,6 +19,7 @@ import ShopNewProduct from "../pages/ShopNewProduct/ShopNewProduct.jsx";
 import ImportProduct from "../pages/ImportPage/ImportPage.jsx";
 import Link from "../pages/Link/Link.jsx";
 import Analytics from '../pages/Analytic/Analytic.jsx';
+import HistoryLink from '../pages/HistoryLink/HistoryLink.jsx';
 
 
 const Routers = () => {
@@ -37,6 +38,7 @@ const Routers = () => {
     <Route path="/profile" element={<Profile/>}> </Route>
     <Route path="/link" element={<Link/>}> </Route>
     <Route path="/myorder" element={<MyOrder/>}> </Route>
+    <Route path="/history/:id" element={<HistoryLink/>}> </Route>
     {
       currentUser?.role?.Editor?
       <>

@@ -113,7 +113,7 @@ function Profile() {
                                 src={data.img||user_icon} alt="" />  
                             <div className="userShowTopTitle">
                                 <div className="userShowUsername">{data.name}</div>
-                                <div className="userShowTypeCustomer">{data.chip} Chip</div>
+                                <div className="userShowTypeCustomer">{Number(data.chip).toFixed(1)} Chip</div>
                             </div>
                         </div>
                         
