@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var historyDetail =new Schema({
+  orderId:String,
   quantity:Number,
   price:Number,
   discount:Number,

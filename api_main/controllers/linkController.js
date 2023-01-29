@@ -23,14 +23,27 @@ const addChipOrder=async(req,res)=>{
         if(!foundLink) {
             return res.status(204).json({ "data":"",'message': false });
         }
+        const foundProduct=await Product.findOne({_id:foundLink.productId}).exec();
+        if(!foundProduct) {
+            return res.status(204).json({ "data":"",'message': false });
+        }
         let sold=Number(foundLink.sold)+Number(req.body.quantity);
-        let chip=Number(foundLink.chip)+Number(1)+Number((Number(req.body.quantity)*Number(req.body.price)/10).toFixed(1));
-        await Link.updateOne(
+        let chip=Number(foundLink.chip)+Number(1)+Number((Number(req.body.quantity)*Number(req.body.price)*Number(foundProduct.discount)/100).toFixed(1));
+         await Link.updateOne(
             {_id:req.params.id},
             {
                 $set:{
                     sold:sold,
                     chip:chip,
+                },
+                $push:{
+                    history:{
+                        orderId:req.body.orderId,
+                        quantity:req.body.quantity,
+                        price:req.body.price,
+                        discount:foundProduct.discount,
+                        date:new Date().getTime(),
+                    }
                 }
             }
         )

@@ -60,7 +60,7 @@ export default function Order() {
     await updateProductById(productId,body,admin)
   }
   const addChip=async(body)=>{
-    await addChipOrder(admin,body);
+    await addChipOrder(admin,{...body,orderId:orderId});
   }
   const changeIsPay=async()=>{
     const res=await updateIsPay(admin,orderId);
@@ -87,6 +87,7 @@ export default function Order() {
             <select  className='selectStatus'  onChange={(e)=>changStatus(e)}>
               {
                 data.status==="Delivered"?
+                
                  <option selected={data?.status==="Delivered"} value="Delivered" >Delivered </option>
                 :
                 <>
