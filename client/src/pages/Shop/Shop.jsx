@@ -28,6 +28,7 @@ const Shop = () => {
   useEffect(()=>{
     const getData=async()=>{
       const res= await getProduct("sale");
+      console.log(res)
       if(res){
         setData(res);
         if(keyWord){
@@ -39,7 +40,7 @@ const Shop = () => {
             }],currentUser)
           }
           const dataResult=res.filter(item=>{
-            if(item.title.includes(keyWord)
+            if(item.title.toLowerCase().includes(keyWord.toLowerCase())
             ){
               return item
             }
@@ -79,9 +80,7 @@ const Shop = () => {
   }
   const handleSearch=()=>{
     let search = searchKey ;
-
     if(search){
-      
       const dataResult=data.filter(item=>{
         if(item.title.toLowerCase().includes(search.toLowerCase())||
           item.category.toLowerCase().includes(search.toLowerCase())||

@@ -182,6 +182,10 @@ function ShopProductDetail() {
                                 <input className='inputItem' name="img" type="text" placeholder='URL image' value={data.img} onChange={handleChange} />
                                 <input name="file" type="file" value={file} placeholder='URL image'onChange={e=>setFile(e.target.files[0])}/>
                             </div>
+                            <div className="newProductItem">
+                                <label>Discount %</label>
+                                <input className='inputItem' name='discount' type="number" value={data?.discount||4} onChange={handleChange}/>
+                            </div>
                         </form>
                         <button className="updateProduct" onClick={handleClick}> Update</button>
                     </div>

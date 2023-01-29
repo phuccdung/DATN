@@ -4,7 +4,9 @@ import { behaviorActions } from "./slices/behaviorSlice";
 
 import axios from "axios";
 
-const BASE_URL = "http://api.multi-mart.shop:3500/";
+// const BASE_URL = "http://api.multi-mart.shop:3500/";
+const BASE_URL = "http://localhost:3500/";
+
 
 export const addChipView= async(id)=>{
     await axios({

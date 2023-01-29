@@ -213,7 +213,7 @@ const ProductDetail = () => {
     if(currentUser){
       const res=await createLinks(body,currentUser)
       if(res?.message){
-        navigator.clipboard.writeText(`http://multi-mart.shop${location.pathname}?${res.data}`)
+        navigator.clipboard.writeText(`http://localhost:3000${location.pathname}?${res.data}`)
         NotificationManager.success('Copied!',"Success", 2000);
       }else{
         NotificationManager.error('Error!', 2000);

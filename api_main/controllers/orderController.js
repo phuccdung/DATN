@@ -152,12 +152,12 @@ const countProductIdtWithDate=async(req,res)=>{
         let data;
         let dataLink;
         data = await Order.aggregate([
-            {$unwind: '$products'},
             { $match: { 
                 createdAt: { $gte: fromDate,$lt:toDate} ,
                 vendorId: req.params.id,
                 }
             },
+            {$unwind: '$products'},
             {
                 $group: {
                     _id:{
@@ -175,13 +175,13 @@ const countProductIdtWithDate=async(req,res)=>{
         ]);
 
         dataLink = await Order.aggregate([
-            {$unwind: '$products'},
             { $match: { 
                 createdAt: { $gte: fromDate,$lt:toDate} ,
                 vendorId: req.params.id,
                 "products.link":{ $ne:"" },
                 }
             },
+            {$unwind: '$products'},
             {
                 $group: {
                     _id: "$products.productId",
@@ -322,12 +322,16 @@ const countQuantityOrder=async (req,res)=>{
                {
                    $project: {
                    month: { $month: "$createdAt" },
+                   year:{$year:"$createdAt"},
                    number:{$sum:'$products.quantity'}
                    },
                },
                {
                    $group: {
-                   _id: "$month",
+                   _id: {
+                      year:"$year",
+                      month:"$month",
+                    },
                    total: { $sum: '$number' },
                    },
                },
@@ -343,12 +347,17 @@ const countQuantityOrder=async (req,res)=>{
                {
                    $project: {
                    month: { $month: "$createdAt" },
+                   year:{$year:"$createdAt"},
                    number:{$sum:'$products.quantity'}
                    },
                },
                {
                    $group: {
-                   _id: "$month",
+                    _id: {
+                        year:"$year",
+                        month:"$month",
+                        
+                        },
                    total: { $sum: '$number' },
                    },
                },

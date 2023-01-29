@@ -34,6 +34,10 @@ const productSchema = new Schema({
         type:String,
         default:"waiting",
     },
+    discount:{
+        type:Number,
+        default:4,
+    },
     stock:{
         type:Number,
         default:0,

@@ -27,7 +27,7 @@ const Analytics = () => {
           setData(res?.data[0]);
           setDataLink(res?.dataLink[0]);
         }
-        const res2=await countOrderVendor(currentUser,fromDate,toDate); 
+        const res2=await countOrderVendor(currentUser,Moment(fromDate).startOf('day').toString(),Moment(toDate).endOf('day').toString()); 
         if(res2?.message){
           let arr=[];
           res2.data.forEach((item)=>{
@@ -47,7 +47,7 @@ const Analytics = () => {
         }
       }
       getData();
-    },[])
+    },[fromDate,toDate])
     return (
       <Helmet title="Link">
           <CommonSectionfrom title='Analytic'/>

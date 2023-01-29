@@ -1,11 +1,16 @@
 const path = require("path");
-
+const HtmlWebpackPlugin=require("html-webpack-plugin");
 module.exports = {
   entry: "./src/index.js", // Dẫn tới file index.js ta đã tạo
   output: {
     path: path.join(__dirname, "/build"),
     publicPath: '/',
     filename: 'bundle.js',
+},
+devServer: {
+  historyApiFallback: true,
+  contentBase: './',
+  hot: true
 },
   module: {
     rules: [
@@ -30,5 +35,9 @@ module.exports = {
   },
   // Chứa các plugins sẽ cài đặt trong tương lai
   plugins: [
+    new HtmlWebpackPlugin({
+      template:path.resolve(__dirname,'public/index.html'),
+      filename:'index.html'
+    })
   ]
 };

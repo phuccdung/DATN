@@ -1,6 +1,7 @@
 
 
-const BASE_URL = "http://api.multi-mart.shop:3500/";
+// const BASE_URL = "http://api.multi-mart.shop:3500/";
+const BASE_URL = "http://localhost:3500/";
 // const TOKEN = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser.token;
 
 

@@ -56,8 +56,6 @@ const getProductHomePage=async(req,res)=>{
                     "price":"$productInfo.price",
                     "title":"$productInfo.title",
                     "userId":"$productInfo.userId",
-
-
                 }
             },
             {

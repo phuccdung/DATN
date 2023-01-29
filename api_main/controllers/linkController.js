@@ -24,7 +24,7 @@ const addChipOrder=async(req,res)=>{
             return res.status(204).json({ "data":"",'message': false });
         }
         let sold=Number(foundLink.sold)+Number(req.body.quantity);
-        let chip=Number(foundLink.chip)+Number(1)+Number((req.body.quantity*req.body.price/10).toFixed(0));
+        let chip=Number(foundLink.chip)+Number(1)+Number((Number(req.body.quantity)*Number(req.body.price)/10).toFixed(1));
         await Link.updateOne(
             {_id:req.params.id},
             {
