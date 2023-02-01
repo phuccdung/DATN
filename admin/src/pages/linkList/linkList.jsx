@@ -21,7 +21,6 @@ export default function History() {
       if(res?.message){
         setData(res.data);
         setFilterData(res.data);
-       console.log(res)
       }
     }
     getData()

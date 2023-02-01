@@ -249,6 +249,35 @@ const getHistoryWithDate=async(req,res)=>{
         res.status(500).json(err);
     }
 }
+const getDistributedChipThisMonth=async(req,res)=>{
+    try{
+        const month=new Date(req.query.fromDate);
+        const data=await Link.aggregate([
+            {$unwind: '$history'},
+            { $match: { 
+                'history.date': { $gte: month} ,
+                }
+            },
+            {
+                $project: {
+                 month: { $month: month },
+                 multiply: { $multiply: [ "$history.price", "$history.quantity","$history.discount" ] }
+                },
+            },
+            {
+                $group: {
+                _id: "$month",    
+                total:{ $sum:"$multiply" },
+                
+                },
+            },
+            
+        ])
+        return res.status(200).json({"data":data,'message':true})
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
 
 
 module.exports = {
@@ -257,5 +286,6 @@ module.exports = {
     addChipView,
     addChipOrder,
     getLinkByUserId,
-    getHistoryWithDate
+    getHistoryWithDate,
+    getDistributedChipThisMonth,
 }

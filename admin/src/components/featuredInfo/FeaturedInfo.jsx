@@ -3,7 +3,7 @@ import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
 import {useSelector} from "react-redux";
 import {selectCurrentUser} from "../../redux/userRedux";
 import { useState,useEffect } from "react";
-import { income } from "../../redux/apiCall";
+import { income,getDistributedChipThisMonth } from "../../redux/apiCall";
 import Moment from 'moment';
 
 export default function FeaturedInfo() {
@@ -15,6 +15,7 @@ export default function FeaturedInfo() {
   const [saleLink,setSaleLink]=useState(0);
   const [total,setTotal]=useState(0);
   const [discount,setDiscount]=useState(0);
+  const [chip,setChip]=useState(0);
   useEffect(()=>{
     const getData=async()=>{
       const res=await income(admin,lastMonth);
@@ -25,6 +26,10 @@ export default function FeaturedInfo() {
         setTotal((res.data[1].quantity*100)/res.data[0].quantity-100);
         setDiscount((res.data[1].dis*100)/res.data[0].dis-100);
         setSaleLink((res.dataLink[1].total*100)/res.dataLink[0].total-100);
+      }
+      const res1=await getDistributedChipThisMonth(admin,Moment().startOf("month").format("YYYY-MM-DD").toString());
+      if(res1?.message){
+        setChip(res1.data[0].total);
       }
     }
     getData()
@@ -99,6 +104,12 @@ export default function FeaturedInfo() {
           </span>
         </div>
         <span className="featuredSub">Compared to last month</span>
+      </div>
+      <div className="featuredItem">
+        <span className="featuredTitle">Distributed Chips</span>
+        <div className="featuredMoneyContainerChip">
+          <span className="featuredMoney matop">{Number(chip/100).toFixed(1)}</span>          
+        </div>
       </div>
     </div>
   );
