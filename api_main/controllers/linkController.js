@@ -200,9 +200,50 @@ const getLinkByUserId= async (req, res) => {
 }
 
 const getLinkById=async (req,res)=>{
-    try{
-        
+    try{     
         const data=await Link.findById(req.params.id);
+        return res.status(200).json({"data":data,'message':true})
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
+
+const getHistoryWithDate=async(req,res)=>{
+    try{
+        const fromDate=new Date(req.query.fromDate);
+        const toDate=new Date(req.query.toDate);
+        const data=await Link.aggregate([
+            {$unwind: '$history'},
+            {$match:{
+                "history.date": { $gte: fromDate,$lt:toDate} ,
+            }},
+            { $addFields: { "product": { $toObjectId: "$productId" }}},
+            {
+                $lookup:
+                {
+                    from: "products",
+                    localField: "product",
+                    foreignField: "_id",
+                    as: "productInfo"
+                }
+            },
+            {$unwind: '$productInfo'},
+            {
+                $project:{
+                    _id:"$history._id",
+                    productName:"$productInfo.title",
+                    productImg:"$productInfo.img",
+                    date:"$history.date",
+                    orderId:"$history.orderId",
+                    discount:"$history.discount",
+                    quantity:"$history.quantity",
+                    price:"$history.price",
+                    userId:1,
+                    linkId:"$_id",
+                    
+                }
+            },
+        ])
         return res.status(200).json({"data":data,'message':true})
     }catch(err){
         res.status(500).json(err);
@@ -215,5 +256,6 @@ module.exports = {
     createLink, 
     addChipView,
     addChipOrder,
-    getLinkByUserId
+    getLinkByUserId,
+    getHistoryWithDate
 }

@@ -6,11 +6,12 @@ const ROLES_LIST = require('../../config/roles_list');
 const verifyRoles = require('../../middleware/verifyRoles');
 
 router.route('/')
-    .post(verifyJWT,linkController.createLink);
+    .post(verifyJWT,linkController.createLink)
+    .get(verifyJWT,linkController.getHistoryWithDate);
 router.route('/:userId')
     .get(verifyJWT,linkController.getLinkByUserId);
 router.route('/link/:id')
-    .get(verifyJWT,linkController.getLinkById);    
+    .get(verifyJWT,linkController.getLinkById);   
 
 router.route('/view/:id')
     .post(linkController.addChipView);    

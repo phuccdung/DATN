@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./pages/home/Home";
 import { BrowserRouter as Router, Switch, Route,Redirect } from "react-router-dom";
 import UserList from "./pages/userList/UserList";
+import LinkList from "./pages/linkList/linkList.jsx"
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
@@ -63,6 +64,9 @@ function App() {
             </Route>
             <Route path="/newproduct">
               <NewProduct />
+            </Route>
+            <Route path="/history">
+              <LinkList />
             </Route>
           </div>
           </>:<Route exact path="/">

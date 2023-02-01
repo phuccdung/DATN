@@ -4,6 +4,10 @@ import {
   PermIdentity,
   Storefront,
   AttachMoney,
+  BarChart,
+  MailOutline,
+  DynamicFeed,
+  ChatBubbleOutline
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -51,10 +55,12 @@ export default function Sidebar() {
               Orders
             </li>
             </Link>
-            {/* <li className="sidebarListItem">
-              <BarChart className="sidebarIcon" />
-              Reports
-            </li> */}
+            <Link to="/history" className="link">
+              <li className="sidebarListItem">
+                <DynamicFeed className="sidebarIcon" />
+                  History
+              </li>
+            </Link>
           </ul>
         </div>
         {/* <div className="sidebarMenu">
